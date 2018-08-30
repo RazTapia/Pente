@@ -1,0 +1,4 @@
+Documentar referencias y que uso se le dio
+
+Ejemplo:
+-https://brainking.com/es/GameRules?tp=38  se utilizó para conocer las reglas del juego.
