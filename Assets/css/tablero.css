@@ -1,10 +1,9 @@
 /*Alinear vertical y horizontalmente el div central*/
 .central{
     width: 603px;
-    margin-top: 1%;
+    margin-top: 5%;
     margin-left: 30%;
     height: 603px;
-    border: 1px solid #000;
     padding-left: -6px;
 }
 
