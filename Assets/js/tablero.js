@@ -7,18 +7,33 @@
 $(document).ready(function () {
 	for( var fila=0; fila<20;fila++)
 	{
-		var currentFila="F"+fila; //Almacena la fila actual
+		var filaActual="F"+fila; //Almacena la fila actual
 		var crearFila = document.createElement("TR"); 
 	    //importante darle id a cada fila para que las columnas se impriman desde la fila 0 a la 20.
-	    crearFila.setAttribute("id", currentFila);
+	    crearFila.setAttribute("id", filaActual);
 	    document.getElementById("tablero").appendChild(crearFila); 
 
 		for(var columna=0;columna<20;columna++)
 		{
-		    var crearCuadro = document.createElement("TH");
-		    crearCuadro.classList.add("cuadro");
+
+
+		var posicion = "F"+fila+"C"+columna; //Se agrego una ID para cada cuadro que representa su cordenada
+
+		var crearCuadro = document.createElement("TH");
+		crearCuadro.classList.add("cuadro");
+
+		    //Se eliminan los bordes dependiendo si es el final de la columna o de la fila
+		    if (fila != 19) {
+		    	crearCuadro.setAttribute("id", posicion);
+		    	if (columna == 19)
+	    			crearCuadro.style.borderStyle="hidden hidden hidden none";
+		    } else {
+		    	crearCuadro.setAttribute("id", posicion);
+		    	crearCuadro.style.borderStyle="none hidden hidden hidden";
+		    }
+
 		    //Dependiendo de la fila en la que se esta imprimir sus respectivas 20 columnas
-	   		document.getElementById(currentFila).appendChild(crearCuadro);
+	   		document.getElementById(filaActual).appendChild(crearCuadro);
 		} 
     }   
 });

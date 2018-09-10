@@ -1,0 +1,13 @@
+/*Clase ficha con la que se dibuja la ficha.
+se posiciona en la esquina superior izquierda de las TH*/
+.ficha 
+{
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+	z-index: 1;
+	position: absolute;
+	margin: -25px 0px 0px -10px;
+	border: 1px solid black;
+		background: purple;
+}
