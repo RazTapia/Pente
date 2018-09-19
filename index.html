@@ -5,17 +5,22 @@
   <title>PENTE v1</title>
   <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/tablero.css">
-
-</head>
-<body>
-	<!--Div principal y central  el cual contendrá el tablero y sus fichas-->
-	<div class='central'>
-		<table border="1" id="tablero">
-		</table>
-	</div>
+  <link rel="stylesheet" href="assets/css/penteStyle.css">
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/jquery-ui.min.js"></script>
-  <script src="assets/js/tablero.js"></script>
+  <script src="assets/js/funcionesPente.js"></script>
+</head>
+<body onload="Ready()">
+	<!--Div principal y central  el cual contendrá el tablero y sus fichas-->
+	<div class="central">
+		<table id="tablero" border=1>
+		</table>
+	</div>
+  <script type="text/javascript">
+    function Ready(){
+      Tablero();
+      //Ficha(0, 0);
+    }
+  </script>
 </body>
 </html>
