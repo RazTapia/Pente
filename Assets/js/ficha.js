@@ -4,11 +4,12 @@
 */
 
 $(document).ready(function () {
-	Ficha(0, 0); //Se ingresan las cordenadas del 0 - 19 tanto en X como en Y
-	Ficha(0, 19);
-	Ficha(19, 0);
-	Ficha(19, 19);
-	
+
+	for (i = 0; i <= 19; i++) {
+		for (j = 0; j <= 19; j++) {
+			Ficha(i,j);
+		}
+	};
 	//Metodo que se usa´para colocoar la ficha mediante cordenadas x & y
 	function Ficha(x, y) {
 		var crearFicha = document.createElement("DIV"); 

@@ -15,8 +15,6 @@ $(document).ready(function () {
 
 		for(var columna=0;columna<20;columna++)
 		{
-
-
 		var posicion = "F"+fila+"C"+columna; //Se agrego una ID para cada cuadro que representa su cordenada
 
 		var crearCuadro = document.createElement("TH");
