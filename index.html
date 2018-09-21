@@ -3,23 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>PENTE v1</title>
-  <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/penteStyle.css">
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/jquery-ui.min.js"></script>
-  <script src="assets/js/funcionesPente.js"></script>
+  <link rel="stylesheet" href="assets/css/estilosGenerales.css">
+  <script src="assets/js/funcionesGenerales.js"></script>
 </head>
-<body onload="Ready()">
+<body onload="Principal()">
   <!--Div principal y central  el cual contendrá el tablero y sus fichas-->
   <div class="central">
     <table id="tablero" border=1>
     </table>
   </div>
   <script type="text/javascript">
-    function Ready(){
+    function Principal() {
       Tablero();
-      //Ficha(0, 0);
     }
   </script>
 </body>

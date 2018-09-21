@@ -1,4 +1,7 @@
-/*Alinear vertical y horizontalmente el div central*/
+/*
+* Autor: RannFerii
+* Alinear vertical y horizontalmente el div central
+*/
 .central {
     width: 603px;
     margin-top: 5%;
@@ -7,14 +10,20 @@
     padding-left: -6px;
 }
 
+/*
+* Autor: RannFerii
+* Cuadro= 30x30 px cuadrados
+*/
 .cuadro {
-  /*Cuadro= 30x30 px cuadrados*/
   width: 30px;
   height: 30px;
 }
 
-/*Clase ficha con la que se dibuja la ficha.
-se posiciona en la esquina superior izquierda de las TH*/
+/*
+* Autor: BacteriaLoki
+* Clase ficha con la que se dibuja la ficha.
+* se posiciona en la esquina superior izquierda de las TH
+*/
 .ficha {
 	width: 20px;
 	height: 20px;

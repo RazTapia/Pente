@@ -1,4 +1,5 @@
 /*
+* Autor: RannFerii
 * Su tarea es dibujar todo el tablero 
 * empezando por las filas, y en cada una de estas dibujar sus 20 columnas.
 * Al terminar 20 filas se tendrá el tablero dibujado , 30x30 pixeles cuadrados.
@@ -36,6 +37,7 @@ function Tablero() {
 }
 
 /*
+* Autor: BacteriaLoki
 * Se crea un metodo que recibe la cordenada a la cual se quiere colocar la ficha 
 * con los siguientes parametros: int X: la fila & int Y: la columna
 */
