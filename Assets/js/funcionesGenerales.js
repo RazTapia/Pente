@@ -60,3 +60,38 @@ function DibujarFichasTablero() {
         }
     }
 }
+/*
+* Autor: Bryan Román
+* Se Agrega la funcion de cambio de estados de la ficha por jugador, la funcion utiliza como parametros "x" y "y",
+* los estados son determinados por numero de jugador, y se obtienen por cada elemento de id de su respectiva 
+* filas y columnas, esto con la finalidad de que se pueda dibujar o ocultar los diferentes 4 estados en el tablero.
+*/
+
+function EstadoFicha(x, y){
+	/*Definiendo los estados por jugador,es decir, estadoHueco y estado ocupado representan a jugador 1,
+		estadoHueco1 y estado ocupado1 representan a jugador 2, y asi sucesivamente*/
+	var estadoHueco = document.createElement("DIV"),estadoOcupado = document.createElement("DIV"); 
+	var estadoHueco1 = document.createElement("DIV"),estadoOcupado1 = document.createElement("DIV"); 
+	var estadoHueco2 = document.createElement("DIV"),estadoOcupado2 = document.createElement("DIV"); 
+	var estadoHueco3 = document.createElement("DIV"),estadoOcupado3 = document.createElement("DIV"); 
+	
+	/*Definiendo los estados por jugador,es decir, por color*/
+	estadoHueco.classList.add("Aqui va el color de la fichaHueca"); 
+	estadoOcupado.classList.add("Aqui va el color de la ficha Ocupada o Puesta");
+	estadoHueco1.classList.add("Aqui va el color de la fichaHueca1"); 
+	estadoOcupado1.classList.add("Aqui va el color de la ficha Ocupada o Puesta1"); 
+	estadoHueco2.classList.add("Aqui va el color de la fichaHueca2"); 
+	estadoOcupado2.classList.add("Aqui va el color de la ficha Ocupada o Puesta2");  
+	estadoHueco3.classList.add("Aqui va el color de la fichaHueca3"); 
+	estadoOcupado3.classList.add("Aqui va el color de la ficha Ocupada o Puesta3"); 
+
+	/*Tomando elementos de id F y C para cada jugador*/
+	document.getElementById("F"+x+"C"+y).appendChild(estadoHueco); 
+	document.getElementById("F"+x+"C"+y).appendChild(estadoOcupado); 
+	document.getElementById("F"+x+"C"+y).appendChild(estadoHueco1); 
+	document.getElementById("F"+x+"C"+y).appendChild(estadoOcupado1); 
+	document.getElementById("F"+x+"C"+y).appendChild(estadoHueco2); 
+	document.getElementById("F"+x+"C"+y).appendChild(estadoOcupado2); 
+	document.getElementById("F"+x+"C"+y).appendChild(estadoHueco3); 
+	document.getElementById("F"+x+"C"+y).appendChild(estadoOcupado3); 
+}
