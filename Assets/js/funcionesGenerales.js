@@ -53,7 +53,7 @@ function Ficha(x, y) {
 * utilizaran en el juego.
 */
 
-function DibujarFichasTablero(x, y) {
+function DibujarFichasTablero() {
     for (i = 0; i <= 19; i++) {
         for (j = 0; j <= 19; j++) {
             Ficha(i,j);
