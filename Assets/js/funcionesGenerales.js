@@ -47,3 +47,17 @@ function Ficha(x, y) {
 	document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
 	crearFicha.classList.add("ficha");
 }
+
+/*
+* Autor: Tania Torres Alvarado y Roberto Sagaón H.luz
+* Se integra el método que dibuja todas las fichas-hueco en el tablero que se 
+* utilizaran en el juego.
+*/
+
+function DibujarFichasTablero() {
+    for (let i = 0; i <= 19; i++) {
+        for (let j = 0; j <= 19; j++) {
+            Ficha(i, j);
+        }
+    }
+}
