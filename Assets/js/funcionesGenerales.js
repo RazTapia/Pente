@@ -66,8 +66,8 @@ function DibujarFichasTablero() {
 * los estados son determinados por numero de jugador, y se obtienen por cada elemento de id de su respectiva 
 * filas y columnas, esto con la finalidad de que se pueda dibujar o ocultar los diferentes 4 estados en el tablero.
 */
-
-function EstadoFicha(x, y){
+ //Se agregua window.onload a la funcion para evitar error y conflictos con las funciones que solo se permite en Principal();
+window.onload = function EstadoFicha(x, y){
 	/*Definiendo los estados por jugador,es decir, estadoHueco y estado ocupado representan a jugador 1,
 		estadoHueco1 y estado ocupado1 representan a jugador 2, y asi sucesivamente*/
 	var estadoHueco = document.createElement("DIV"),estadoOcupado = document.createElement("DIV"); 
@@ -76,8 +76,8 @@ function EstadoFicha(x, y){
 	var estadoHueco3 = document.createElement("DIV"),estadoOcupado3 = document.createElement("DIV"); 
 	
 	/*Definiendo los estados por jugador,es decir, por color*/
-	estadoHueco.classList.add("Aqui va el color de la fichaHueca"); 
-	estadoOcupado.classList.add("Aqui va el color de la ficha Ocupada o Puesta");
+	estadoHueco.classList.add("fichaHueca"); 
+	estadoOcupado.classList.add("fichaOcupada");
 	estadoHueco1.classList.add("Aqui va el color de la fichaHueca1"); 
 	estadoOcupado1.classList.add("Aqui va el color de la ficha Ocupada o Puesta1"); 
 	estadoHueco2.classList.add("Aqui va el color de la fichaHueca2"); 
