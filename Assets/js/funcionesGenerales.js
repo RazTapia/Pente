@@ -48,15 +48,14 @@ function Ficha(x, y) {
 	let estadoFoo =0; //variable que contendrá el estado actual del huco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
     document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
 	crearFicha.classList.add("ficha");
-	crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control de la posición, Autor: LucNieto
+	crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
 
 /*
 * Autor: LucNieto
 * se obtiene el id del hueco para cambiar el la opacida para indicar que se está seleccionando,
 * ya sea para el onmouseover o el onclick
 */   
-   // let posicionActual = document.getElementById("F"+x+"C"+y).childNodes[0];
-    //console.log(posicionActual.outerHTML);
+
 	crearFicha.addEventListener('mouseover', () => { (crearFicha.id == 0) ? crearFicha.style.opacity = "0.5" : crearFicha.style.opacity = "1"; }); // Autor: Lucio Nieto Bautista 
 
 	crearFicha.addEventListener('mouseout', () => { crearFicha.style.opacity = "1"; });// Autor: Lucio Nieto Bautista 
