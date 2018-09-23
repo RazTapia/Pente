@@ -44,11 +44,25 @@ function Tablero() {
 
 function Ficha(x, y) {
 	var crearFicha = document.createElement("DIV"); 
+	let hueco = `${x}hueco${y}`; //variable que contendá la posición del puntero sobre el hueco actual, Autor: LucNieto
 	document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
 	crearFicha.classList.add("ficha");
-	crearFicha.setAttribute("id",`hueco${x}${y}`); //se le asigna un id al hueco para llevar control de la posición
-	crearFicha.setAttribute("onmouseover",`sobreElHueco(${x},${y})`);//se manda a llamar la funcion sobreElHueco cuando el puntero este sobre el hueco
-	crearFicha.setAttribute("onmouseout",`fueraDelhueco(${x},${y})`);//se manda a llamar la funcion fueraElHueco cuando el puntero deje el hueco
+	crearFicha.setAttribute("id",hueco); //se le asigna un id al hueco para llevar control de la posición, Autor: LucNieto
+
+/*
+* Autor: LucNieto
+* se obtiene el id del hueco para cambiar el la opacida para indicar que se está seleccionando,
+* ya sea para el onmouseover o el onclick
+*/
+	crearFicha.addEventListener('mouseover', (hueco) => {  document.getElementById(hueco.path[0].id).style.opacity = "0.5"; }); // Autor: Lucio Nieto Bautista 
+
+	crearFicha.addEventListener('mouseout', (hueco) => { document.getElementById(hueco.path[0].id).style.opacity = "1"; });// Autor: Lucio Nieto Bautista 
+
+	crearFicha.addEventListener('click', (hueco) => { 
+		let pos = document.getElementById(hueco.path[0].id);	
+		pos.style.opacity = "1";
+		pos.style.backgroundColor = "black"; 
+	});// Fin  del bloque,Autor: Lucio Nieto Bautista 
 }
 
 /*
@@ -65,19 +79,3 @@ function DibujarFichasTablero() {
     }
 }
 
-/*
-* Autor: Lucio Nieto Bautista 
-* Usuario GitHub: LucNieto
-* se obtiene el id del hueco para cambiar el la opacida para indicar que se está seleccionando,
-* ya sea para el onmouseover o el onclick
-*/
-function sobreElHueco(x,y){
-	let hueco = `hueco${x}${y}`;
-	document.getElementById(hueco).style.opacity = "0.5";
-
-}
-
-function fueraDelhueco(x,y){
-	let hueco = `hueco${x}${y}`;
-	document.getElementById(hueco).style.opacity = "1";
-}
