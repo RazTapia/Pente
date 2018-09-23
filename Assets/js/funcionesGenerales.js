@@ -43,25 +43,26 @@ function Tablero() {
 */
 
 function Ficha(x, y) {
+	var colorUsuario = "black"; //variable que contendrá el color de la ficha según el usuario
 	var crearFicha = document.createElement("DIV"); 
-	let hueco = `${x}hueco${y}`; //variable que contendá la posición del puntero sobre el hueco actual, Autor: LucNieto
-	document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
+	let estadoFoo =0; //variable que contendrá el estado actual del huco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
+    document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
 	crearFicha.classList.add("ficha");
-	crearFicha.setAttribute("id",hueco); //se le asigna un id al hueco para llevar control de la posición, Autor: LucNieto
+	crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control de la posición, Autor: LucNieto
 
 /*
 * Autor: LucNieto
 * se obtiene el id del hueco para cambiar el la opacida para indicar que se está seleccionando,
 * ya sea para el onmouseover o el onclick
-*/
-	crearFicha.addEventListener('mouseover', (hueco) => {  document.getElementById(hueco.path[0].id).style.opacity = "0.5"; }); // Autor: Lucio Nieto Bautista 
+*/   
+   // let posicionActual = document.getElementById("F"+x+"C"+y).childNodes[0];
+    //console.log(posicionActual.outerHTML);
+	crearFicha.addEventListener('mouseover', () => { (crearFicha.id == 0) ? crearFicha.style.opacity = "0.5" : crearFicha.style.opacity = "1"; }); // Autor: Lucio Nieto Bautista 
 
-	crearFicha.addEventListener('mouseout', (hueco) => { document.getElementById(hueco.path[0].id).style.opacity = "1"; });// Autor: Lucio Nieto Bautista 
+	crearFicha.addEventListener('mouseout', () => { crearFicha.style.opacity = "1"; });// Autor: Lucio Nieto Bautista 
 
-	crearFicha.addEventListener('click', (hueco) => { 
-		let pos = document.getElementById(hueco.path[0].id);	
-		pos.style.opacity = "1";
-		pos.style.backgroundColor = "black"; 
+	crearFicha.addEventListener('click', () => { 
+		(crearFicha.id == 0) ? (crearFicha.style.backgroundColor = colorUsuario, crearFicha.style.opacity = "1", crearFicha.id = 1) : null;
 	});// Fin  del bloque,Autor: Lucio Nieto Bautista 
 }
 
