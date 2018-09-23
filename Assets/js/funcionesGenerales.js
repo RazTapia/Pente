@@ -46,6 +46,9 @@ function Ficha(x, y) {
 	var crearFicha = document.createElement("DIV"); 
 	document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
 	crearFicha.classList.add("ficha");
+	crearFicha.setAttribute("id",`hueco${x}${y}`); //se le asigna un id al hueco para llevar control de la posición
+	crearFicha.setAttribute("onmouseover",`sobreElHueco(${x},${y})`);//se manda a llamar la funcion sobreElHueco cuando el puntero este sobre el hueco
+	crearFicha.setAttribute("onmouseout",`fueraDelhueco(${x},${y})`);//se manda a llamar la funcion fueraElHueco cuando el puntero deje el hueco
 }
 
 /*
@@ -60,4 +63,21 @@ function DibujarFichasTablero() {
             Ficha(i, j);
         }
     }
+}
+
+/*
+* Autor: Lucio Nieto Bautista 
+* Usuario GitHub: LucNieto
+* se obtiene el id del hueco para cambiar el la opacida para indicar que se está seleccionando,
+* ya sea para el onmouseover o el onclick
+*/
+function sobreElHueco(x,y){
+	let hueco = `hueco${x}${y}`;
+	document.getElementById(hueco).style.opacity = "0.5";
+
+}
+
+function fueraDelhueco(x,y){
+	let hueco = `hueco${x}${y}`;
+	document.getElementById(hueco).style.opacity = "1";
 }
