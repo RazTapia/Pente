@@ -43,7 +43,7 @@ function Tablero() {
 */
 
 function Ficha(x, y) {
-	var colorUsuario = "black"; //variable que contendrá el color de la ficha según el usuario
+	var colorUsuario = "orange"; //variable que contendrá el color de la ficha según el usuario
 	var crearFicha = document.createElement("DIV"); 
 	let estadoFoo =0; //variable que contendrá el estado actual del huco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
     document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
