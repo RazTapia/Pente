@@ -43,10 +43,28 @@ function Tablero() {
 */
 
 function Ficha(x, y) {
+	var colorUsuario = "orange"; //variable que contendrá el color de la ficha según el usuario
 	var crearFicha = document.createElement("DIV"); 
-	document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
+	let estadoFoo =0; //variable que contendrá el estado actual del huco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
+    document.getElementById("F"+x+"C"+y).appendChild(crearFicha); 
 	crearFicha.classList.add("ficha");
+	crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
+
+/*
+* Autor: LucNieto
+* se obtiene el id del hueco para cambiar el la opacida para indicar que se está seleccionando,
+* ya sea para el onmouseover o el onclick
+*/   
+
+	crearFicha.addEventListener('mouseover', () => { (crearFicha.id == 0) ? crearFicha.style.opacity = "0.5" : crearFicha.style.opacity = "1"; }); // Autor: Lucio Nieto Bautista 
+
+	crearFicha.addEventListener('mouseout', () => { crearFicha.style.opacity = "1"; });// Autor: Lucio Nieto Bautista 
+
+	crearFicha.addEventListener('click', () => { 
+		(crearFicha.id == 0) ? (crearFicha.style.backgroundColor = colorUsuario, crearFicha.style.opacity = "1", crearFicha.id = 1) : null;
+	});// Fin  del bloque,Autor: Lucio Nieto Bautista 
 }
+
 /*
 * Autor: Tania Torres Alvarado y Roberto Sagaón H.luz
 * Se integra el método que dibuja todas las fichas-hueco en el tablero que se 
@@ -60,3 +78,4 @@ function DibujarFichasTablero() {
         }
     }
 }
+
