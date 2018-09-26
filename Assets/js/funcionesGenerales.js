@@ -49,7 +49,7 @@ function Ficha(x, y) {
     document.getElementById("F"+x+"C"+y).appendChild(crearFicha);
 	crearFicha.classList.add("ficha");
 	crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
-
+	crearFicha.setAttribute("draggable",false);
 /*
 * Autor: LucNieto
 * se obtiene el id del hueco para cambiar el color e indicar que se está seleccionando
@@ -60,7 +60,7 @@ function Ficha(x, y) {
 
 	crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
 
-	crearFicha.addEventListener('click', () => {
+	crearFicha.addEventListener('mouseup', () => {
 		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUsuario, crearFicha.id = 1) : null; });// Fin  del bloque,Autor: Lucio Nieto Bautista
 }
 /*
