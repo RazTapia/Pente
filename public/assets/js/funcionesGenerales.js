@@ -77,7 +77,10 @@ socket.on('pente:seleccion',function(data){
 });
 
 socket.on('timeout',function(data){
+	if(data==1)
+	{
 	alert("SOLO HAY UN JUGADOR");
+	}
 });
 /*
 * Autor: Tania Torres Alvarado y Roberto Sagaón H.luz

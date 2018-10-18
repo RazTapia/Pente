@@ -45,12 +45,12 @@ io.on('connection',(socket) => {
     //console.log(TOTAL_USERS);
     if(io.engine.clientsCount>=3)
     {
-     //console.log("ya son 2, no mas");   
+
      socket.disconnect( true );
     }
     socket.on('disconnect', ()=>{
       TOTAL_USERS=io.engine.clientsCount;
-      console.log('en dissconet'+TOTAL_USERS);	
+
       socket.broadcast.emit('timeout', TOTAL_USERS);
   })
   
