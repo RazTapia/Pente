@@ -75,6 +75,10 @@ socket.on('pente:seleccion',function(data){
 	childNode[0].setAttribute('style', 'background-color: red;');
 	childNode[0].setAttribute('id', '1');
 });
+
+socket.on('timeout',function(data){
+	alert("SOLO HAY UN JUGADOR");
+});
 /*
 * Autor: Tania Torres Alvarado y Roberto Sagaón H.luz
 * Se integra el método que dibuja todas las fichas-hueco en el tablero que se

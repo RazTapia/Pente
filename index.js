@@ -40,7 +40,7 @@ const io=socketIO(server);
 
 io.on('connection',(socket) => {
     console.log("Nueva conexion", socket.id);
-
+    
     TOTAL_USERS=io.engine.clientsCount;
     //console.log(TOTAL_USERS);
     if(io.engine.clientsCount>=3)
@@ -51,6 +51,7 @@ io.on('connection',(socket) => {
     socket.on('disconnect', ()=>{
       TOTAL_USERS=io.engine.clientsCount;
       console.log('en dissconet'+TOTAL_USERS);	
+      socket.broadcast.emit('timeout', TOTAL_USERS);
   })
   
   socket.on('pente:selecion',(data) => {
