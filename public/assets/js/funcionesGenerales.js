@@ -78,12 +78,19 @@ socket.on('pente:seleccion',function(data){
 
 socket.on('timeout:inicio',function(data){
 	if(data==1){
-	alert("SOLO HAY UN JUGADOR");
+		alert("solo hya un jugador")
+		document.getElementById('tablero').style.pointerEvents = 'none';
+	}
+});
+socket.on('totaljugadores',function(data){
+	if(data==2){
+		alert("Ya son dos jugadores puedes inciar la partida");
+		document.getElementById('tablero').style.pointerEvents = 'auto';
 	}
 });
 socket.on('desconectado',function(data){
 	if(data==1){
-	alert("SE SALIO EL OTRO JUGADOR");
+		alert("SE SALIO EL OTRO JUGADOR");
 	}
 });
 /*
@@ -105,11 +112,3 @@ function DibujarFichasTablero() {
 * Bloquear y desbloquear el tablero a partir de un true o false
 *
 */
-
-function BloquearTablero(data) { 
- 	if(data){
-    document.getElementById('tablero').style.pointerEvents = 'none';
-  }else{
-  	document.getElementById('tablero').style.pointerEvents = 'auto';
-  }
-}

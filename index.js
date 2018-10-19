@@ -43,12 +43,11 @@ io.on('connection',(socket) => {
     console.log("Nueva conexion", socket.id);  
     TOTAL_USERS=io.engine.clientsCount;
     if(TOTAL_USERS==1){
-      console.log('solo hay un jugador');
       socket.emit('timeout:inicio', TOTAL_USERS);    
     }
     console.log(TOTAL_USERS);
-    if(io.engine.clientsCount>=3){
-     socket.disconnect( true );
+    if(io.engine.clientsCount==2){
+      socket.broadcast.emit('totaljugadores', TOTAL_USERS);    
     }
     socket.on('disconnect', ()=>{
       TOTAL_USERS=io.engine.clientsCount;
