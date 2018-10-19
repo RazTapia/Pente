@@ -99,3 +99,17 @@ function DibujarFichasTablero() {
         }
     }
 }
+
+/*
+* Autor: Josué Zapata
+* Bloquear y desbloquear el tablero a partir de un true o false
+*
+*/
+
+function BloquearTablero(data) { 
+ 	if(data){
+    document.getElementById('tablero').style.pointerEvents = 'none';
+  }else{
+  	document.getElementById('tablero').style.pointerEvents = 'auto';
+  }
+}
