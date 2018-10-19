@@ -2,23 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PENTE v1</title>
+  <title>PENTE</title>
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
+  <link rel="icon" type="assets/image/png" href="assets/images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/vendor/animate/animate.css">
+  <link rel="stylesheet" type="text/css" href="assets/vendor/css-hamburgers/hamburgers.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/vendor/select2/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/util.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/estilosGenerales.css">
   <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
   <script src="assets/js/funcionesGenerales.js"></script>
 </head>
 <body onload="Principal()">  
-  <!--Div principal y central  el cual contendrá el tablero y sus fichas-->
-  <div class="central">
-    <table id="tablero" border=1>
-    </table>
-  </div>
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <!--Div principal y central  el cual contendrá el tablero y sus fichas-->
+        <div class="central">
+          <table id="tablero" border=1>
+          </table>
+        </div>
+      </div>
+      <!-- <div class="wrap-login100">
+      </div> -->
+    </div>
+  </div> 
   <script type="text/javascript">
     function Principal() {
       Tablero();
       DibujarFichasTablero();
-      BloquearTablero(true);
+      // BloquearTablero(true);
     }
   </script>
 </body>
