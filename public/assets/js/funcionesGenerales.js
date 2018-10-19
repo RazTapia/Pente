@@ -76,10 +76,14 @@ socket.on('pente:seleccion',function(data){
 	childNode[0].setAttribute('id', '1');
 });
 
-socket.on('timeout',function(data){
-	if(data==1)
-	{
+socket.on('timeout:inicio',function(data){
+	if(data==1){
 	alert("SOLO HAY UN JUGADOR");
+	}
+});
+socket.on('desconectado',function(data){
+	if(data==1){
+	alert("SE SALIO EL OTRO JUGADOR");
 	}
 });
 /*

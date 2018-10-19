@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const socketIO= require('socket.io');
 var TOTAL_USERS;
+var flag;
 //Puerto
 app.set('port', process.env.PORT || 3000);
 
@@ -39,19 +40,19 @@ const server = app.listen(app.get('port'),() =>{
 const io=socketIO(server);
 
 io.on('connection',(socket) => {
-    console.log("Nueva conexion", socket.id);
-    
+    console.log("Nueva conexion", socket.id);  
     TOTAL_USERS=io.engine.clientsCount;
-    //console.log(TOTAL_USERS);
-    if(io.engine.clientsCount>=3)
-    {
-
+    if(TOTAL_USERS==1){
+      console.log('solo hay un jugador');
+      socket.emit('timeout:inicio', TOTAL_USERS);    
+    }
+    console.log(TOTAL_USERS);
+    if(io.engine.clientsCount>=3){
      socket.disconnect( true );
     }
     socket.on('disconnect', ()=>{
       TOTAL_USERS=io.engine.clientsCount;
-
-      socket.broadcast.emit('timeout', TOTAL_USERS);
+      socket.broadcast.emit('desconectado', TOTAL_USERS);
   })
   
   socket.on('pente:selecion',(data) => {
