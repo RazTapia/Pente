@@ -1,3 +1,5 @@
+[ FONT ]*/
+
 @font-face {
   font-family: Poppins-Regular;
   src: url('../fonts/poppins/Poppins-Regular.ttf'); 
@@ -17,6 +19,9 @@
   font-family: Montserrat-Bold;
   src: url('../fonts/montserrat/Montserrat-Bold.ttf'); 
 }
+
+/*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
 
 * {
 	margin: 0px; 
@@ -175,7 +180,7 @@ iframe {
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
-  display: flow-root;
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 177px 130px 33px 95px;

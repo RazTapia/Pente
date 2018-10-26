@@ -70,18 +70,35 @@ function Ficha(x, y) {
 	
 	}
 
+	/*
+* Autor: Tania Torres, Josue Zapata
+* Envio de parametros a las funciones con socket para pintar, y avisar las circuntancias del juego
+*/
+
 socket.on('pente:seleccion',function(data){
 	var childNode =  document.getElementById(data.id).childNodes;
 	childNode[0].setAttribute('style', 'background-color: red;');
-	childNode[0].setAttribute('id', '1');
+	childNode[0].setAttribute('id', '2');
 });
 
-socket.on('timeout',function(data){
-	if(data==1)
-	{
-	alert("SOLO HAY UN JUGADOR");
+socket.on('timeout:inicio',function(data){
+	if(data==1){
+		alert("solo hya un jugador")
+		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
+socket.on('totaljugadores',function(data){
+	if(data==2){
+		alert("Ya son dos jugadores puedes inciar la partida");
+		document.getElementById('tablero').style.pointerEvents = 'auto';
+	}
+});
+socket.on('desconectado',function(data){
+	if(data==1){
+		alert("SE SALIO EL OTRO JUGADOR");
+	}
+});
+
 /*
 * Autor: Tania Torres Alvarado y Roberto Sagaón H.luz
 * Se integra el método que dibuja todas las fichas-hueco en el tablero que se
@@ -94,18 +111,4 @@ function DibujarFichasTablero() {
             Ficha(i, j);
         }
     }
-}
-
-/*
-* Autor: Josué Zapata
-* Bloquear y desbloquear el tablero a partir de un true o false
-*
-*/
-
-function BloquearTablero(data) { 
- 	if(data){
-    document.getElementById('tablero').style.pointerEvents = 'none';
-  }else{
-  	document.getElementById('tablero').style.pointerEvents = 'auto';
-  }
 }

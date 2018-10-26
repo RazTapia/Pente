@@ -42,18 +42,25 @@ body {
 	background: lightgrey;
 }
 
-
-
 /*
  * Autor: Josué Zapata
  * Sobreescritura de las clases del template para acomodar componentes y ajustar la interfaz
  */
 
 .wrap-login100 {
-    width: 605px;
-    background: #ffffff;
+    width: 550px;
+    background: #ffff;
     border-radius: 10px;
     display: -moz-box;
     display: -ms-flexbox;
     padding:0; margin:0;
+}
+
+ /*  Bakcgound*/
+ .container-login100 {
+    background: linear-gradient(-135deg, #c850c0, #4158d0);
+}
+
+.section-jugador{
+     width: 223px;
 }
