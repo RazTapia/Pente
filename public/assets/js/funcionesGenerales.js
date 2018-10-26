@@ -1,3 +1,8 @@
+/* Autor: Tania Torres Alvarado
+* Se inicializa la variable del socket del lado del cliente.
+*/
+const socket = io()
+
 /*
 * Autor: RannFerii
 * Su tarea es dibujar todo el tablero
@@ -5,8 +10,6 @@
 * Al terminar 20 filas se tendrá el tablero dibujado , 30x30 pixeles cuadrados.
 * Este metodo funciona sobre el tag <table id="tablero">
 */
-
-const socket = io()
 
 function Tablero() {
 	for( var fila=0; fila<20; fila++) {
@@ -71,31 +74,50 @@ function Ficha(x, y) {
 	}
 
 /*
-* Autor: Tania Torres, Josue Zapata
-* Envio de parametros a las funciones con socket para pintar, y avisar las circuntancias del juego
+* Autor: Tania Torres Alvarado,Josue Zapata Moreno
+* En este metodo se recibe el id del TH donde el otro usuario tiro
+* y se pinta en la pantalla contraria.	
 */
-
 socket.on('pente:seleccion',function(data){
 	var childNode =  document.getElementById(data.id).childNodes;
 	childNode[0].setAttribute('style', 'background-color: red;');
 	childNode[0].setAttribute('id', '2');
 });
 
+/*
+* Autor: Tania Torres Alvarado,Josue Zapata Moreno
+* En este metodo si detecta que eres el primer usuario en entrar a /juego
+* bloquea el tablero de juego.
+*/
 socket.on('timeout:inicio',function(data){
 	if(data==1){
 		jugadorUnoListo();
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
+
+/*
+* Autor: Tania Torres Alvarado,Josue Zapata Moreno
+* En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
+* Envia un mensaje avisando
+*/
 socket.on('totaljugadores',function(data){
 	if(data==2){
 		EmpezarPartida();
 		document.getElementById('tablero').style.pointerEvents = 'auto';
 	}
 });
+
+/*
+* Autor: Tania Torres Alvarado,Josue Zapata Moreno
+* En este metodo si el servidor detecta que uno de los dos jugadores se a salido 
+* se le bloquea al tablero al usuario que aun permanece y envia un mensaje.
+*/
+
 socket.on('desconectado',function(data){
 	if(data==1){
 		JugadorFuera();
+		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
 
