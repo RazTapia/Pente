@@ -18,20 +18,20 @@
   <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
   <script src="assets/vendor/jquery/jquery-3.2.1.min.js"></script>
   <script src="assets/js/funcionesGenerales.js"></script>
+  <script src="assets/js/sweetAlert2.min.js"></script>
+  <script src="assets/js/notificacionesSweetAlert2.js"></script>
 </head>
 <body onload="Principal()">  
   <div class="limiter">
     <div class="container-login100">
-      <div class="wrap-login100 section-jugador">
+      <div class="wrap-login100 seccion-jugador1">
+        <div class="wrap-secction">
         <h1>JUGADOR 1</h1>
-        <div class="product-options">
-            <a  id="myWish" href="javascript:;"  class="btn btn-mini" >Add to Wishlist </a>
-            <a  href="" class="btn btn-mini"> Purchase </a>
         </div>
-        <div class="alert alert-success" id="success-alert">
-            <button type="button" class="close" data-dismiss="alert">x</button>
-            <strong>Success! </strong>
-            Product have added to your wishlist.
+      </div>
+      <div class=" seccion-jugador1-puntaje">
+        <div class="wrap-secction">
+        <h1>PUNTAJE</h1>
         </div>
       </div>
       <div class="wrap-login100">
@@ -41,8 +41,10 @@
           </table>
         </div>
       </div>
-      <div class="section-jugador">
+      <div class="wrap-login100 seccion-jugador2">
+        <div class="wrap-secction">
         <h1>JUGADOR 2</h1>
+        </div>
       </div>
       <!-- <div class="wrap-login100">
       </div> -->
@@ -53,12 +55,6 @@
       Tablero();
       DibujarFichasTablero();
     }
-    $("#success-alert").hide();
-        $("#myWish").click(function showAlert() {
-          $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
-          $("#success-alert").slideUp(500);
-        });   
-    });
   </script>
 </body>
 </html>

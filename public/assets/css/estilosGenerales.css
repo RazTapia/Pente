@@ -56,11 +56,21 @@ body {
     padding:0; margin:0;
 }
 
- /*  Bakcgound*/
- .container-login100 {
-    background: linear-gradient(-135deg, #c850c0, #4158d0);
+.seccion-jugador1{
+  width: 223px;
+  margin-right: 90px;
+  margin-bottom: 450px;
+}
+.seccion-jugador1-puntaje{
+  
 }
 
-.section-jugador{
-     width: 223px;
+.seccion-jugador2{
+  width: 223px;
+  margin-bottom: 450px;
+  margin-left: 70px;
+}
+
+.wrap-secction{
+      padding-left: 38px;
 }

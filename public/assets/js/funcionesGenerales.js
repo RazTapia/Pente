@@ -70,7 +70,7 @@ function Ficha(x, y) {
 	
 	}
 
-	/*
+/*
 * Autor: Tania Torres, Josue Zapata
 * Envio de parametros a las funciones con socket para pintar, y avisar las circuntancias del juego
 */
@@ -83,19 +83,19 @@ socket.on('pente:seleccion',function(data){
 
 socket.on('timeout:inicio',function(data){
 	if(data==1){
-		alert("solo hya un jugador")
+		jugadorUnoListo();
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
 socket.on('totaljugadores',function(data){
 	if(data==2){
-		alert("Ya son dos jugadores puedes inciar la partida");
+		EmpezarPartida();
 		document.getElementById('tablero').style.pointerEvents = 'auto';
 	}
 });
 socket.on('desconectado',function(data){
 	if(data==1){
-		alert("SE SALIO EL OTRO JUGADOR");
+		JugadorFuera();
 	}
 });
 
