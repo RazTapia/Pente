@@ -1,12 +1,20 @@
+body {
+
+   background-color: #cccccc;
+    height: 100%; 
+   /* background-position: center;*/
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 /*
 * Autor: RannFerii
 * Alinear vertical y horizontalmente el div central
 */
 .central {
-    width: 603px;
+    width: 620px;
     margin-top: 5%;
-    margin-left: 30%;
-    height: 603px;
+    margin-left: 3%;
+    height: 533px;
     padding-left: -6px;
 }
 
@@ -15,8 +23,8 @@
 * Cuadro= 30x30 px cuadrados
 */
 .cuadro {
-  width: 30px;
-  height: 30px;
+  width: 27px;
+  height: 27px;
 }
 
 /*
@@ -32,4 +40,37 @@
 	position: absolute;
 	margin: -25px 0px 0px -10px;
 	background: lightgrey;
+}
+
+/*
+ * Autor: Josué Zapata
+ * Sobreescritura de las clases del template para acomodar componentes y ajustar la interfaz
+ */
+
+.wrap-login100 {
+    width: 550px;
+    background: #ffff;
+    border-radius: 10px;
+    display: -moz-box;
+    display: -ms-flexbox;
+    padding:0; margin:0;
+}
+
+.seccion-jugador1{
+  width: 223px;
+  margin-right: 90px;
+  margin-bottom: 450px;
+}
+.seccion-jugador1-puntaje{
+  
+}
+
+.seccion-jugador2{
+  width: 223px;
+  margin-bottom: 450px;
+  margin-left: 70px;
+}
+
+.wrap-secction{
+      padding-left: 38px;
 }
