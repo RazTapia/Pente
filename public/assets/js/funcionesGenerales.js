@@ -69,7 +69,12 @@ function Ficha(x, y) {
 	crearFicha.addEventListener('mouseup', () => {
 		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUsuario, crearFicha.id = 1,
 			socket.emit('pente:selecion',{ id:crearFicha.parentNode.id}) )//Autor: Tania Torres Alvarado
-		: null;});// Fin  del bloque,Autor: Lucio Nieto Bautista
+		: null;// Fin  del bloque,Autor: Lucio Nieto Bautista
+		sumaJ1=1;
+		sumaJ2=0;
+		fichasEneConsecu=0;
+		Evaluar(x, y);
+		});
 	
 	}
 
@@ -94,6 +99,16 @@ socket.on('timeout:inicio',function(data){
 		jugadorUnoListo();
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
+});
+
+/*
+* Autor: Roberto Sagaón , Nicolas Omar Diego
+* En este metodo se desaparecen las fichas que se hayan comido en el turno.
+*/
+socket.on('pente:comeer',function(data){
+	var childNode =  document.getElementById(data.id).childNodes;
+	childNode[0].setAttribute('style', 'background-color: lightgrey;');
+	childNode[0].setAttribute('id', '0');
 });
 
 /*
@@ -133,4 +148,335 @@ function DibujarFichasTablero() {
             Ficha(i, j);
         }
     }
+}
+
+/*
+* Autor: Roberto Sagaón, Nicolar Omar Diego
+* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para 
+* realizar recorrido de todas las posiciones a su alrededor y decidir si 
+* puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
+*/
+var sumaJ1=1;
+var sumaJ2=0;
+var fichasEneConsecu =0;
+var fichasConsecu =1;
+
+function Evaluar(x, y) {
+	sumaJ1=1;
+	sumaJ2=0;
+	fichasConsecu=1;
+	fichasEneConsecu =0;
+	Arriba(x,y);
+	fichasEneConsecu =0;
+	Abajo(x,y);
+	console.log(fichasConsecu + " en el eje vertical");
+
+
+    sumaJ1=1;
+	sumaJ2=0;
+	fichasConsecu=1;
+	fichasEneConsecu =0;
+	ArribaDerecha(x,y);	
+	fichasEneConsecu =0;
+	IzquierdaAbajo(x,y);
+	console.log(fichasConsecu + " en el eje inclinado 1");
+
+	sumaJ1=1;
+	sumaJ2=0;
+	fichasConsecu=1;
+	fichasEneConsecu =0;
+	Derecha(x,y);
+	fichasEneConsecu =0;
+	Izquierda(x,y);
+	console.log(fichasConsecu + " en el eje horizontal");
+
+	sumaJ1=1;
+	sumaJ2=0;
+	fichasConsecu=1;
+	fichasEneConsecu =0;	
+	DerechaAbajo(x,y);
+	fichasEneConsecu =0;
+	IzquierdaArriba(x,y);
+	console.log(fichasConsecu + " en el eje inclinado 2");	
+}
+
+function  Arriba(x, y)
+{
+	//console.log(x + " & " + y);
+	if(x>0)
+	{
+		
+		console.log(`${x}${y}`);
+		x--;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+(x+1)+"C"+y).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+(x+2)+"C"+y).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+				{
+					Arriba(x, y);
+				}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			Arriba(x, y);
+		}	
+	}
+}
+
+function  ArribaDerecha(x, y)
+{
+	if(x>0 && y<19)
+	{
+		y++;
+		x--;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+(x+1)+"C"+(y-1)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+(x+2)+"C"+(y-2)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+				{
+					ArribaDerecha(x, y);
+				}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			ArribaDerecha(x, y);
+		}	
+	}	
+}
+
+function  Derecha(x, y)
+{
+	if(y<19)
+	{
+		y++;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+x+"C"+(y-1)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+x+"C"+(y-2)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+				{
+					Derecha(x, y);
+				}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			Derecha(x, y);
+		}	
+	}
+}
+
+function  DerechaAbajo(x, y)
+{
+	if(x<19 && y<19)
+	{
+		y++;
+		x++;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+(x-1)+"C"+(y-1)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+(x-2)+"C"+(y-2)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+				{
+					DerechaAbajo(x, y);
+				}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			DerechaAbajo(x, y);
+		}		
+	}	
+}
+
+function Abajo(x, y)
+{
+	if(x<19)
+	{
+		x++;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+(x-1)+"C"+y).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+(x-2)+"C"+y).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+			{
+				Abajo(x, y);
+			}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			Abajo(x, y);
+		}	
+	}
+}
+
+function  IzquierdaAbajo(x, y)
+{
+	if(x<19 && y>0)
+	{
+		y--;
+		x++;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+(x-1)+"C"+(y+1)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+(x-2)+"C"+(y+2)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+			{
+				IzquierdaAbajo(x, y);
+			}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			IzquierdaAbajo(x, y);
+		}	
+	}	
+}
+
+function  Izquierda(x, y)
+{
+	if(y>0)
+	{
+		y--;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+x+"C"+(y+1)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+x+"C"+(y+2)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+				{
+					Izquierda(x, y);
+				}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			Izquierda(x, y);
+		}	
+	}	
+}
+
+function  IzquierdaArriba(x, y)
+{
+	if(x>0 && y>0)
+	{
+		y--;
+		x--;
+		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
+		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
+		{
+			sumaJ1 += 1;
+			fichasConsecu++;
+			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			{
+				sumaJ1 = 0;
+				ficha = document.getElementById("F"+(x+1)+"C"+(y+1)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+				ficha = document.getElementById("F"+(x+2)+"C"+(y+2)).lastChild;
+				ficha.style.backgroundColor = "lightgrey", ficha.id = 0;
+				socket.emit('pente:comer',{id:ficha.parentNode.id})
+			}
+			else
+				{
+					IzquierdaArriba(x, y);
+				}		
+		}	
+		else if (ficha.id == 2)
+		{		
+			sumaJ2 += 1;
+			fichasEneConsecu++;
+			IzquierdaArriba(x, y);
+		}		
+	}
+	
 }
