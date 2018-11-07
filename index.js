@@ -56,5 +56,9 @@ io.on('connection',(socket) => {
   socket.on('pente:selecion',(data) => {
     socket.broadcast.emit('pente:seleccion', data);
   })
+
+  socket.on('pente:comer',(data) => {
+    socket.broadcast.emit('pente:comeer', data);
+  })
 });
 
