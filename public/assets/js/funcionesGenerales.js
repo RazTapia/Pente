@@ -38,7 +38,7 @@ function Tablero() {
 			    //Dependiendo de la fila en la que se esta imprimir sus respectivas 20 columnas
 		   		document.getElementById(filaActual).appendChild(crearCuadro);
 		}
-    }
+  }
 }
 
 /*
@@ -65,28 +65,29 @@ function Ficha(x, y) {
 		(crearFicha.id == 0) ? (crearFicha.style.backgroundColor = "grey") : null ; }); // Autor: Lucio Nieto Bautista
 
 	crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
-		
+
 	crearFicha.addEventListener('mouseup', () => {
 		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUsuario, crearFicha.id = 1,
-			socket.emit('pente:selecion',{ id:crearFicha.parentNode.id}) )//Autor: Tania Torres Alvarado
-		: null;// Fin  del bloque,Autor: Lucio Nieto Bautista
-		sumaJ1=1;
-		sumaJ2=0;
-		fichasEneConsecu=0;
-		Evaluar(x, y);
+		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id}), sumaJ1=1,
+		sumaJ2=0,
+		fichasEneConsecu=0,
+		Evaluar(x, y),
+		document.getElementById('tablero').style.pointerEvents = 'none' )//Autor: Tania Torres Alvarado
+		: null();// Fin  del bloque,Autor: Lucio Nieto Bautista
+
 		});
-	
 	}
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo se recibe el id del TH donde el otro usuario tiro
-* y se pinta en la pantalla contraria.	
+* y se pinta en la pantalla contraria.
 */
 socket.on('pente:seleccion',function(data){
 	var childNode =  document.getElementById(data.id).childNodes;
 	childNode[0].setAttribute('style', 'background-color: red;');
 	childNode[0].setAttribute('id', '2');
+	document.getElementById('tablero').style.pointerEvents = 'auto';
 });
 
 /*
@@ -94,13 +95,23 @@ socket.on('pente:seleccion',function(data){
 * En este metodo si detecta que eres el primer usuario en entrar a /juego
 * bloquea el tablero de juego.
 */
-socket.on('timeout:inicio',function(data){
+socket.on('jugador1',function(data){
 	if(data==1){
-		jugadorUnoListo();
+		NotificacionJugador1Listo();
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
-
+/*
+* Autor: Tania Torres Alvarado,Josue Zapata Moreno
+* En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
+* Envia un mensaje avisando
+*/
+socket.on('jugador2',function(data){
+	if(data==2){
+		NotificacionEmpezarPartida();
+		document.getElementById('tablero').style.pointerEvents = 'auto';
+	}
+});
 /*
 * Autor: Roberto Sagaón , Nicolas Omar Diego
 * En este metodo se desaparecen las fichas que se hayan comido en el turno.
@@ -109,34 +120,45 @@ socket.on('pente:comeer',function(data){
 	var childNode =  document.getElementById(data.id).childNodes;
 	childNode[0].setAttribute('style', 'background-color: lightgrey;');
 	childNode[0].setAttribute('id', '0');
-	console.log("Comi");
 });
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
-* Envia un mensaje avisando
-*/
-socket.on('totaljugadores',function(data){
-	if(data==2){
-		EmpezarPartida();
-		document.getElementById('tablero').style.pointerEvents = 'auto';
-	}
-});
-
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si el servidor detecta que uno de los dos jugadores se a salido 
+* En este metodo si el servidor detecta que uno de los dos jugadores se a salido
 * se le bloquea al tablero al usuario que aun permanece y envia un mensaje.
 */
 
 socket.on('desconectado',function(data){
 	if(data==1){
-		JugadorFuera();
+		NotificacionJugadorFuera();
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
+socket.on('perdedor',function(data){
+	if(data.flag==1){
+		NotificacionHasPerdido();
+	}
+});
+/*
+* Autor: Tania Torres Alvarado y Roberto Sagaón H.luz
+* Se integra el método que dibuja todas las fichas-hueco en el tablero que se
+* utilizaran en el juego.
+*/
 
+function DibujarFichasTablero() {
+    for (let i = 0; i <= 19; i++) {
+        for (let j = 0; j <= 19; j++) {
+            Ficha(i, j);
+        }
+    }
+}
+
+/*
+* Autor: Roberto Sagaón, Nicolar Omar Diego
+* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
+* realizar recorrido de todas las posiciones a su alrededor y decidir si
+* puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
+*/
 /*
 *
 *
@@ -772,3 +794,101 @@ function  IzquierdaArriba(x, y)
 	}
 	
 }
+/*
+ *Autor: Josué Zapata
+ * Funciones para mostrar el puntaje segun el jugador y su movimiento
+ * como por ejemplo, mostrar cuantas fichas comidas por jugador hay
+ * y asi mismo cuantas filas de 4.
+ *
+ */
+
+function PuntajeComidaJugador1(comida) {
+	document.getElementById("jugador1Comida").textContent = comida;
+}
+
+function PuntajeFilas4Jugador1(filas) {
+	document.getElementById("jugador1Filas4").textContent = filas;
+}
+
+function PuntajeComidaJugador2(comida) {
+	document.getElementById("jugador2Comida").textContent = comida;
+}
+
+function PuntajeFilas4Jugador2(filas) {
+	document.getElementById("jugador2Filas4").textContent = filas;
+}
+
+/* Autor: Josue Zapata
+ *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
+ */
+
+function NotificacionJugador1Listo() {
+  let timerInterval
+  swal({
+    title: 'Jugador 1 Listo',
+    html: 'Espera a tu oponente<strong></strong> ',
+    timer: 3000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+function NotificacionEmpezarPartida() {
+  let timerInterval
+  swal({
+    title: 'Jugador 2 Listo',
+    html: 'A jugar<strong></strong> ',
+    timer: 4000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+function NotificacionJugadorFuera() {
+	RecargarPagina();
+  let timerInterval
+  swal({
+    title: 'Has ganado',
+    html: 'To oponente se ha salido de la partida<strong></strong>  <br> Creando nuevo juego...',
+    timer: 3000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+function NotificacionHasGanado() {
+	RecargarPagina();
+  let timerInterval
+  swal({
+    title: 'Has ganado',
+    html: '¡ Has demostrado ser el mejor !<strong></strong> ',
+    timer: 10000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+function NotificacionHasPerdido(){
+	RecargarPagina();
+  let timerInterval
+  swal({
+    title: 'Has perdido',
+    html: '¡ Lo sentimos !<strong></strong> ',
+    timer: 10000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+/*  Autor: Josue Zapata
+ *  Recargar pagina cuando  hay un ganador
+ */
+
+ function RecargarPagina()
+ {
+ 	setTimeout(function(){ window.location.href = '/'}, 3000); 
+ }
