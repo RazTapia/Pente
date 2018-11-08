@@ -48,12 +48,12 @@ body {
  */
 
 .wrap-login100 {
-    width: 550px;
-    background: #ffff;
-    border-radius: 10px;
-    display: -moz-box;
-    display: -ms-flexbox;
-    padding:0; margin:0;
+  width: 550px;
+  background: #ffff;
+  border-radius: 10px;
+  display: -moz-box;
+  display: -ms-flexbox;
+  padding:0; margin:0;
 }
 
 .seccion-jugador1{

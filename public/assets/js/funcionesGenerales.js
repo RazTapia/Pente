@@ -468,7 +468,7 @@ function  Izquierda(x, y)
 	}
 }
 
-function  IzquierdaArriba(x, y)
+function  IzquierdaArriba(x, y) 
 {
 	if(x>0 && y>0)
 	{
@@ -593,17 +593,12 @@ function NotificacionHasPerdido(){
     }
   })
 }
+
 /*  Autor: Josue Zapata
  *  Recargar pagina cuando  hay un ganador
  */
 
-<<<<<<< HEAD
- function RecargarPagina() {
- 	setTimeout(function(){ window.location.href = ''}, 3000);
- }
-=======
  function RecargarPagina()
  {
- 	setTimeout(function(){ window.location.href = '/'}, 3000);
+ 	setTimeout(function(){ window.location.href = '/'}, 3000); 
  }
->>>>>>> 0a2094351c1b5873763515c6bac754099cd168db
