@@ -25,7 +25,7 @@ function EmpezarPartida(){
   swal({
     title: 'Jugador 2 listo',
     html: 'Empezando partida en <strong></strong> ',
-    timer: 10000,
+    timer: 100,
     onOpen: () => {
       swal.showLoading()
       timerInterval = setInterval(() => {

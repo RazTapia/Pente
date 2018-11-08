@@ -61,5 +61,20 @@ io.on('connection',(socket) => {
   socket.on('pente:comer',(data) => {
     socket.broadcast.emit('pente:comeer', data);
   })
+
+  socket.on('pasarArregloJ1',(data) => {
+    console.log(socket.id + " DatosJ1: ",data[0], data[1], data[2], data[3], data[4]);
+    socket.broadcast.emit('recibirArregloJ1', data);
+  })
+
+  socket.on('pasarArregloJ2',(data) => {
+    console.log(socket.id + " DatosJ2: ",data[0], data[1], data[2], data[3], data[4]);
+    socket.broadcast.emit('recibirArregloJ2', data);
+  })
+
+  socket.on('pasarTiro',() => {
+    console.log("Servidor Metodo Evaluar Lineas 4");
+    socket.broadcast.emit('recibirTiro');
+  })
 });
 
