@@ -68,13 +68,13 @@ function Ficha(x, y) {
 		
 	crearFicha.addEventListener('mouseup', () => {
 		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUsuario, crearFicha.id = 1,
-			socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id}) )//Autor: Tania Torres Alvarado
-		: null;// Fin  del bloque,Autor: Lucio Nieto Bautista
-		sumaJ1=1;
-		sumaJ2=0;
-		fichasEneConsecu=0;
-		Evaluar(x, y);
-		document.getElementById('tablero').style.pointerEvents = 'none';
+		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id}), sumaJ1=1,
+		sumaJ2=0,
+		fichasEneConsecu=0,
+		Evaluar(x, y),
+		document.getElementById('tablero').style.pointerEvents = 'none' )//Autor: Tania Torres Alvarado
+		: null();// Fin  del bloque,Autor: Lucio Nieto Bautista
+
 		});
 	}
 
@@ -171,7 +171,7 @@ function Evaluar(x, y) {
 	console.log(fichasConsecu + " en el eje vertical");
 
 
-    sumaJ1=1;
+  sumaJ1=1;
 	sumaJ2=0;
 	fichasConsecu=1;
 	fichasEneConsecu =0;
@@ -480,7 +480,6 @@ function  IzquierdaArriba(x, y)
 	
 }
 
-
 /*
  *Autor: Josué Zapata
  * Funciones para mostrar el puntaje segun el jugador y su movimiento
@@ -489,23 +488,19 @@ function  IzquierdaArriba(x, y)
  *
  */
 
-function PuntajeComidaJugador1(comida)
-{
+function PuntajeComidaJugador1(comida) {
 	document.getElementById("jugador1Comida").textContent = comida;
 }
 
-function PuntajeFilas4Jugador1(filas)
-{
+function PuntajeFilas4Jugador1(filas) {
 	document.getElementById("jugador1Filas4").textContent = filas;
 }
 
-function PuntajeComidaJugador2(comida)
-{
+function PuntajeComidaJugador2(comida) {
 	document.getElementById("jugador2Comida").textContent = comida;
 }
 
-function PuntajeFilas4Jugador2(filas)
-{
+function PuntajeFilas4Jugador2(filas) {
 	document.getElementById("jugador2Filas4").textContent = filas;
 }
 
@@ -513,7 +508,7 @@ function PuntajeFilas4Jugador2(filas)
  *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
  */
 
-function NotificacionJugador1Listo(){
+function NotificacionJugador1Listo() {
   let timerInterval
   swal({
     title: 'Jugador 1 Listo',
@@ -525,7 +520,7 @@ function NotificacionJugador1Listo(){
   })
 }
 
-function NotificacionEmpezarPartida(){
+function NotificacionEmpezarPartida() {
   let timerInterval
   swal({
     title: 'Jugador 2 Listo',
@@ -537,7 +532,7 @@ function NotificacionEmpezarPartida(){
   })
 }
 
-function NotificacionJugadorFuera(){
+function NotificacionJugadorFuera() {
 	RecargarPagina();
   let timerInterval
   swal({
@@ -550,7 +545,7 @@ function NotificacionJugadorFuera(){
   })
 }
 
-function NotificacionHasGanado(){
+function NotificacionHasGanado() {
 	RecargarPagina();
   let timerInterval
   swal({
@@ -567,7 +562,6 @@ function NotificacionHasGanado(){
  *  Recargar pagina cuando  hay un ganador
  */
 
- function RecargarPagina()
- {
+ function RecargarPagina() {
  	setTimeout(function(){ window.location.href = ''}, 3000);
  }
