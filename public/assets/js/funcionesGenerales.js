@@ -68,7 +68,7 @@ function Ficha(x, y) {
 		
 	crearFicha.addEventListener('mouseup', () => {
 		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUsuario, crearFicha.id = 1,
-			socket.emit('pente:selecion',{ id:crearFicha.parentNode.id}) )//Autor: Tania Torres Alvarado
+			socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id}) )//Autor: Tania Torres Alvarado
 		: null;// Fin  del bloque,Autor: Lucio Nieto Bautista
 		sumaJ1=1;
 		sumaJ2=0;
@@ -94,13 +94,23 @@ socket.on('pente:seleccion',function(data){
 * En este metodo si detecta que eres el primer usuario en entrar a /juego
 * bloquea el tablero de juego.
 */
-socket.on('timeout:inicio',function(data){
+socket.on('jugado1',function(data){
 	if(data==1){
 		jugadorUnoListo();
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
-
+/*
+* Autor: Tania Torres Alvarado,Josue Zapata Moreno
+* En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
+* Envia un mensaje avisando
+*/
+socket.on('jugador2',function(data){
+	if(data==2){
+		EmpezarPartida();
+		document.getElementById('tablero').style.pointerEvents = 'auto';
+	}
+});
 /*
 * Autor: Roberto Sagaón , Nicolas Omar Diego
 * En este metodo se desaparecen las fichas que se hayan comido en el turno.
@@ -109,18 +119,6 @@ socket.on('pente:comeer',function(data){
 	var childNode =  document.getElementById(data.id).childNodes;
 	childNode[0].setAttribute('style', 'background-color: lightgrey;');
 	childNode[0].setAttribute('id', '0');
-});
-
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
-* Envia un mensaje avisando
-*/
-socket.on('totaljugadores',function(data){
-	if(data==2){
-		EmpezarPartida();
-		document.getElementById('tablero').style.pointerEvents = 'auto';
-	}
 });
 
 /*

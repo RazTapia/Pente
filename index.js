@@ -42,19 +42,20 @@ const io=socketIO(server);
 io.on('connection',(socket) => {
     console.log("Nueva conexion", socket.id);  
     TOTAL_USERS=io.engine.clientsCount;
+    
     if(TOTAL_USERS==1){
-      socket.emit('timeout:inicio', TOTAL_USERS);    
+      socket.emit('jugador1', TOTAL_USERS);    
     }
     console.log(TOTAL_USERS);
-    if(io.engine.clientsCount==2){
-      socket.broadcast.emit('totaljugadores', TOTAL_USERS);    
+    if(TOTAL_USERS==2){
+      socket.broadcast.emit('jugador2', TOTAL_USERS);    
     }
     socket.on('disconnect', ()=>{
       TOTAL_USERS=io.engine.clientsCount;
       socket.broadcast.emit('desconectado', TOTAL_USERS);
   })
   
-  socket.on('pente:selecion',(data) => {
+  socket.on('pente:seleccion',(data) => {
     socket.broadcast.emit('pente:seleccion', data);
   })
 
