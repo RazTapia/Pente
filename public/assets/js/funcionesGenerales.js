@@ -65,7 +65,7 @@ function Ficha(x, y) {
 		(crearFicha.id == 0) ? (crearFicha.style.backgroundColor = "grey") : null ; }); // Autor: Lucio Nieto Bautista
 
 	crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
-		
+
 	crearFicha.addEventListener('mouseup', () => {
 		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUsuario, crearFicha.id = 1,
 		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id}), sumaJ1=1,
@@ -81,7 +81,7 @@ function Ficha(x, y) {
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo se recibe el id del TH donde el otro usuario tiro
-* y se pinta en la pantalla contraria.	
+* y se pinta en la pantalla contraria.
 */
 socket.on('pente:seleccion',function(data){
 	var childNode =  document.getElementById(data.id).childNodes;
@@ -98,7 +98,7 @@ socket.on('pente:seleccion',function(data){
 socket.on('jugador1',function(data){
 	if(data==1){
 		NotificacionJugador1Listo();
-		document.getElementById('tablero').style.pointerEvents = 'none';	
+		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
 /*
@@ -124,7 +124,7 @@ socket.on('pente:comeer',function(data){
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si el servidor detecta que uno de los dos jugadores se a salido 
+* En este metodo si el servidor detecta que uno de los dos jugadores se a salido
 * se le bloquea al tablero al usuario que aun permanece y envia un mensaje.
 */
 
@@ -134,7 +134,11 @@ socket.on('desconectado',function(data){
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
-
+socket.on('perdedor',function(data){
+	if(data.flag==1){
+		NotificacionHasPerdido();
+	}
+});
 /*
 * Autor: Tania Torres Alvarado y Roberto Sagaón H.luz
 * Se integra el método que dibuja todas las fichas-hueco en el tablero que se
@@ -151,8 +155,8 @@ function DibujarFichasTablero() {
 
 /*
 * Autor: Roberto Sagaón, Nicolar Omar Diego
-* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para 
-* realizar recorrido de todas las posiciones a su alrededor y decidir si 
+* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
+* realizar recorrido de todas las posiciones a su alrededor y decidir si
 * puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
 */
 var sumaJ1=1;
@@ -170,15 +174,24 @@ function Evaluar(x, y) {
 	Abajo(x,y);
 	console.log(fichasConsecu + " en el eje vertical");
 
+		if (fichasConsecu == 5) {
+			NotificacionHasGanado();
+			socket.emit('perdedor',{ flag: 1 })
+		}
 
   sumaJ1=1;
 	sumaJ2=0;
 	fichasConsecu=1;
 	fichasEneConsecu =0;
-	ArribaDerecha(x,y);	
+	ArribaDerecha(x,y);
 	fichasEneConsecu =0;
 	IzquierdaAbajo(x,y);
 	console.log(fichasConsecu + " en el eje inclinado 1");
+
+		if (fichasConsecu == 5) {
+			NotificacionHasGanado();
+			socket.emit('perdedor',{ flag: 1 })
+		}
 
 	sumaJ1=1;
 	sumaJ2=0;
@@ -189,14 +202,25 @@ function Evaluar(x, y) {
 	Izquierda(x,y);
 	console.log(fichasConsecu + " en el eje horizontal");
 
+		if (fichasConsecu == 5) {
+			NotificacionHasGanado();
+			socket.emit('perdedor',{ flag: 1 })
+		}
+
 	sumaJ1=1;
 	sumaJ2=0;
 	fichasConsecu=1;
-	fichasEneConsecu =0;	
+	fichasEneConsecu =0;
 	DerechaAbajo(x,y);
 	fichasEneConsecu =0;
 	IzquierdaArriba(x,y);
-	console.log(fichasConsecu + " en el eje inclinado 2");	
+	console.log(fichasConsecu + " en el eje inclinado 2");
+
+		if (fichasConsecu == 5) {
+			NotificacionHasGanado();
+			socket.emit('perdedor',{ flag: 1 })
+		}
+
 }
 
 function  Arriba(x, y)
@@ -204,16 +228,16 @@ function  Arriba(x, y)
 	//console.log(x + " & " + y);
 	if(x>0)
 	{
-		
+
 		console.log(`${x}${y}`);
 		x--;
 		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
-		
+
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x+1)+"C"+y).lastChild;
@@ -226,14 +250,14 @@ function  Arriba(x, y)
 			else
 				{
 					Arriba(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Arriba(x, y);
-		}	
+		}
 	}
 }
 
@@ -248,7 +272,7 @@ function  ArribaDerecha(x, y)
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x+1)+"C"+(y-1)).lastChild;
@@ -261,15 +285,15 @@ function  ArribaDerecha(x, y)
 			else
 				{
 					ArribaDerecha(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			ArribaDerecha(x, y);
-		}	
-	}	
+		}
+	}
 }
 
 function  Derecha(x, y)
@@ -282,7 +306,7 @@ function  Derecha(x, y)
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+x+"C"+(y-1)).lastChild;
@@ -295,14 +319,14 @@ function  Derecha(x, y)
 			else
 				{
 					Derecha(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Derecha(x, y);
-		}	
+		}
 	}
 }
 
@@ -317,7 +341,7 @@ function  DerechaAbajo(x, y)
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x-1)+"C"+(y-1)).lastChild;
@@ -330,15 +354,15 @@ function  DerechaAbajo(x, y)
 			else
 				{
 					DerechaAbajo(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			DerechaAbajo(x, y);
-		}		
-	}	
+		}
+	}
 }
 
 function Abajo(x, y)
@@ -351,7 +375,7 @@ function Abajo(x, y)
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x-1)+"C"+y).lastChild;
@@ -364,14 +388,14 @@ function Abajo(x, y)
 			else
 			{
 				Abajo(x, y);
-			}		
-		}	
+			}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Abajo(x, y);
-		}	
+		}
 	}
 }
 
@@ -386,7 +410,7 @@ function  IzquierdaAbajo(x, y)
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x-1)+"C"+(y+1)).lastChild;
@@ -399,15 +423,15 @@ function  IzquierdaAbajo(x, y)
 			else
 			{
 				IzquierdaAbajo(x, y);
-			}		
-		}	
+			}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			IzquierdaAbajo(x, y);
-		}	
-	}	
+		}
+	}
 }
 
 function  Izquierda(x, y)
@@ -420,7 +444,7 @@ function  Izquierda(x, y)
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+x+"C"+(y+1)).lastChild;
@@ -433,15 +457,15 @@ function  Izquierda(x, y)
 			else
 				{
 					Izquierda(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Izquierda(x, y);
-		}	
-	}	
+		}
+	}
 }
 
 function  IzquierdaArriba(x, y)
@@ -455,7 +479,7 @@ function  IzquierdaArriba(x, y)
 		{
 			sumaJ1 += 1;
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x+1)+"C"+(y+1)).lastChild;
@@ -468,16 +492,16 @@ function  IzquierdaArriba(x, y)
 			else
 				{
 					IzquierdaArriba(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			IzquierdaArriba(x, y);
-		}		
+		}
 	}
-	
+
 }
 
 /*
@@ -557,11 +581,29 @@ function NotificacionHasGanado() {
     }
   })
 }
-
+function NotificacionHasPerdido(){
+	RecargarPagina();
+  let timerInterval
+  swal({
+    title: 'Has perdido',
+    html: '¡ Lo sentimos !<strong></strong> ',
+    timer: 10000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
 /*  Autor: Josue Zapata
  *  Recargar pagina cuando  hay un ganador
  */
 
+<<<<<<< HEAD
  function RecargarPagina() {
  	setTimeout(function(){ window.location.href = ''}, 3000);
  }
+=======
+ function RecargarPagina()
+ {
+ 	setTimeout(function(){ window.location.href = '/'}, 3000);
+ }
+>>>>>>> 0a2094351c1b5873763515c6bac754099cd168db
