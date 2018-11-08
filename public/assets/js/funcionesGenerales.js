@@ -38,7 +38,7 @@ function Tablero() {
 			    //Dependiendo de la fila en la que se esta imprimir sus respectivas 20 columnas
 		   		document.getElementById(filaActual).appendChild(crearCuadro);
 		}
-    }
+  }
 }
 
 /*
@@ -76,7 +76,6 @@ function Ficha(x, y) {
 		Evaluar(x, y);
 		document.getElementById('tablero').style.pointerEvents = 'none';
 		});
-	
 	}
 
 /*
@@ -96,11 +95,10 @@ socket.on('pente:seleccion',function(data){
 * En este metodo si detecta que eres el primer usuario en entrar a /juego
 * bloquea el tablero de juego.
 */
-socket.on('jugado1',function(data){
+socket.on('jugador1',function(data){
 	if(data==1){
-		jugadorUnoListo();
-		document.getElementById('tablero').style.pointerEvents = 'none';
-		
+		NotificacionJugador1Listo();
+		document.getElementById('tablero').style.pointerEvents = 'none';	
 	}
 });
 /*
@@ -110,7 +108,7 @@ socket.on('jugado1',function(data){
 */
 socket.on('jugador2',function(data){
 	if(data==2){
-		EmpezarPartida();
+		NotificacionEmpezarPartida();
 		document.getElementById('tablero').style.pointerEvents = 'auto';
 	}
 });
@@ -132,7 +130,7 @@ socket.on('pente:comeer',function(data){
 
 socket.on('desconectado',function(data){
 	if(data==1){
-		JugadorFuera();
+		NotificacionJugadorFuera();
 		document.getElementById('tablero').style.pointerEvents = 'none';
 	}
 });
@@ -481,3 +479,95 @@ function  IzquierdaArriba(x, y)
 	}
 	
 }
+
+
+/*
+ *Autor: Josué Zapata
+ * Funciones para mostrar el puntaje segun el jugador y su movimiento
+ * como por ejemplo, mostrar cuantas fichas comidas por jugador hay
+ * y asi mismo cuantas filas de 4.
+ *
+ */
+
+function PuntajeComidaJugador1(comida)
+{
+	document.getElementById("jugador1Comida").textContent = comida;
+}
+
+function PuntajeFilas4Jugador1(filas)
+{
+	document.getElementById("jugador1Filas4").textContent = filas;
+}
+
+function PuntajeComidaJugador2(comida)
+{
+	document.getElementById("jugador2Comida").textContent = comida;
+}
+
+function PuntajeFilas4Jugador2(filas)
+{
+	document.getElementById("jugador2Filas4").textContent = filas;
+}
+
+/* Autor: Josue Zapata
+ *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
+ */
+
+function NotificacionJugador1Listo(){
+  let timerInterval
+  swal({
+    title: 'Jugador 1 Listo',
+    html: 'Espera a tu oponente<strong></strong> ',
+    timer: 3000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+function NotificacionEmpezarPartida(){
+  let timerInterval
+  swal({
+    title: 'Jugador 2 Listo',
+    html: 'A jugar<strong></strong> ',
+    timer: 4000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+function NotificacionJugadorFuera(){
+	RecargarPagina();
+  let timerInterval
+  swal({
+    title: 'Has ganado',
+    html: 'To oponente se ha salido de la partida<strong></strong>  <br> Creando nuevo juego...',
+    timer: 3000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+function NotificacionHasGanado(){
+	RecargarPagina();
+  let timerInterval
+  swal({
+    title: 'Has ganado',
+    html: '¡ Has demostrado ser el mejor !<strong></strong> ',
+    timer: 10000,
+    onClose: () => {
+      clearInterval(timerInterval)
+    }
+  })
+}
+
+/*  Autor: Josue Zapata
+ *  Recargar pagina cuando  hay un ganador
+ */
+
+ function RecargarPagina()
+ {
+ 	setTimeout(function(){ window.location.href = ''}, 3000);
+ }
