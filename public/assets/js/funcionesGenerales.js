@@ -74,6 +74,7 @@ function Ficha(x, y) {
 		sumaJ2=0;
 		fichasEneConsecu=0;
 		Evaluar(x, y);
+		document.getElementById('tablero').style.pointerEvents = 'none';
 		});
 	
 	}
@@ -87,6 +88,7 @@ socket.on('pente:seleccion',function(data){
 	var childNode =  document.getElementById(data.id).childNodes;
 	childNode[0].setAttribute('style', 'background-color: red;');
 	childNode[0].setAttribute('id', '2');
+	document.getElementById('tablero').style.pointerEvents = 'auto';
 });
 
 /*
@@ -98,6 +100,7 @@ socket.on('jugado1',function(data){
 	if(data==1){
 		jugadorUnoListo();
 		document.getElementById('tablero').style.pointerEvents = 'none';
+		
 	}
 });
 /*
