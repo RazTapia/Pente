@@ -159,36 +159,7 @@ function DibujarFichasTablero() {
 * realizar recorrido de todas las posiciones a su alrededor y decidir si
 * puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
 */
-/*
-*
-*
-*/
 
-//socket.on('recibirArregloJ2',function(numero){
-//	for (var i = 0; i < 5; i++)
-//	{
-//		posicionesJ2[i] = numero[i];
-//	}
-//	console.log("Actualizar datos J2", posicionesJ2[0], posicionesJ2[1], posicionesJ2[2], posicionesJ2[3], posicionesJ2[4]);
-//});
-
-/*
-*
-*
-*/
-
-//socket.on('recibirArregloJ1',function(numero){
-//	for (var i = 0; i < 5; i++)
-//	{
-//		posicionesJ1[i] = numero[i];
-//	}
-//	console.log("Actualizar datos J1", posicionesJ1[0], posicionesJ1[1], posicionesJ1[2], posicionesJ1[3], posicionesJ1[4]);
-//});
-//
-/*
-*
-*
-*/
 
 socket.on('recibirTiro',function(){
 	EvaluarLineas4()
@@ -212,8 +183,8 @@ function DibujarFichasTablero() {
 
 /*
 * Autor: Roberto Sagaón, Nicolar Omar Diego
-* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para 
-* realizar recorrido de todas las posiciones a su alrededor y decidir si 
+* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
+* realizar recorrido de todas las posiciones a su alrededor y decidir si
 * puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
 */
 var sumaJ1=1;
@@ -222,16 +193,16 @@ var fichasEneConsecu =0;
 var fichasConsecu = 1;
 
 var lineasCuatro = [
-["x,y", "x,y", "x,y", "x,y"], 
-["x,y", "x,y", "x,y", "x,y"], 
-["x,y", "x,y", "x,y", "x,y"], 
-["x,y", "x,y", "x,y", "x,y"], 
+["x,y", "x,y", "x,y", "x,y"],
+["x,y", "x,y", "x,y", "x,y"],
+["x,y", "x,y", "x,y", "x,y"],
+["x,y", "x,y", "x,y", "x,y"],
 ["x,y", "x,y", "x,y", "x,y"]];
 
 
-//for (var i = 0; i < 5; i++) 
+//for (var i = 0; i < 5; i++)
 //{
-//	for (var j = 0; i < 4; i++) 
+//	for (var j = 0; i < 4; i++)
 //	{
 //		lineasCuatro[i][j] = "x"+ i +","+ j +"y";
 //	}
@@ -244,18 +215,10 @@ var posicionesJ2 = [0, 0, 0, 0, 0];
 
 var toatalLineas = 0;
 
-function Evaluar(x, y) 
+function Evaluar(x, y)
 {
-	//socket.emit('pente:pasaArregloJ2',{ posicionesJ1 });
-	//console.log("Matriz: \n" + 
-	//	lineasCuatro[0][0] + " - " + lineasCuatro[0][1] + " - " + lineasCuatro[0][2] + " - " + lineasCuatro[0][3] + " - " +
-	//	lineasCuatro[1][0] + " - " + lineasCuatro[1][1] + " - " + lineasCuatro[1][2] + " - " + lineasCuatro[1][3] + " - " +
-	//	lineasCuatro[2][0] + " - " + lineasCuatro[2][1] + " - " + lineasCuatro[2][2] + " - " + lineasCuatro[2][3] + " - " +
-	//	lineasCuatro[3][0] + " - " + lineasCuatro[3][1] + " - " + lineasCuatro[3][2] + " - " + lineasCuatro[3][3] + " - " +
-	//	lineasCuatro[4][0] + " - " + lineasCuatro[4][1] + " - " + lineasCuatro[4][2] + " - " + lineasCuatro[4][3]);
+
 	lineaTemporal[0] = x + "," + y;
-	///console.log("lineaTemporal: " + lineaTemporal[0]);
-	//BorroLinea4(x + " " + y);
 	sumaJ1=1;
 	sumaJ2=0;
 	fichasConsecu=1;
@@ -263,34 +226,12 @@ function Evaluar(x, y)
 	Arriba(x,y);
 	fichasEneConsecu =0;
 	Abajo(x,y);
-	//console.log(fichasConsecu + " en el eje vertical");
-	//var checar = true;
-	//if (fichasConsecu == 4) 
-	//{
-	//	
-	//	
-	//	//console.log("if fichas <= 4 pase");
-	//	//lineasCuatro[][] = 
-	//	
-	//	for (var i = 0; i < 5 && checar == true; i++)
-	//	{
-	//		if (posicionesJ1[i] == 0) 
-	//		{
-	//			//console.log("if  "+i+ " > 5 && " + posicionesJ1[i] +" == 0 &&" + checar);
-	//			//console.log("EUREKA!");
-	//			posicionesJ1[i] = 1;
-	//			for (var j = 0; j < 4; j++) 
-	//			{
-	//				console.log("Asigne dato en matriz");
-	//				lineasCuatro[i][j] = lineaTemporal[j];
-	//				//console.log("Entre doble for");	
-	//				checar = false;
-	//			}
-	//			console.log("matriz: " + lineasCuatro[i][0] + " " + lineasCuatro[i][1] + " " + lineasCuatro[i][2] + " " + lineasCuatro[i][3]);
-	//		}	
-	//	}
-	//}
-	
+
+	if (fichasConsecu == 5) {
+	NotificacionHasGanado();
+	socket.emit('perdedor',{ flag: 1 })
+	}
+
 	if (fichasConsecu == 4)
 	{
 		//console.log("lineaTemporal: " + lineaTemporal[0] + " - " + lineaTemporal[1] + " - " + lineaTemporal[2] + " - " + lineaTemporal[3]);
@@ -300,31 +241,30 @@ function Evaluar(x, y)
 			if (posicionesJ1[i] == 0 && checar == true)
 			{
 				posicionesJ1[i] = 1;
-				for (var j = 0; j < 4; j++) 
+				for (var j = 0; j < 4; j++)
 				{
-					lineasCuatro[i][j] = lineaTemporal[j];	
+					lineasCuatro[i][j] = lineaTemporal[j];
 				}
 				checar = false;
-				//console.log("Entraron bien?: " + lineasCuatro[i][0] + " " + lineasCuatro[i][1] + " " + lineasCuatro[i][2] + " " + lineasCuatro[i][3]);
 			}
 		}
-		//console.log("Matriz: \n" + 
-		//lineasCuatro[0][0] + " - " + lineasCuatro[0][1] + " - " + lineasCuatro[0][2] + " - " + lineasCuatro[0][3] + " - " +
-		//lineasCuatro[1][0] + " - " + lineasCuatro[1][1] + " - " + lineasCuatro[1][2] + " - " + lineasCuatro[1][3] + " - " +
-		//lineasCuatro[2][0] + " - " + lineasCuatro[2][1] + " - " + lineasCuatro[2][2] + " - " + lineasCuatro[2][3] + " - " +
-		//lineasCuatro[3][0] + " - " + lineasCuatro[3][1] + " - " + lineasCuatro[3][2] + " - " + lineasCuatro[3][3] + " - " +
-		//lineasCuatro[4][0] + " - " + lineasCuatro[4][1] + " - " + lineasCuatro[4][2] + " - " + lineasCuatro[4][3]);
 	}
 
 
 	lineaTemporal[0] = x + "," + y;
-    sumaJ1=1;
+  sumaJ1=1;
 	sumaJ2=0;
 	fichasConsecu=1;
 	fichasEneConsecu =0;
-	ArribaDerecha(x,y);	
+	ArribaDerecha(x,y);
 	fichasEneConsecu =0;
 	IzquierdaAbajo(x,y);
+
+	if (fichasConsecu == 5) {
+	NotificacionHasGanado();
+	socket.emit('perdedor',{ flag: 1 })
+	}
+
 	if (fichasConsecu == 4)
 	{
 		var checar = true;
@@ -333,9 +273,9 @@ function Evaluar(x, y)
 			if (posicionesJ1[i] == 0 && checar == true)
 			{
 				posicionesJ1[i] = 1;
-				for (var j = 0; j < 4; j++) 
+				for (var j = 0; j < 4; j++)
 				{
-					lineasCuatro[i][j] = lineaTemporal[j];	
+					lineasCuatro[i][j] = lineaTemporal[j];
 				}
 				checar = false;
 			}
@@ -350,7 +290,12 @@ function Evaluar(x, y)
 	Derecha(x,y);
 	fichasEneConsecu =0;
 	Izquierda(x,y);
-	//console.log(fichasConsecu + " en el eje horizontal");
+
+	if (fichasConsecu == 5) {
+	NotificacionHasGanado();
+	socket.emit('perdedor',{ flag: 1 })
+	}
+
 	if (fichasConsecu == 4)
 	{
 		var checar = true;
@@ -359,9 +304,9 @@ function Evaluar(x, y)
 			if (posicionesJ1[i] == 0 && checar == true)
 			{
 				posicionesJ1[i] = 1;
-				for (var j = 0; j < 4; j++) 
+				for (var j = 0; j < 4; j++)
 				{
-					lineasCuatro[i][j] = lineaTemporal[j];	
+					lineasCuatro[i][j] = lineaTemporal[j];
 				}
 				checar = false;
 			}
@@ -373,10 +318,16 @@ function Evaluar(x, y)
 	sumaJ1=1;
 	sumaJ2=0;
 	fichasConsecu=1;
-	fichasEneConsecu =0;	
+	fichasEneConsecu =0;
 	DerechaAbajo(x,y);
 	fichasEneConsecu =0;
 	IzquierdaArriba(x,y);
+
+	if (fichasConsecu == 5) {
+	NotificacionHasGanado();
+	socket.emit('perdedor',{ flag: 1 })
+	}
+
 	if (fichasConsecu == 4)
 	{
 		var checar = true;
@@ -385,30 +336,43 @@ function Evaluar(x, y)
 			if (posicionesJ1[i] == 0 && checar == true)
 			{
 				posicionesJ1[i] = 1;
-				for (var j = 0; j < 4; j++) 
+				for (var j = 0; j < 4; j++)
 				{
-					lineasCuatro[i][j] = lineaTemporal[j];	
+					lineasCuatro[i][j] = lineaTemporal[j];
 				}
 				checar = false;
 			}
 		}
 	}
-	//console.log(fichasConsecu + " en el eje inclinado 2");	
-	//socket.emit('pasarTiro');
+
+
+
 	socket.emit('pasarTiro');
-	console.log("posicionesJ1: \n" + "Pos 1: " + posicionesJ1[0] + " Pos 2: " + posicionesJ1[1] + " Pos 3: " + posicionesJ1[2] + " Pos 4: " + posicionesJ1[3] + " Pos 5: " + posicionesJ1[4]);	
-	
-}
+	console.log("posicionesJ1: \n" + "Pos 1: " + posicionesJ1[0] + " Pos 2: " + posicionesJ1[1] + " Pos 3: " + posicionesJ1[2] + " Pos 4: " + posicionesJ1[3] + " Pos 5: " + posicionesJ1[4]);
+
+	var ganar =0;
+	posicionesJ1.forEach(function(valor) {
+		if(valor==1){
+			ganar++;
+		}
+	});
+
+	if (ganar==5) {
+		NotificacionHasGanado();
+		socket.emit('perdedor',{ flag: 1 })
+	}
+
+}//Fin Evaluar
 
 function EvaluarLineas4()
 {
 	console.log("Metodo: Evaluar Lineas 4");
-	for (var i = 0; i < 5; i++) 
+	for (var i = 0; i < 5; i++)
 	{
-		for (var j = 0; j < 4; j++) 
+		for (var j = 0; j < 4; j++)
 		{
 			console.log("Matriz: " + lineasCuatro[i][j]);
-			if (lineasCuatro[i][j] != "x,y") 
+			if (lineasCuatro[i][j] != "x,y")
 			{
 				console.log("Entre es distinto de x,y");
 				console.log("Linea Pasante:" + lineasCuatro[i][j]);
@@ -419,7 +383,7 @@ function EvaluarLineas4()
 				{
 					tempXD = lineasCuatro[i][j].charAt(1);
 					charExtra++;
-				}		
+				}
 				var tempYC = lineasCuatro[i][j].charAt(2 + charExtra);
 				var tempYD = "";
 				if (lineasCuatro[i][j].charAt(1) != null)
@@ -429,7 +393,7 @@ function EvaluarLineas4()
 				}
 				var ficha = document.getElementById("F" + tempXC + tempXD + "C" + tempYC + tempYD).lastChild;
 				console.log("Cuak!: " + tempXC + tempXD + " | " + tempYC + tempYD + " | ficha id: " + ficha.id + " == " + "0");
-				if (ficha.id == 0) 
+				if (ficha.id == 0)
 				{
 					console.log("¡¡¡LO BORRO!!! : " + i);
 					posicionesJ1[i] = 0;
@@ -437,60 +401,36 @@ function EvaluarLineas4()
 			}
 			//console.log("j"+j);
 		}
-		
+
 		//console.log("i"+i);
 	}
 	console.log("----------------------------");
 }
 
-//function BorroLinea4()
-//{
-//	console.log("Borrar Lineas 4");
-//	for (var i = 0; i < 5; i++) 
-//	{
-//		for (var j = 0; i < 4; i++) 
-//		{
-//			console.log("Cuak!: " + lineasCuatro[i][j] + " != " + "0");
-//			if (lineasCuatro[i][j] != "0") 
-//			{
-//				var tempX = lineasCuatro[i][j].charAt(0);
-//				var tempY = lineasCuatro[i][j].charAt(2);
-//				var ficha = document.getElementById("F" + tempX + "C" + tempY).lastChild;
-//				console.log("Cuak!: " + tempX + " | " + tempY + " | ficha id: " + ficha.id + " == " + "0");
-//				if (ficha.id == 0) 
-//				{
-//					console.log("¡¡¡LO BORRO!!!");
-//					posicionesJ2[i] = 0;
-//				}
-//			} 
-//		}
-//	}
-//	socket.emit('pasarArregloJ1', posicionesJ2);
-//}
 
 function  Arriba(x, y)
 {
 	//console.log(x + " & " + y);
 	if(x>0)
 	{
-		
+
 		//console.log(`${x}${y}`);
 		x--;
 		var ficha = document.getElementById("F"+x+"C"+y).lastChild;
-		
+
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
 
-			
 
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x+1)+"C"+y).lastChild;
@@ -503,14 +443,14 @@ function  Arriba(x, y)
 			else
 			{
 				Arriba(x, y);
-			}		
-		}	
+			}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Arriba(x, y);
-		}	
+		}
 	}
 }
 
@@ -524,13 +464,13 @@ function  ArribaDerecha(x, y)
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x+1)+"C"+(y-1)).lastChild;
@@ -543,15 +483,15 @@ function  ArribaDerecha(x, y)
 			else
 				{
 					ArribaDerecha(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			ArribaDerecha(x, y);
-		}	
-	}	
+		}
+	}
 }
 
 function  Derecha(x, y)
@@ -563,13 +503,13 @@ function  Derecha(x, y)
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+x+"C"+(y-1)).lastChild;
@@ -582,14 +522,14 @@ function  Derecha(x, y)
 			else
 				{
 					Derecha(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Derecha(x, y);
-		}	
+		}
 	}
 }
 
@@ -603,13 +543,13 @@ function  DerechaAbajo(x, y)
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x-1)+"C"+(y-1)).lastChild;
@@ -622,15 +562,15 @@ function  DerechaAbajo(x, y)
 			else
 				{
 					DerechaAbajo(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			DerechaAbajo(x, y);
-		}		
-	}	
+		}
+	}
 }
 
 function Abajo(x, y)
@@ -642,16 +582,16 @@ function Abajo(x, y)
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Abajo: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Abajo: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
 
-			
 
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x-1)+"C"+y).lastChild;
@@ -664,14 +604,14 @@ function Abajo(x, y)
 			else
 			{
 				Abajo(x, y);
-			}		
-		}	
+			}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Abajo(x, y);
-		}	
+		}
 	}
 }
 
@@ -685,13 +625,13 @@ function  IzquierdaAbajo(x, y)
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x-1)+"C"+(y+1)).lastChild;
@@ -704,15 +644,15 @@ function  IzquierdaAbajo(x, y)
 			else
 			{
 				IzquierdaAbajo(x, y);
-			}		
-		}	
+			}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			IzquierdaAbajo(x, y);
-		}	
-	}	
+		}
+	}
 }
 
 function  Izquierda(x, y)
@@ -724,13 +664,13 @@ function  Izquierda(x, y)
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+x+"C"+(y+1)).lastChild;
@@ -743,15 +683,15 @@ function  Izquierda(x, y)
 			else
 				{
 					Izquierda(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			Izquierda(x, y);
-		}	
-	}	
+		}
+	}
 }
 
 function  IzquierdaArriba(x, y)
@@ -764,13 +704,13 @@ function  IzquierdaArriba(x, y)
 		if(ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2))
 		{
 			sumaJ1 += 1;
-			if (fichasConsecu <= 4) 
+			if (fichasConsecu <= 4)
 			{
-				lineaTemporal[fichasConsecu] = x + "," + y;		
-				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);		
+				lineaTemporal[fichasConsecu] = x + "," + y;
+				///console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
 			}
 			fichasConsecu++;
-			if (fichasEneConsecu == 2 && sumaJ1 <=2) 
+			if (fichasEneConsecu == 2 && sumaJ1 <=2)
 			{
 				sumaJ1 = 0;
 				ficha = document.getElementById("F"+(x+1)+"C"+(y+1)).lastChild;
@@ -783,16 +723,16 @@ function  IzquierdaArriba(x, y)
 			else
 				{
 					IzquierdaArriba(x, y);
-				}		
-		}	
+				}
+		}
 		else if (ficha.id == 2)
-		{		
+		{
 			sumaJ2 += 1;
 			fichasEneConsecu++;
 			IzquierdaArriba(x, y);
-		}		
+		}
 	}
-	
+
 }
 /*
  *Autor: Josué Zapata
@@ -890,5 +830,5 @@ function NotificacionHasPerdido(){
 
  function RecargarPagina()
  {
- 	setTimeout(function(){ window.location.href = '/'}, 3000); 
+ 	setTimeout(function(){ window.location.href = '/'}, 3000);
  }
