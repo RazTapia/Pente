@@ -32,3 +32,16 @@ Se documentaran las refencias y que uso se le dio al final de cada archivo:
 
 Referencias:
 -https://brainking.com/es/GameRules?tp=38  se utilizó para conocer las reglas del juego.
+
+##para correr las pruebas unitarias se usa el siguiente comando 
+```js
+./node_modules/mocha/bin/mocha
+```
+claro, antes se debe correr el comando
+```js
+npm install
+```
+
+ #Sugerencia
+ Para llevar un mejor estándar en la s buenas prácticas, se puede utilizar el módulo ESLint con base en airbnb,  google o standard.
+ Y para la documentación, jsdoc

@@ -32,9 +32,11 @@ app.use(express.static(path.join(__dirname,'public')));
 //test
 //Inicializa servidor
 
-const server = app.listen(app.get('port'),() =>{
+const server = app.listen(app.get('port'),function(){
+  //var port = server.address.port;
     console.log('server on port', app.get('port'));
 });
+module.exports = server;
 
 //websockets
 const io=socketIO(server);
