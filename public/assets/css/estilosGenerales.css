@@ -1,10 +1,16 @@
+/**
+ * @author: Lucas Films
+ * @description: estilos para la página 404
+ */
 body {
   background-color: #cccccc;
   height: 100%; 
   background-repeat: no-repeat;
   background-size: cover;
 }
-
+.svgfondo { 
+   background-color:#07bdeb; 
+ }
 /*
 * Autor: RannFerii
 * Alinear vertical y horizontalmente el div central

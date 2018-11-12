@@ -27,6 +27,16 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname,'public','error.html'));
   });
 
+/**
+ * @author: Lucas Films
+ * @function: app.get('*', (req,res) =>{ })
+ * @returns: página 404 en caso de una ruta errone
+ * @description: en caso de que la url sea errónea, debera mostrar un mensaje 404
+ */
+app.get('*', function(req, res){
+  res.sendFile(path.join(__dirname,'public','404.html'));
+});
+
 //Static
 app.use(express.static(path.join(__dirname,'public')));
 //test
