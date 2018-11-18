@@ -1,0 +1,88 @@
+body {
+  background-color: #cccccc;
+  height: 100%; 
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/*
+* Autor: RannFerii
+* Alinear vertical y horizontalmente el div central
+*/
+.central {
+    width: 620px;
+    margin-top: 5%;
+    margin-left: 3%;
+    height: 533px;
+    padding-left: -6px;
+}
+
+/*
+* Autor: RannFerii
+* Cuadro= 30x30 px cuadrados
+*/
+.cuadro {
+  width: 27px;
+  height: 27px;
+}
+
+/*
+* Autor: BacteriaLoki
+* Clase ficha con la que se dibuja la ficha.
+* se posiciona en la esquina superior izquierda de las TH
+*/
+
+.ficha {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	z-index: 1;
+	position: absolute;
+	margin: -25px 0px 0px -10px;
+	background: lightgrey;
+}
+
+/*
+ * Autor: Josué Zapata
+ * Sobreescritura de las clases del template para acomodar componentes y el puntaje a la interfaz
+ */
+
+.wrap-login100 {
+  width: 550px;
+  background: #ffff;
+  border-radius: 10px;
+  display: -moz-box;
+  display: -ms-flexbox;
+  padding:0; margin:0;
+}
+
+.seccion-jugador1{
+  margin-top: 22px;
+  margin-bottom: 368px;
+  width: 223px;
+  margin-right: 90px;
+}
+
+.seccion-jugador2{
+  margin-top: 22px;
+  margin-bottom: 368px;
+  width: 223px;
+  margin-left: 99px;
+}
+
+.wrap-secction{
+  padding-left: 38px;
+  font-size: 13px;
+}
+
+.wrap-filas4{
+  display: inline-block;
+  height: 20px;
+  line-height:50%;
+}
+
+.wrap-display{
+  display: inline;
+  margin-left: 18px;
+  font-size: 40px;
+}

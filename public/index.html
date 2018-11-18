@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PENTE</title>
+  <meta charset="UTF-8">
+  <link rel="icon" type="assets/image/png" href="assets/images/icons/favicon.ico"/>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/estilosPlantilla.css">
+  <link rel="stylesheet" href="assets/css/estilosGenerales.css">
+  <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
+  <script src="assets/js/funcionesGenerales.js"></script>
+  <script src="assets/js/sweetAlert2.min.js"></script>
+</head>
+<body onload="Principal()">  
+  <div class="limiter">
+    <div class="container-login100">
+      <!--Contenedores para el Jugardor 1-->
+      <div class="wrap-login100 seccion-jugador1">
+        <div class="wrap-secction">
+          <br>
+          <h3>JUGADOR 1</h3>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="wrap-secction">
+          <div class="wrap-comida" >
+            <i class="fa fa-circle fa-2" aria-hidden="true"></i>
+            <div class="wrap-display" id="jugador1Comida">0</div>
+          </div>
+          <br>
+          <div class="wrap-filas4">
+            <i class="fa fa-circle" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-circle" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-circle" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-circle" aria-hidden="true"></i>
+          </div>
+          <div class="wrap-display" id="jugador1Filas4">0</div>
+          <br>
+        </div>
+      </div>
+      <!-- Terminan los contenedores del Jugador 1-->
+      <!--Tablero-->
+      <div class="wrap-login100">
+        <!--Div principal y central  el cual contendrá el tablero y sus fichas-->
+        <div class="central">
+          <table id="tablero" border=1>
+          </table>
+        </div>
+      </div>
+      <!--Contenedores para el Jugardor 2-->
+      <div class="wrap-login100 seccion-jugador2">
+        <div class="wrap-secction">
+          <br>
+          <h3>JUGADOR 2</h3>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="wrap-secction">
+          <div class="wrap-comida" >
+            <i class="fa fa-circle fa-2" aria-hidden="true"></i>
+            <div class="wrap-display" id="jugador2Comida">0</div>
+          </div>
+          <br>
+          <div class="wrap-filas4">
+            <i class="fa fa-circle" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-circle" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-circle" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-circle" aria-hidden="true"></i>
+          </div>
+          <div class="wrap-display" id="jugador2Filas4">0</div>
+          <br>
+        </div>
+      </div>
+      <!--Terminan los contenedores del jugador 2 -->
+    </div>
+  </div> 
+  <script type="text/javascript">
+    function Principal() {
+      Tablero();
+      DibujarFichasTablero();
+      //PuntajeComidaJugador1(3);
+    }
+  </script>
+</body>
+</html>
+
