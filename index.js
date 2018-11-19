@@ -1,9 +1,10 @@
+/* eslint-env mocha */
 const path = require('path')
 const express = require('express')
 const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
-var flag
+
 // Puerto
 app.set('port', process.env.PORT || 3000)
 
@@ -13,7 +14,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/juego', function (req, res) {
-  if (TOTAL_USERS == 2) {
+  if (TOTAL_USERS === 2) {
     res.redirect('/error')
   } else {
     console.log('juego ' + TOTAL_USERS)
@@ -40,11 +41,11 @@ io.on('connection', (socket) => {
   console.log('Nueva conexion', socket.id)
   TOTAL_USERS = io.engine.clientsCount
 
-  if (TOTAL_USERS == 1) {
+  if (TOTAL_USERS === 1) {
     socket.emit('jugador1', TOTAL_USERS)
   }
   console.log(TOTAL_USERS)
-  if (TOTAL_USERS == 2) {
+  if (TOTAL_USERS === 2) {
     socket.broadcast.emit('jugador2', TOTAL_USERS)
   }
 

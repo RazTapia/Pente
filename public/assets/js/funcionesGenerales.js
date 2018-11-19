@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 /* Autor: Tania Torres Alvarado
 * Se inicializa la variable del socket del lado del cliente.
 */
