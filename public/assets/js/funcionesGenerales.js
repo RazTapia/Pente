@@ -628,68 +628,6 @@ function PuntajeFilas4Jugador2 (filas) {
  *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
  */
 
-function NotificacionJugador1Listo () {
-  let timerInterval
-  swal({
-    title: 'Jugador 1 Listo',
-    html: 'Espera a tu oponente<strong></strong> ',
-    timer: 3000,
-    onClose: () => {
-      clearInterval(timerInterval)
-    }
-  })
-}
-
-function NotificacionEmpezarPartida () {
-  let timerInterval
-  swal({
-    title: 'Jugador 2 Listo',
-    html: 'A jugar<strong></strong> ',
-    timer: 4000,
-    onClose: () => {
-      clearInterval(timerInterval)
-    }
-  })
-}
-
-function NotificacionJugadorFuera () {
-  RecargarPagina()
-  let timerInterval
-  swal({
-    title: 'Has ganado',
-    html: 'To oponente se ha salido de la partida<strong></strong>  <br> Creando nuevo juego...',
-    timer: 3000,
-    onClose: () => {
-      clearInterval(timerInterval)
-    }
-  })
-}
-
-function NotificacionHasGanado () {
-  RecargarPagina()
-  let timerInterval
-  swal({
-    title: 'Has ganado',
-    html: '¡ Has demostrado ser el mejor !<strong></strong> ',
-    timer: 10000,
-    onClose: () => {
-      clearInterval(timerInterval)
-    }
-  })
-}
-function NotificacionHasPerdido () {
-  RecargarPagina()
-  let timerInterval
-  swal({
-    title: 'Has perdido',
-    html: '¡ Lo sentimos !<strong></strong> ',
-    timer: 10000,
-    onClose: () => {
-      clearInterval(timerInterval)
-    }
-  })
-}
-
 /*  Autor: Josue Zapata
  *  Recargar pagina cuando  hay un ganador
  */
