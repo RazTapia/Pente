@@ -2,6 +2,10 @@
 * Se inicializa la variable del socket del lado del cliente.
 */
 const socket = io()
+var userId;
+var colorUser;
+
+colorUser='#'+(Math.random()*0xFFFFFF<<0).toString(16);
 
 /*
 * Autor: RannFerii
@@ -48,7 +52,7 @@ function Tablero() {
 */
 
 function Ficha(x, y) {
-	var colorUsuario = "black"; //variable que contendrá el color de la ficha según el usuario,  Autor: LucNieto
+	
 	let estadoFoo =0; //variable que contendrá el estado actual del hueco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
 	var crearFicha = document.createElement("DIV");
 	let idPadre=0;
@@ -67,8 +71,8 @@ function Ficha(x, y) {
 	crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
 
 	crearFicha.addEventListener('mouseup', () => {
-		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUsuario, crearFicha.id = 1,
-		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id}), sumaJ1=1,
+		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUser, crearFicha.id = 1,
+		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id, color:colorUser,usuarioTiro: userId}), sumaJ1=1,
 		sumaJ2=0,
 		fichasEneConsecu=0,
 		Evaluar(x, y),
@@ -83,11 +87,14 @@ function Ficha(x, y) {
 * En este metodo se recibe el id del TH donde el otro usuario tiro
 * y se pinta en la pantalla contraria.
 */
+
 socket.on('pente:seleccion',function(data){
-	var childNode =  document.getElementById(data.id).childNodes;
-	childNode[0].setAttribute('style', 'background-color: red;');
-	childNode[0].setAttribute('id', '2');
-	document.getElementById('tablero').style.pointerEvents = 'auto';
+    var childNode = document.getElementById(data.id).childNodes;
+    console.log(data.usuarioTiro)
+
+    childNode[0].setAttribute('style', `background-color: ${data.color}`);
+    childNode[0].setAttribute('id', '2');
+    document.getElementById('tablero').style.pointerEvents = 'auto';
 });
 
 /*
