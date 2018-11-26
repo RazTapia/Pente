@@ -106,7 +106,7 @@ socket.on('pente:seleccion',function(data){
 */
 socket.on('jugador1', function (data) {
   if (data == 1) {
-    NotificacionJugador1Listo()
+    // NotificacionJugador1Listo()
     document.getElementById('tablero').style.pointerEvents = 'none'
   }
 })
@@ -117,7 +117,7 @@ socket.on('jugador1', function (data) {
 */
 socket.on('jugador2', function (data) {
   if (data == 2) {
-    NotificacionEmpezarPartida()
+    // NotificacionEmpezarPartida()
     document.getElementById('tablero').style.pointerEvents = 'auto'
   }
 })
@@ -139,13 +139,13 @@ socket.on('pente:comeer', function (data) {
 
 socket.on('desconectado', function (data) {
   if (data == 1) {
-    NotificacionJugadorFuera()
+    // NotificacionJugadorFuera()
     document.getElementById('tablero').style.pointerEvents = 'none'
   }
 })
 socket.on('perdedor', function (data) {
   if (data.flag == 1) {
-    NotificacionHasPerdido()
+    // NotificacionHasPerdido()
   }
 })
 /*

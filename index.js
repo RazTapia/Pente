@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/juego', function (req, res) {
-  if (TOTAL_USERS === 2) {
+  if (TOTAL_USERS === 4) {
     res.redirect('/error')
   } else {
     console.log('juego ' + TOTAL_USERS)

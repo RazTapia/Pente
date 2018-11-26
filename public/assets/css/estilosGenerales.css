@@ -1,5 +1,5 @@
 body {
-  background-color: #ffff;
+  background-image: linear-gradient(to bottom right, #0fff , #000 );
   height: 100%; 
   background-repeat: no-repeat;
   background-size: cover;
@@ -10,11 +10,17 @@ body {
 * Alinear vertical y horizontalmente el div central
 */
 .central {
-    width: 620px;
-    margin-top: 5%;
-    margin-left: 3%;
-    height: 533px;
-    padding-left: -6px;
+  width: 620px;
+  margin-top: 5%;
+  margin-left: 3%;
+  height: 533px;
+  padding-left: -6px;
+}
+
+.estilo-tablero {
+  border-radius: 15px;
+  background-color: #ffffff;
+  margin-top: 20px;
 }
 
 /*
@@ -155,16 +161,16 @@ body {
     width: 40px;
 }
 @keyframes osahanloading {
-0% {
-    transform: rotate(0deg);
-}
-50% {
-    background: #85d6de none repeat scroll 0 0;
-    transform: rotate(180deg);
-}
-100% {
-    transform: rotate(360deg);
-}
+  0% {
+      transform: rotate(0deg);
+  }
+  50% {
+      background: #85d6de none repeat scroll 0 0;
+      transform: rotate(180deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
 }
 
 /* animacion de div principal de notificacion*/
@@ -176,8 +182,8 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
-  height: 400px;
-  background: #001e2d;
+  height: 200px;
+  background: #ffff;
   box-sizing: border-box;
   box-shadow: 0 20px 50px rgba(0,0,0,.5);
   border:2px solid rgba(0,0,0,.5);
@@ -188,20 +194,20 @@ body {
   left: 15px;
   right: 15px;
   bottom: 15px;
-  border: 2px solid #ffeb3b;
+  border: 2px solid #034643;
   padding: 30px;
   box-shadow: 0 5px 10px rgba(0,0,0,.5);
   text-align: center;
 }
 .box .content h1{
-  color: #fff;
+  color: #000;
   font-size: 30px;
   margin: 0 0 10px;
   padding: 0;
 
 }
 .box .content p{
- color: #fff;
+ color: #000;
 }
 .box svg,
 .box svg rect{
@@ -213,10 +219,10 @@ body {
   fill: transparent;
 }
 .box svg rect{
-  stroke: #0093ff;
+  stroke: #000000;
   stroke-width:4px;
   stroke-dasharray: 400;
-  animation: animate 3s linear infinite;
+  /*animation: animate 20s linear infinite;*/
 }
 
 @keyframes animate

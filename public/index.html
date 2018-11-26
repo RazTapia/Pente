@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="assets/css/estilosGenerales.css">
   <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
   <script src="assets/js/funcionesGenerales.js"></script>
-  <script src="assets/js/sweetAlert2.min.js"></script>
   <script src="assets/js/jquery.min.js"></script>
 </head>
 <body onload="Principal()">  
@@ -20,13 +19,13 @@
           <div class="box">
               <svg><rect></rect></svg>
               <div class="content">
-                <h1>¡Atención jugadores!</h1>
-                <p>Bienvenidos a su juego preferido, pente.</p>
-                <p id="temporizador">times</p>
+                <h1 id="notificacionTitulo">¡Atención jugadores!</h1>
+                <p id="notificacionDescripcion">Bienvenidos a su juego preferido, pente.</p>
+                <p id="temporizador">Tiempo</p>
               </div>
           </div>
         </div>
-         <div class="col-md-5">
+         <div class="col-md-5 estilo-tablero">
           <div class="central">
             <table id="tablero" border=1>
             </table>
@@ -68,6 +67,10 @@
     function Principal() {
       Tablero();
       DibujarFichasTablero();
+
+      document.getElementById("notificacionTitulo").innerHTML = "Actualizar notificacion";
+      document.getElementById("notificacionDescripcion").innerHTML = "Actualizar descripcion";
+      /* EN DESAROLLO, Josué esta viendo lo del timer y turnos
       //PuntajeComidaJugador1(3);
 
        // document.getElementById("temporizador").innerHTML = h + ":" + m + ":" + s;
@@ -79,6 +82,7 @@
        // }
       // var duration = 2000; //2 seconds
       // setTimeout(function () { $('#welldone').hide(); }, duration);
+      */
   }
   </script>
 </body>
