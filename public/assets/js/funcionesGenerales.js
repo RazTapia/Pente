@@ -73,7 +73,7 @@ function Ficha(x, y) {
 	crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
 
 	crearFicha.addEventListener('mouseup', () => {
-		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUser, crearFicha.id = 1,
+		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUser, crearFicha.id = userId,
 		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id, color:colorUser,usuarioTiro: userId}), sumaJ1=1,
 		sumaJ2=0,
 		fichasEneConsecu=0,
@@ -83,7 +83,12 @@ function Ficha(x, y) {
 
 		});
 	}
+  socket.on('setPlayers', function (data) {
+    userId=data;
+   console.log(userId);
 
+   document.getElementById("jugador").innerHTML = "Jugador "+ userId;
+  })
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo se recibe el id del TH donde el otro usuario tiro
@@ -95,7 +100,7 @@ socket.on('pente:seleccion',function(data){
     console.log(data.usuarioTiro)
 
     childNode[0].setAttribute('style', `background-color: ${data.color}`);
-    childNode[0].setAttribute('id', '2');
+    childNode[0].setAttribute('id',` ${data.usuarioTiro}`);
     document.getElementById('tablero').style.pointerEvents = 'auto';
 });
 
@@ -365,7 +370,7 @@ function Arriba (x, y) {
     x--
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
 
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -375,17 +380,20 @@ function Arriba (x, y) {
 
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + (x + 1) + 'C' + y).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + (x + 2) + 'C' + y).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + (x + 1) + 'C' + y).lastChild
+        var fichaSig2 = document.getElementById('F' + (x + 2) + 'C' + y).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + (x + 1) + 'C' + y).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + (x + 2) + 'C' + y).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         Arriba(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       Arriba(x, y)
     }
@@ -397,7 +405,7 @@ function ArribaDerecha (x, y) {
     y++
     x--
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -406,17 +414,20 @@ function ArribaDerecha (x, y) {
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + (x + 1) + 'C' + (y - 1)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + (x + 2) + 'C' + (y - 2)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + (x + 1) + 'C' + (y - 1)).lastChild
+        var fichaSig2 = document.getElementById('F' + (x + 2) + 'C' + (y - 2)).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + (x + 1) + 'C' + (y - 1)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + (x + 2) + 'C' + (y - 2)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         ArribaDerecha(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       ArribaDerecha(x, y)
     }
@@ -427,7 +438,7 @@ function Derecha (x, y) {
   if (y < 19) {
     y++
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -436,17 +447,20 @@ function Derecha (x, y) {
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + x + 'C' + (y - 1)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + x + 'C' + (y - 2)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + x + 'C' + (y - 1)).lastChild
+        var fichaSig2 = document.getElementById('F' + x + 'C' + (y - 2)).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + x + 'C' + (y - 1)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + x + 'C' + (y - 2)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         Derecha(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       Derecha(x, y)
     }
@@ -458,7 +472,7 @@ function DerechaAbajo (x, y) {
     y++
     x++
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -467,17 +481,20 @@ function DerechaAbajo (x, y) {
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + (x - 1) + 'C' + (y - 1)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + (x - 2) + 'C' + (y - 2)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + (x - 1) + 'C' + (y - 1)).lastChild
+        var fichaSig2 = document.getElementById('F' + (x - 2) + 'C' + (y - 2)).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + (x - 1) + 'C' + (y - 1)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + (x - 2) + 'C' + (y - 2)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         DerechaAbajo(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       DerechaAbajo(x, y)
     }
@@ -488,7 +505,7 @@ function Abajo (x, y) {
   if (x < 19) {
     x++
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -498,17 +515,20 @@ function Abajo (x, y) {
 
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + (x - 1) + 'C' + y).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + (x - 2) + 'C' + y).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + (x - 1) + 'C' + y).lastChild
+        var fichaSig2 = document.getElementById('F' + (x - 2) + 'C' + y).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + (x - 1) + 'C' + y).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + (x - 2) + 'C' + y).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         Abajo(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       Abajo(x, y)
     }
@@ -520,7 +540,7 @@ function IzquierdaAbajo (x, y) {
     y--
     x++
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -529,17 +549,20 @@ function IzquierdaAbajo (x, y) {
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + (x - 1) + 'C' + (y + 1)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + (x - 2) + 'C' + (y + 2)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + (x - 1) + 'C' + (y + 1)).lastChild
+        var fichaSig2 = document.getElementById('F' + (x - 2) + 'C' + (y + 2)).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + (x - 1) + 'C' + (y + 1)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + (x - 2) + 'C' + (y + 2)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         IzquierdaAbajo(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       IzquierdaAbajo(x, y)
     }
@@ -550,7 +573,7 @@ function Izquierda (x, y) {
   if (y > 0) {
     y--
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -559,17 +582,20 @@ function Izquierda (x, y) {
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + x + 'C' + (y + 1)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + x + 'C' + (y + 2)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + x + 'C' + (y + 1)).lastChild
+        var fichaSig2 = document.getElementById('F' + x + 'C' + (y + 2)).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + x + 'C' + (y + 1)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + x + 'C' + (y + 2)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         Izquierda(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       Izquierda(x, y)
     }
@@ -581,7 +607,7 @@ function IzquierdaArriba (x, y) {
     y--
     x--
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
-    if (ficha.id == 1 && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
+    if (ficha.id == userId && (fichasEneConsecu == 0 || fichasEneConsecu == 2)) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
@@ -590,17 +616,20 @@ function IzquierdaArriba (x, y) {
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
         sumaJ1 = 0
-        ficha = document.getElementById('F' + (x + 1) + 'C' + (y + 1)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
-        ficha = document.getElementById('F' + (x + 2) + 'C' + (y + 2)).lastChild
-        ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
-        socket.emit('pente:comer', { id: ficha.parentNode.id })
+        var fichaSig1 = document.getElementById('F' + (x + 1) + 'C' + (y + 1)).lastChild
+        var fichaSig2 = document.getElementById('F' + (x + 2) + 'C' + (y + 2)).lastChild
+        if (fichaSig1.id == fichaSig2.id) {
+          ficha = document.getElementById('F' + (x + 1) + 'C' + (y + 1)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+          ficha = document.getElementById('F' + (x + 2) + 'C' + (y + 2)).lastChild
+          ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
+          socket.emit('pente:comer', { id: ficha.parentNode.id })
+        }
       } else {
         IzquierdaArriba(x, y)
       }
-    } else if (ficha.id == 2) {
-      sumaJ2 += 1
+    } else if (ficha.id != userId) {
       fichasEneConsecu++
       IzquierdaArriba(x, y)
     }

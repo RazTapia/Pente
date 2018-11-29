@@ -40,6 +40,8 @@ const io = socketIO(server)
 io.on('connection', (socket) => {
   console.log('Nueva conexion', socket.id)
   TOTAL_USERS = io.engine.clientsCount
+  
+  io.to(socket.id).emit('setPlayers',TOTAL_USERS);
 
   if (TOTAL_USERS === 1) {
     socket.emit('jugador1', TOTAL_USERS)
