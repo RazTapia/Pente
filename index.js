@@ -11,10 +11,6 @@ app.set('port', process.env.PORT || 3000)
 
 // Routeo
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'))
-})
-
-app.get('/juego', function (req, res) {
   if (TOTAL_USERS === 4) {
     res.redirect('/error')
   } else {
@@ -22,6 +18,7 @@ app.get('/juego', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
   }
 })
+
 app.get('/error', function (req, res) {
   res.sendFile(path.join(__dirname, 'public', 'error.html'))
 })
