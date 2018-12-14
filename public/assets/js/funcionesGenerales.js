@@ -7,8 +7,6 @@ const socket = io()
 var userId;
 var colorUser;
 
-colorUser='#'+(Math.random()*0xFFFFFF<<0).toString(16);
-
 /*
 * Autor: RannFerii
 * Su tarea es dibujar todo el tablero
@@ -87,46 +85,64 @@ function Ficha(x, y) {
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * setPlayers Se almacena en una variable global el ID del cliente actual para usos del algoritmo de evaluacion de tiro
+* asi como su color fijo para cada usuario
 * setScore dibuja el score a todos los usuarios dependiendo del numero de usuarios actuales
 */
 
   socket.on('setPlayers', function (data) {
     userId=data;
+
+    if(userId==1) { colorUser='red';   }
+
+    if(userId==2) { colorUser='blue';  }
+
+    if(userId==3) { colorUser='green'; }
+
+    if(userId==4) { colorUser='yellow';}
+
   })
 
   socket.on('setScore', function (data) {
      document.getElementById("panel-jugadores").innerHTML = "";
-   for(var i = 1;i <= data;i++) {
-    document.getElementById("panel-jugadores").innerHTML+=
-      "<div class='panel1'>"+
-       "<div class='panel-Jugador1'>"+
-        "<div class='card' style='width: 18rem;''>"+
-          "<div class='card-body'>"+
-            "<div class='row justify-content-md-center'>"+
-              "<div cass='col-2'>"+
-                "<span class='dot'></span>"+
+     for(var i = 1;i <= data;i++) {
+      document.getElementById("panel-jugadores").innerHTML+=
+        "<div class='panel1'>"+
+         "<div class='panel-Jugador1'>"+
+          "<div class='card' style='width: 18rem;''>"+
+            "<div class='card-body'>"+
+              "<div class='row justify-content-md-center'>"+
+                "<div cass='col-2'>"+
+                  "<span id='"+i+"color' class='dot'></span>"+
+                "</div>"+
+                "<div cass='col-4'>"+
+                  "<h5 class='card-title'> &nbsp; <label id='jugador'>Jugador "+i+"</label> </h5>"+
+                "</div>"+
+                "<div class='col-4 margin-down'>"+ 
+                  "<div class='osahanloading'></div>"+
+                "</div>"+
               "</div>"+
-              "<div cass='col-4'>"+
-                "<h5 class='card-title'> &nbsp; <label id='jugador'>Jugador "+i+"</label> </h5>"+
-              "</div>"+
-              "<div class='col-4 margin-down'>"+ 
-                "<div class='osahanloading'></div>"+
-              "</div>"+
-            "</div>"+
-            "<div class='row'>"+
-              "<div class='col-6'>"+
-                "<P id='jugador"+i+"Comida'>Comidas: 0</P>"+
-                "<P id='jugador"+i+"Filas'>Filas de 4: 0</P>"+
-              "</div>"+
-              "<div class='col-6'>"+
-                "<P>Tiempo</P>"+
+              "<div class='row'>"+
+                "<div class='col-6'>"+
+                  "<P id='jugador"+i+"Comida'>Comidas: 0</P>"+
+                  "<P id='jugador"+i+"Filas'>Filas de 4: 0</P>"+
+                "</div>"+
+                "<div class='col-6'>"+
+                  "<P>Tiempo</P>"+
+                "</div>"+
               "</div>"+
             "</div>"+
           "</div>"+
-        "</div>"+
-       "</div>"+
-      "</div>"
-   }
+         "</div>"+
+        "</div>"
+        var ficha = document.getElementById( i+'color' );
+      if(i==1) { ficha.style.backgroundColor = 'red';   }
+
+      if(i==2) { ficha.style.backgroundColor = 'blue';  }
+
+      if(i==3) { ficha.style.backgroundColor = 'green'; }
+
+      if(i==4) { ficha.style.backgroundColor = 'yellow';}
+     }
   })
 
 /*

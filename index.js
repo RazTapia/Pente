@@ -42,12 +42,11 @@ io.on('connection', (socket) => {
   console.log('Nueva conexion', socket.id)
   TOTAL_USERS = io.engine.clientsCount
   io.to(socket.id).emit('setPlayers',TOTAL_USERS)
-  
+
   if (TOTAL_USERS === 1) {
     socket.emit('jugador1', TOTAL_USERS)
     USER_ARRAY[0]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
-    
   }
 
   if (TOTAL_USERS === 2) {
