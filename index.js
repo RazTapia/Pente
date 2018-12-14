@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
+var USER_ARRAY = new Array();
 
 // Puerto
 app.set('port', process.env.PORT || 3000)
@@ -41,14 +42,34 @@ io.on('connection', (socket) => {
   console.log('Nueva conexion', socket.id)
   TOTAL_USERS = io.engine.clientsCount
   
-  io.to(socket.id).emit('setPlayers',TOTAL_USERS);
-
   if (TOTAL_USERS === 1) {
     socket.emit('jugador1', TOTAL_USERS)
+    USER_ARRAY[0]=socket.id
+    io.to(USER_ARRAY[0]).emit('setPlayers',TOTAL_USERS)
   }
-  console.log(TOTAL_USERS)
+
   if (TOTAL_USERS === 2) {
     socket.broadcast.emit('jugador2', TOTAL_USERS)
+    USER_ARRAY[1]=socket.id
+    io.to(USER_ARRAY[0]).emit('setPlayers',TOTAL_USERS)
+    io.to(USER_ARRAY[1]).emit('setPlayers',TOTAL_USERS)
+  }
+
+  if (TOTAL_USERS === 3) {
+    socket.broadcast.emit('jugador3', TOTAL_USERS)
+    USER_ARRAY[2]=socket.id
+    io.to(USER_ARRAY[0]).emit('setPlayers',TOTAL_USERS)
+    io.to(USER_ARRAY[1]).emit('setPlayers',TOTAL_USERS)
+    io.to(USER_ARRAY[2]).emit('setPlayers',TOTAL_USERS)
+  }
+
+  if (TOTAL_USERS === 4) {
+    socket.broadcast.emit('jugador2', TOTAL_USERS)
+    USER_ARRAY[3]=socket.id
+    io.to(USER_ARRAY[0]).emit('setPlayers',TOTAL_USERS)
+    io.to(USER_ARRAY[1]).emit('setPlayers',TOTAL_USERS)
+    io.to(USER_ARRAY[2]).emit('setPlayers',TOTAL_USERS)
+    io.to(USER_ARRAY[3]).emit('setPlayers',TOTAL_USERS)
   }
 
   socket.on('disconnect', () => {

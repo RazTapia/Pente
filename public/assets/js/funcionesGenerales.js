@@ -83,12 +83,45 @@ function Ficha(x, y) {
 
 		});
 	}
+
   socket.on('setPlayers', function (data) {
     userId=data;
-   console.log(userId);
+    document.getElementById("panel-jugadores").innerHTML = "";
+   for(var i = 1;i <= userId;i++)
+   {
 
-   document.getElementById("jugador").innerHTML = "Jugador "+ userId;
+    document.getElementById("panel-jugadores").innerHTML+=
+      "<div class='panel1'>"+
+       "<div class='panel-Jugador1'>"+
+        "<div class='card' style='width: 18rem;''>"+
+          "<div class='card-body'>"+
+            "<div class='row justify-content-md-center'>"+
+              "<div cass='col-2'>"+
+                "<span class='dot'></span>"+
+              "</div>"+
+              "<div cass='col-4'>"+
+                "<h5 class='card-title'> &nbsp; <label id='jugador'>Jugador "+i+"</label> </h5>"+
+              "</div>"+
+              "<div class='col-4 margin-down'>"+ 
+                "<div class='osahanloading'></div>"+
+              "</div>"+
+            "</div>"+
+            "<div class='row'>"+
+              "<div class='col-6'>"+
+                "<P id='jugador"+i+"Comida'>Comidas: 0</P>"+
+                "<P id='jugador"+i+"Filas'>Filas de 4: 0</P>"+
+              "</div>"+
+              "<div class='col-6'>"+
+                "<P>Tiempo</P>"+
+              "</div>"+
+            "</div>"+
+          "</div>"+
+        "</div>"+
+       "</div>"+
+      "</div>"
+   }
   })
+
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo se recibe el id del TH donde el otro usuario tiro
