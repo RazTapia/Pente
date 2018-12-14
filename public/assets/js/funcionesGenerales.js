@@ -87,9 +87,7 @@ function Ficha(x, y) {
   socket.on('setPlayers', function (data) {
     userId=data;
     document.getElementById("panel-jugadores").innerHTML = "";
-   for(var i = 1;i <= userId;i++)
-   {
-
+   for(var i = 1;i <= userId;i++) {
     document.getElementById("panel-jugadores").innerHTML+=
       "<div class='panel1'>"+
        "<div class='panel-Jugador1'>"+
