@@ -84,10 +84,19 @@ function Ficha(x, y) {
 		});
 	}
 
+/*
+* Autor: Tania Torres Alvarado,Josue Zapata Moreno
+* setPlayers Se almacena en una variable global el ID del cliente actual para usos del algoritmo de evaluacion de tiro
+* setScore dibuja el score a todos los usuarios dependiendo del numero de usuarios actuales
+*/
+
   socket.on('setPlayers', function (data) {
     userId=data;
-    document.getElementById("panel-jugadores").innerHTML = "";
-   for(var i = 1;i <= userId;i++) {
+  })
+
+  socket.on('setScore', function (data) {
+     document.getElementById("panel-jugadores").innerHTML = "";
+   for(var i = 1;i <= data;i++) {
     document.getElementById("panel-jugadores").innerHTML+=
       "<div class='panel1'>"+
        "<div class='panel-Jugador1'>"+
