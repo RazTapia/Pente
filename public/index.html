@@ -9,10 +9,10 @@
   <link rel="stylesheet" href="assets/css/estilosPlantilla.css">
   <link rel="stylesheet" href="assets/css/estilosGenerales.css">
   <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
-  <script src="assets/js/funcionesGenerales.js"></script>
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.min.js"></script>
   <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/funcionesGenerales.js"></script>
 </head>
 <body onload="Principal()">  
   <div class="container-fluid">
@@ -34,16 +34,16 @@
           </div>
         </div>
         <div class="col-md-3">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+          <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formCantidadJugadores">
             Launch demo modal
-          </button>
+          </button>-->
           <div id= "panel-jugadores">
           </div>
         </div>
     </div>
   </div>
   <!--Modal para escoger cantidad de jugadores-->
-  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="formCantidadJugadores" tabindex="-1" role="dialog" aria-labelledby="formCantidadJugadores" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -53,9 +53,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <h5>Popover in a modal</h5>
-        <p>This <a href="#" role="button" class="btn btn-secondary popover-test" title="Popover title" data-content="Popover body content is set in this attribute.">button</a> triggers a popover on click.</p>
-        <hr>
+        
+        <button type="button" class="btn btn-primary">2 jugadores</button>
+        <button type="button" class="btn btn-secondary">3 jugadores</button>
+        <button type="button" class="btn btn-info">4 jugadores</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

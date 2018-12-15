@@ -167,6 +167,7 @@ socket.on('pente:seleccion',function(data){
 */
 socket.on('jugador1', function (data) {
   if (data == 1) {
+    $('#formCantidadJugadores').modal('show')
     // NotificacionJugador1Listo()
     document.getElementById('tablero').style.pointerEvents = 'none'
   }
@@ -726,3 +727,7 @@ function PuntajeFilas4Jugador2 (filas) {
 function RecargarPagina () {
   setTimeout(function () { window.location.href = '/' }, 3000)
 }
+/*$( document ).ready(function() {
+
+  $('#formCantidadJugadores').modal('show')
+});*/
