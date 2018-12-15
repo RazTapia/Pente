@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "standard": "standard || exit 0",
+    "standard::fix": "standard --fix || exit 0"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.7",
+    "standard": "^12.0.1"
   }
 }
