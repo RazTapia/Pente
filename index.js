@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
+var USERS; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
 var USER_ARRAY = new Array();
 
 // Puerto
@@ -11,7 +12,7 @@ app.set('port', process.env.PORT || 3000)
 
 // Routeo
 app.get('/', function (req, res) {
-  if (TOTAL_USERS === 4) {
+  if (TOTAL_USERS === USERS) {
     res.redirect('/error')
   } else {
     console.log('juego ' + TOTAL_USERS)
@@ -44,6 +45,7 @@ io.on('connection', (socket) => {
     socket.emit('jugador1', TOTAL_USERS)
     USER_ARRAY[0]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
+
   }
 
   if (TOTAL_USERS === 2) {
@@ -73,6 +75,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     TOTAL_USERS = io.engine.clientsCount
     socket.broadcast.emit('desconectado', TOTAL_USERS)
+  })
+
+  socket.on('cantidadJugadores', (users) => {
+    USERS=users;
   })
 
   socket.on('pente:seleccion', (data) => {
