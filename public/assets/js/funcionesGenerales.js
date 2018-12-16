@@ -160,6 +160,11 @@ socket.on('pente:seleccion',function(data){
     document.getElementById('tablero').style.pointerEvents = 'auto';
 });
 
+/*
+* Autor: Tania Torres Alvarado
+* Verifica el valor escogido por el primer usuario en el form formCantidadJugadores
+* y se lo envía al servidor.
+*/
 
 function Guardar() {
   var users;
@@ -184,8 +189,6 @@ socket.on('jugador1', function (data) {
     document.getElementById('tablero').style.pointerEvents = 'none'
   }
 })
-
-socket.emit('cantidadUsuarios',users);
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
@@ -209,8 +212,8 @@ socket.on('pente:comeer', function (data) {
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si el servidor detecta que uno de los dos jugadores se a salido
-* se le bloquea al tablero al usuario que aun permanece y envia un mensaje.
+* En este metodo  el servidor detecta cuando  solo queda un jugador 
+* en la partida ganando por default
 */
 
 socket.on('desconectado', function (data) {

@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
-var USERS; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
+var USERS=1; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
 var USER_ARRAY = new Array();
 
 // Puerto
@@ -76,13 +76,18 @@ io.on('connection', (socket) => {
     TOTAL_USERS = io.engine.clientsCount
     socket.broadcast.emit('desconectado', TOTAL_USERS)
   })
-
+/*
+* Autor: Tania Torres Alvarado
+* En este metodo recibe lo obtenido en el formulario formCantidadJugadores
+* y le asigna a una variable global del servidor de cuantos seran la partida;
+*/
   socket.on('cantidadJugadores', (users) => {
     USERS=users;
   })
 
   socket.on('pente:seleccion', (data) => {
     socket.broadcast.emit('pente:seleccion', data)
+    console.log(data);
   })
 
   socket.on('pente:comer', (data) => {
