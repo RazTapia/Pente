@@ -10,6 +10,7 @@ var flagInicioJuego
 var TIEMPO
 var TIEMPO_ESPERA_SALA = 60
 var TIEMPO_INICIAR_JUEGO = 3
+var fichasComidas = [0, 0, 0, 0]
 
 // Puerto
 /**
@@ -219,5 +220,24 @@ io.on('connection', (socket) => {
     } else {
       io.to(USER_ARRAY[data]).emit('turno', flagInicioJuego)
     }
+  })
+
+  socket.on('totalPuntajeComer', (data) => {
+    console.log('Recibi datos id: ' + data[0] + ' puntaje: ' + data[1])
+    socket.broadcast.emit('totalJugadores', USERS)
+    console.log('Total Jugadores: ' + USERS)
+    if (data[0] === 1) {
+      fichasComidas[0] = data[1]
+    }
+    if (data[0] === 2) {
+      fichasComidas[1] = data[1]
+    }
+    if (data[0] === 3) {
+      fichasComidas[2] = data[1]
+    }
+    if (data[0] === 4) {
+      fichasComidas[3] = data[1]
+    }
+    socket.broadcast.emit('actualizarPuntaje', fichasComidas)
   })
 })

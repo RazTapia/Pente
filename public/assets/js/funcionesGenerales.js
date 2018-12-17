@@ -306,6 +306,18 @@ socket.on('recibirTiro', function () {
   console.log('Paso metodo Evaluar Lineas 4')
 })
 
+socket.on('actualizarPuntaje', function (datos) {
+  for (var i = 0; i < jugadoresTotal; i++) {
+    console.log('ActualizadosDatos: ' + datos[i])
+    document.getElementById('jugador' + (i + 1) + 'Comida').innerHTML = ' ' + datos[i]
+  }
+})
+
+var jugadoresTotal = 0
+socket.on('totalJugadores', function (jugadoresT) {
+  jugadoresTotal = jugadoresT
+})
+
 /**
  * @author Roberto Sagaón, Nicolás Diego
  * @description Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
@@ -315,6 +327,7 @@ socket.on('recibirTiro', function () {
 var sumaJ1 = 1
 var fichasEneConsecu = 0
 var fichasConsecu = 1
+var fichasComidas = 0
 
 var lineasCuatro = [
   ['x,y', 'x,y', 'x,y', 'x,y'],
@@ -513,13 +526,18 @@ function Arriba (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + (x + 1) + 'C' + y).lastChild
         var fichaSig2 = document.getElementById('F' + (x + 2) + 'C' + y).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + (x + 1) + 'C' + y).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + (x + 2) + 'C' + y).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          console.log('id: ' + data[0] + ' fichas: ' + data[1])
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         Arriba(x, y)
@@ -551,13 +569,17 @@ function ArribaDerecha (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + (x + 1) + 'C' + (y - 1)).lastChild
         var fichaSig2 = document.getElementById('F' + (x + 2) + 'C' + (y - 2)).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + (x + 1) + 'C' + (y - 1)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + (x + 2) + 'C' + (y - 2)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         ArribaDerecha(x, y)
@@ -588,13 +610,17 @@ function Derecha (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + x + 'C' + (y - 1)).lastChild
         var fichaSig2 = document.getElementById('F' + x + 'C' + (y - 2)).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + x + 'C' + (y - 1)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + x + 'C' + (y - 2)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         Derecha(x, y)
@@ -627,13 +653,17 @@ function DerechaAbajo (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + (x - 1) + 'C' + (y - 1)).lastChild
         var fichaSig2 = document.getElementById('F' + (x - 2) + 'C' + (y - 2)).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + (x - 1) + 'C' + (y - 1)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + (x - 2) + 'C' + (y - 2)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         DerechaAbajo(x, y)
@@ -665,13 +695,17 @@ function Abajo (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + (x - 1) + 'C' + y).lastChild
         var fichaSig2 = document.getElementById('F' + (x - 2) + 'C' + y).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + (x - 1) + 'C' + y).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + (x - 2) + 'C' + y).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         Abajo(x, y)
@@ -703,13 +737,17 @@ function IzquierdaAbajo (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + (x - 1) + 'C' + (y + 1)).lastChild
         var fichaSig2 = document.getElementById('F' + (x - 2) + 'C' + (y + 2)).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + (x - 1) + 'C' + (y + 1)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + (x - 2) + 'C' + (y + 2)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         IzquierdaAbajo(x, y)
@@ -740,13 +778,17 @@ function Izquierda (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + x + 'C' + (y + 1)).lastChild
         var fichaSig2 = document.getElementById('F' + x + 'C' + (y + 2)).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + x + 'C' + (y + 1)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + x + 'C' + (y + 2)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         Izquierda(x, y)
@@ -777,13 +819,17 @@ function IzquierdaArriba (x, y) {
         sumaJ1 = 0
         var fichaSig1 = document.getElementById('F' + (x + 1) + 'C' + (y + 1)).lastChild
         var fichaSig2 = document.getElementById('F' + (x + 2) + 'C' + (y + 2)).lastChild
-        if (fichaSig1.id == fichaSig2.id) {
+        if (fichaSig1.id == fichaSig2.id && fichaSig1.id != 0) {
           ficha = document.getElementById('F' + (x + 1) + 'C' + (y + 1)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
           ficha = document.getElementById('F' + (x + 2) + 'C' + (y + 2)).lastChild
           ficha.style.backgroundColor = 'lightgrey', ficha.id = 0
           socket.emit('pente:comer', { id: ficha.parentNode.id })
+          fichasComidas += 2
+          document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
+          var data = [userId, fichasComidas]
+          socket.emit('totalPuntajeComer', data)
         }
       } else {
         IzquierdaArriba(x, y)
