@@ -1,21 +1,22 @@
 /* eslint-env mocha */
-
-/* Autor: Tania Torres Alvarado
-* Se inicializa la variable del socket del lado del cliente.
-*/
+/**
+ * @author  Tania Torres
+ * @description Se inicializa la variable del socket del lado del cliente.
+ */
 const socket = io()
 var userId;
 var colorUser;
 var flagTiro;
 var jugadores;
-/*
-* Autor: RannFerii
-* Su tarea es dibujar todo el tablero
+
+
+/**
+* @author  Josué Zapata
+* @description Su tarea es dibujar todo el tablero
 * empezando por las filas, y en cada una de estas dibujar sus 20 columnas.
 * Al terminar 20 filas se tendrá el tablero dibujado , 30x30 pixeles cuadrados.
 * Este metodo funciona sobre el tag <table id="tablero">
 */
-
 function Tablero () { // eslint-disable-line
   for (var fila = 0; fila < 20; fila++) {
     var filaActual = 'F' + fila // Almacena la fila actual
@@ -46,11 +47,11 @@ function Tablero () { // eslint-disable-line
   }
 }
 
-/*
-* Autor: BacteriaLoki
-* Se crea un metodo que recibe la cordenada a la cual se quiere colocar la ficha
-* con los siguientes parametros: int X: la fila & int Y: la columna
-*/
+/**
+ * @author  Nicolas Diego
+ * @description Se crea un metodo que recibe la cordenada a la cual se quiere colocar la ficha
+ * con los siguientes parametros: int X: la fila & int Y: la columna
+ */
 
 function Ficha(x, y) {
   
@@ -61,11 +62,14 @@ function Ficha(x, y) {
   crearFicha.classList.add("ficha");
   crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
   crearFicha.setAttribute("draggable",false);
-/*
-* Autor: LucNieto
-* se obtiene el id del hueco para cambiar el color e indicar que se está seleccionando
-* ya sea para el mouseover o el click
-*/
+
+/**
+ * @author  Lucio Nieto
+ * @description se obtiene el id del hueco para cambiar el color e indicar que se está seleccionando
+ * ya sea para el mouseover o el click
+ */
+
+
   crearFicha.addEventListener('mouseover', () => {
     (crearFicha.id == 0) ? (crearFicha.style.backgroundColor = "grey") : null ; }); // Autor: Lucio Nieto Bautista
 
@@ -83,14 +87,15 @@ function Ficha(x, y) {
     });
   }
 
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* setPlayers Se almacena en una variable global el ID del cliente actual para usos del algoritmo de evaluacion de tiro
-* asi como su color fijo para cada usuario
-* setScore dibuja el score a todos los usuarios dependiendo del numero de usuarios actuales
-*/
+/**
+ * @author  Tania Torres,Josué Zapata 
+ * @param setPlayers 
+ * @description Se almacena en una variable global el ID del cliente actual para usos del algoritmo de evaluacion de tiro
+ * asi como su color fijo para cada usuario
+ * setScore dibuja el score a todos los usuarios dependiendo del numero de usuarios actuales
+ */
 
-  socket.on('setPlayers', function (data) {
+  socket.on('setPlayer', function (data) {
     userId=data;
 
     if(userId==1) { colorUser='red';   }
@@ -148,11 +153,11 @@ function Ficha(x, y) {
   })
 
 
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo se recibe el id del TH donde el otro usuario tiro
-* y se pinta en la pantalla contraria.
-*/
+/** 
+ * @author  Tania Torres ,Josué Zapata 
+ * @description En este metodo se recibe el id del TH donde el otro usuario tiro
+ * y se pinta en la pantalla contraria.
+ */
 
 socket.on('pente:seleccion',function(data){
     var childNode = document.getElementById(data.id).childNodes;
@@ -189,11 +194,11 @@ socket.on('turno',function(data){
 }
 });
 
-/*
-* Autor: Tania Torres Alvarado
-* Verifica el valor escogido por el primer usuario en el form formCantidadJugadores
-* y se lo envía al servidor.
-*/
+/**
+ * @author Tania Torres 
+ *  @description Verifica el valor escogido por el primer usuario en el form formCantidadJugadores
+ * y se lo envía al servidor.
+ */
 
 function Guardar() {
   var users;
@@ -221,31 +226,32 @@ socket.on('notificacionIniciarJuego', function (data) {
       document.getElementById("temporizador").innerHTML = data;
 })
 
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si detecta que eres el primer usuario en entrar a /juego
-* bloquea el tablero de juego.
-*/
+/** 
+ * @author Tania Torres,Josué Zapata 
+ * @description En este metodo si detecta que eres el primer usuario en entrar a /juego
+ * bloquea el tablero de juego.
+ */
 socket.on('jugador1', function (data) {
   if (data == 1) {
     $('#formCantidadJugadores').modal('show')
   }
 })
-/*
-* Autor: Roberto Sagaón , Nicolas Omar Diego
-* En este metodo se desaparecen las fichas que se hayan comido en el turno.
-*/
+
+/**
+ * @author Roberto Sagaón , Nicolas Diego
+ * @description En este metodo se desaparecen las fichas que se hayan comido en el turno.
+ */
 socket.on('pente:comeer', function (data) {
   var childNode = document.getElementById(data.id).childNodes
   childNode[0].setAttribute('style', 'background-color: lightgrey;')
   childNode[0].setAttribute('id', '0')
 })
 
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo  el servidor detecta cuando  solo queda un jugador 
-* en la partida ganando por default
-*/
+/**
+ * @author Tania Torres, Josué Zapata 
+ * @description En este metodo  el servidor detecta cuando  solo queda un jugador 
+ * en la partida ganando por default
+ */
 
 socket.on('desconectado', function (data) {
   if (data == 1) {
@@ -258,11 +264,12 @@ socket.on('perdedor', function (data) {
     // NotificacionHasPerdido()
   }
 })
-/*
-* Autor: Tania Torres Alvarado y Roberto Sagaón H.luz
-* Se integra el método que dibuja todas las fichas-hueco en el tablero que se
-* utilizaran en el juego.
-*/
+
+/**
+ * @author Tania Torres, Roberto Sagaón 
+ * @description Se integra el método que dibuja todas las fichas-hueco en el tablero que se
+ * utilizaran en el juego.
+ */
 
 // Funciones que no son utilizadas en este archivo comentarlas con disable
 function DibujarFichasTablero () { // eslint-disable-line
@@ -273,24 +280,24 @@ function DibujarFichasTablero () { // eslint-disable-line
   }
 }
 
-/*
-* Autor: Roberto Sagaón, Nicolar Omar Diego
-* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
-* realizar recorrido de todas las posiciones a su alrededor y decidir si
-* puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
-*/
+/**
+ *  @author Roberto Sagaón, Nicolás Diego
+ * @description Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
+ * realizar recorrido de todas las posiciones a su alrededor y decidir si
+ * puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
+ */
 
 socket.on('recibirTiro', function () {
   EvaluarLineas4()
   console.log('Paso metodo Evaluar Lineas 4')
 })
 
-/*
-* Autor: Roberto Sagaón, Nicolar Omar Diego
-* Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
-* realizar recorrido de todas las posiciones a su alrededor y decidir si
-* puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
-*/
+/**
+ * @author Roberto Sagaón, Nicolás Diego
+ * @description Se integran los métodos Evaluar y sus respectivos metodos de ayuda para
+ * realizar recorrido de todas las posiciones a su alrededor y decidir si
+ * puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
+ */
 var sumaJ1 = 1
 var sumaJ2 = 0
 var fichasEneConsecu = 0
@@ -305,6 +312,12 @@ var lineasCuatro = [
 
 var lineaTemporal = ['', '', '', '']
 var posicionesJ1 = [0, 0, 0, 0, 0]
+
+
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 
 function Evaluar (x, y) {
   lineaTemporal[0] = x + ',' + y
@@ -468,6 +481,10 @@ function EvaluarLineas4 () {
   console.log('----------------------------')
 }
 
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 function Arriba (x, y) {
   // console.log(x + " & " + y);
   if (x > 0) {
@@ -505,6 +522,10 @@ function Arriba (x, y) {
   }
 }
 
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 function ArribaDerecha (x, y) {
   if (x > 0 && y < 19) {
     y++
@@ -539,6 +560,11 @@ function ArribaDerecha (x, y) {
   }
 }
 
+
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 function Derecha (x, y) {
   if (y < 19) {
     y++
@@ -571,6 +597,11 @@ function Derecha (x, y) {
     }
   }
 }
+
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 
 function DerechaAbajo (x, y) {
   if (x < 19 && y < 19) {
@@ -606,6 +637,11 @@ function DerechaAbajo (x, y) {
   }
 }
 
+
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 function Abajo (x, y) {
   if (x < 19) {
     x++
@@ -640,6 +676,11 @@ function Abajo (x, y) {
   }
 }
 
+
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 function IzquierdaAbajo (x, y) {
   if (x < 19 && y > 0) {
     y--
@@ -674,6 +715,10 @@ function IzquierdaAbajo (x, y) {
   }
 }
 
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 function Izquierda (x, y) {
   if (y > 0) {
     y--
@@ -707,6 +752,10 @@ function Izquierda (x, y) {
   }
 }
 
+/**
+ * @author colocar autor
+ * @description colocar descripción aquí.
+ */
 function IzquierdaArriba (x, y) {
   if (x > 0 && y > 0) {
     y--
@@ -740,9 +789,9 @@ function IzquierdaArriba (x, y) {
     }
   }
 }
-/*
- *Autor: Josué Zapata
- * Funciones para mostrar el puntaje segun el jugador y su movimiento
+/**
+ * @author Josué Zapata
+ * @description Funciones para mostrar el puntaje segun el jugador y su movimiento
  * como por ejemplo, mostrar cuantas fichas comidas por jugador hay
  * y asi mismo cuantas filas de 4.
  *
@@ -764,11 +813,9 @@ function PuntajeFilas4Jugador2 (filas) {
   document.getElementById('jugador2Filas4').textContent = filas
 }
 
-/* Autor: Josue Zapata
- *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
- */
-
-/*  Autor: Josue Zapata
+/**
+ * @author Josué Zapata
+ *  @description Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
  *  Recargar pagina cuando  hay un ganador
  */
 
