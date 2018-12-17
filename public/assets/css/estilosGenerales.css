@@ -1,30 +1,29 @@
-body {
+body, html {
   background-image: linear-gradient(to bottom right, #0fff , #000 );
+  height: 100%;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height:100%;
 }
 
 /*
-* Autor: RannFerii
+* Autor: Josue Zapata
 * Alinear vertical y horizontalmente el div central
 */
-.central {
-  width: 620px;
-  margin-top: 5%;
-  margin-left: 2%;
-  height: 533px;
-  padding-left: -6px;
-}
-
 .estilo-tablero {
   border-radius: 15px;
   background-color: #ffffff;
   margin-top: 20px;
+  padding-top: 2%;
+  padding-left: 1.5%;
+}
+.central {
+  width: 100%;
+  height: 100%;
 }
 
 /*
-* Autor: RannFerii
+* Autor: Josue Zapata
 * Cuadro= 30x30 px cuadrados
 */
 .cuadro {
