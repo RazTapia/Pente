@@ -4,11 +4,9 @@
  * @description Se inicializa la variable del socket del lado del cliente.
  */
 const socket = io()
-var userId;
-var colorUser;
-var flagTiro;
-var jugadores;
-
+var userId
+var colorUser
+var flagTiro
 
 /**
 * @author  Josué Zapata
@@ -53,22 +51,19 @@ function Tablero () { // eslint-disable-line
  * con los siguientes parametros: int X: la fila & int Y: la columna
  */
 
-function Ficha(x, y) {
+function Ficha (x, y) {
+  let estadoFoo = 0 // variable que contendrá el estado actual del hueco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
+  var crearFicha = document.createElement('DIV')
+  document.getElementById('F' + x + 'C' + y).appendChild(crearFicha)
+  crearFicha.classList.add('ficha')
+  crearFicha.setAttribute('id', estadoFoo) // se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
+  crearFicha.setAttribute('draggable', false)
 
-  let estadoFoo =0; //variable que contendrá el estado actual del hueco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
-  var crearFicha = document.createElement("DIV");
-  let idPadre=0;
-    document.getElementById("F"+x+"C"+y).appendChild(crearFicha);
-  crearFicha.classList.add("ficha");
-  crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
-  crearFicha.setAttribute("draggable",false);
-
-/**
+  /**
  * @author  Lucio Nieto
  * @description se obtiene el id del hueco para cambiar el color e indicar que se está seleccionando
  * ya sea para el mouseover o el click
  */
-
 
   crearFicha.addEventListener('mouseover', () => {
     (crearFicha.id == 0) ? (crearFicha.style.backgroundColor = 'grey') : null
@@ -207,14 +202,25 @@ function Guardar (data) {
   socket.emit('cantidadJugadores', data)
   $('#formCantidadJugadores').modal('hide')
   document.getElementById('interfaz').style.display = 'block'
-  TiempoEmpezarSala() // Iniciar el tiempo para que la sala se llene
 }
+
+/**
+ * @author Josue Zapata
+ *  @description Recibe del servidor la indicacion de que se esta esperando a que se llene la sala,
+ *  es recibida por los clientes
+ */
 
 socket.on('notificacionEsperarSala', function (data) {
   document.getElementById('notificacionTitulo').innerHTML = 'Esperando jugadores'
   document.getElementById('notificacionDescripcion').innerHTML = 'tiempo estimado'
   document.getElementById('temporizador').innerHTML = data
 })
+
+/**
+ * @author Josue Zapata
+ *  @description Recibe del servidor la indicacion de que se esta esperando a que el juego empiece en 3
+ *  segundos
+ */
 
 socket.on('notificacionIniciarJuego', function (data) {
   document.getElementById('notificacionTitulo').innerHTML = 'EL juego inicia en'
@@ -231,6 +237,18 @@ socket.on('jugador1', function (data) {
   if (data == 1) {
     $('#formCantidadJugadores').modal('show')
   }
+})
+
+socket.on('jugador2', function (data) {
+  document.getElementById('interfaz').style.display = 'block'
+})
+
+socket.on('jugador3', function (data) {
+  document.getElementById('interfaz').style.display = 'block'
+})
+
+socket.on('jugador4', function (data) {
+  document.getElementById('interfaz').style.display = 'block'
 })
 
 /**
@@ -307,7 +325,6 @@ var lineasCuatro = [
 
 var lineaTemporal = ['', '', '', '']
 var posicionesJ1 = [0, 0, 0, 0, 0]
-
 
 /**
  * @author colocar autor
@@ -552,7 +569,6 @@ function ArribaDerecha (x, y) {
   }
 }
 
-
 /**
  * @author colocar autor
  * @description colocar descripción aquí.
@@ -629,7 +645,6 @@ function DerechaAbajo (x, y) {
   }
 }
 
-
 /**
  * @author colocar autor
  * @description colocar descripción aquí.
@@ -667,7 +682,6 @@ function Abajo (x, y) {
     }
   }
 }
-
 
 /**
  * @author colocar autor
@@ -757,7 +771,6 @@ function IzquierdaArriba (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
@@ -781,55 +794,22 @@ function IzquierdaArriba (x, y) {
     }
   }
 }
-/**
- * @author Josué Zapata
- * @description Funciones para mostrar el puntaje segun el jugador y su movimiento
- * como por ejemplo, mostrar cuantas fichas comidas por jugador hay
- * y asi mismo cuantas filas de 4.
- *2
- */
-
-function PuntajeComidaJugador1 (comida) {
-  document.getElementById('jugador1Comida').textContent = comida
-}
-
-function PuntajeFilas4Jugador1 (filas) {
-  document.getElementById('jugador1Filas4').textContent = filas
-}
-
-function PuntajeComidaJugador2 (comida) {
-  document.getElementById('jugador2Comida').textContent = comida
-}
-
-function PuntajeFilas4Jugador2 (filas) {
-  document.getElementById('jugador2Filas4').textContent = filas
-}
 
 /**
- * @author Josué Zapata
- *  @description Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
+ * @author Raziel Tapia
+ *  @description Funciones ganar, usadas para notificar a los jugadores quien gano
  *  Recargar pagina cuando  hay un ganador
  */
- function NotificacionHasGanado () {
- //  RecargarPagina()
-   console.log('ganaste 5F')
- }
-
- function NotificacionHasPerdido () {
- //  RecargarPagina()
-   console.log('Perdiste')
- }
-
-function RecargarPagina () {
-  setTimeout(function () { window.location.href = '/' }, 3000)
+function NotificacionHasGanado () {
+  RecargarPagina()
+  console.log('ganaste 5F')
 }
 
-/* $( document ).ready(function() {
+function NotificacionHasPerdido () {
+  RecargarPagina()
+  console.log('Perdiste')
+}
 
-  $('#formCantidadJugadores').modal('show')
-}); */
-
-$('#formCantidadJugadores').modal({
-  backdrop: 'static',
-  keyboard: false
-})
+function RecargarPagina () {
+  // setTimeout(function () { window.location.href = '/' }, 3000)
+}
