@@ -4,8 +4,9 @@ const express = require('express')
 const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
-var USERS=0; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
+var USERS; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
 var USER_ARRAY = new Array();
+var flagInicioJuego;
 var TIEMPO
 var TIEMPO_ESPERA_SALA = 60
 var TIEMPO_POR_TURNO = 10
@@ -45,27 +46,26 @@ io.on('connection', (socket) => {
   TOTAL_USERS = io.engine.clientsCount
   io.to(socket.id).emit('setPlayers',TOTAL_USERS)
 
-  if (TOTAL_USERS == 1) {
+  if (TOTAL_USERS === 1) {
     socket.emit('jugador1', TOTAL_USERS)
     USER_ARRAY[0]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
-
   }
 
-  if (TOTAL_USERS == 2) {
+  if (TOTAL_USERS === 2) {
     USER_ARRAY[1]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
   }
 
-  if (TOTAL_USERS == 3) {
+  if (TOTAL_USERS === 3) {
     USER_ARRAY[2]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[2]).emit('setScore',TOTAL_USERS)
   }
 
-  if (TOTAL_USERS == 4) {
+  if (TOTAL_USERS === 4) {
     USER_ARRAY[3]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
@@ -91,20 +91,19 @@ io.on('connection', (socket) => {
 */
   socket.on('cantidadJugadores', (users) => {
     USERS=users;
+    flagInicioJuego=1;
     RecargarTiempo();
+    clearInterval(TIEMPO)
     TiempoEmpezarSala();
     console.log("Cantidad de jugadores máxima",users)
-    
   })
-  
-  function TiempoEmpezarSala() { 
+
+   function TiempoEmpezarSala() { 
     TIEMPO= setInterval(
       function() {
         if(TIEMPO_ESPERA_SALA >= 0)
         {
-           for( var i = 0; i<=USER_ARRAY.length; i++) {
-              io.to(USER_ARRAY[i]).emit('esperarSala',TIEMPO_ESPERA_SALA)
-            }
+            EnviarATodos("notificacionEsperarSala",TIEMPO_ESPERA_SALA)
             TIEMPO_ESPERA_SALA--
         }else{
           clearInterval(TIEMPO)
@@ -118,9 +117,7 @@ io.on('connection', (socket) => {
       function() {
         if(TIEMPO_INICIAR_JUEGO >= 0)
         {
-           for( var i = 0; i<=USER_ARRAY.length; i++) {
-              io.to(USER_ARRAY[i]).emit('iniciarJuego',TIEMPO_INICIAR_JUEGO)
-            }
+            EnviarATodos("notificacionIniciarJuego",TIEMPO_INICIAR_JUEGO)
             TIEMPO_INICIAR_JUEGO--
         }else{
           clearInterval(TIEMPO)
@@ -130,13 +127,9 @@ io.on('connection', (socket) => {
       },1000 
   )}
 
-    function EmpezarJuego() {
-        for( var i = 0; i<=USER_ARRAY.length; i++) {
-        io.to(USER_ARRAY[i]).emit('empezarJuego',"hola")
-        console.log("Juego iniciado")
-      }
-      RecargarTiempo();
-    }   
+  function EmpezarJuego() {
+      EnviarATodos("EmpezarJuego",0)
+  }   
 
   function RecargarTiempo() {
     TIEMPO_ESPERA_SALA = 60;
@@ -144,9 +137,14 @@ io.on('connection', (socket) => {
     TIEMPO_INICIAR_JUEGO = 3;
   }
 
+  function EnviarATodos(metodo,tiempo) {
+    for( var i = 0; i<=USER_ARRAY.length; i++) {
+      io.to(USER_ARRAY[i]).emit(metodo,tiempo)
+    }
+  }
+
   socket.on('pente:seleccion', (data) => {
     socket.broadcast.emit('pente:seleccion', data)
-    console.log(data);
   })
 
   socket.on('pente:comer', (data) => {
@@ -160,5 +158,18 @@ io.on('connection', (socket) => {
 
   socket.on('perdedor', function (data) {
     socket.broadcast.emit('perdedor', data)
+  })
+
+  if(TOTAL_USERS==USERS&& flagInicioJuego==1){
+   
+    io.to(USER_ARRAY[0]).emit('turno',flagInicioJuego);
+  }//endif
+
+  socket.on('siguienteTurno', function (data) {
+    if(data==TOTAL_USERS){
+      io.to(USER_ARRAY[0]).emit('turno',flagInicioJuego);
+    }else{
+    io.to(USER_ARRAY[data]).emit('turno',flagInicioJuego);
+    }
   })
 })

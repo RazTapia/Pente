@@ -6,7 +6,8 @@
 const socket = io()
 var userId;
 var colorUser;
-
+var flagTiro;
+var jugadores;
 /*
 * Autor: RannFerii
 * Su tarea es dibujar todo el tablero
@@ -52,35 +53,35 @@ function Tablero () { // eslint-disable-line
 */
 
 function Ficha(x, y) {
-	
-	let estadoFoo =0; //variable que contendrá el estado actual del hueco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
-	var crearFicha = document.createElement("DIV");
-	let idPadre=0;
+  
+  let estadoFoo =0; //variable que contendrá el estado actual del hueco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
+  var crearFicha = document.createElement("DIV");
+  let idPadre=0;
     document.getElementById("F"+x+"C"+y).appendChild(crearFicha);
-	crearFicha.classList.add("ficha");
-	crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
-	crearFicha.setAttribute("draggable",false);
+  crearFicha.classList.add("ficha");
+  crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
+  crearFicha.setAttribute("draggable",false);
 /*
 * Autor: LucNieto
 * se obtiene el id del hueco para cambiar el color e indicar que se está seleccionando
 * ya sea para el mouseover o el click
 */
-	crearFicha.addEventListener('mouseover', () => {
-		(crearFicha.id == 0) ? (crearFicha.style.backgroundColor = "grey") : null ; }); // Autor: Lucio Nieto Bautista
+  crearFicha.addEventListener('mouseover', () => {
+    (crearFicha.id == 0) ? (crearFicha.style.backgroundColor = "grey") : null ; }); // Autor: Lucio Nieto Bautista
 
-	crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
+  crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
 
-	crearFicha.addEventListener('mouseup', () => {
-		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUser, crearFicha.id = userId,
-		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id, color:colorUser,usuarioTiro: userId}), sumaJ1=1,
-		sumaJ2=0,
-		fichasEneConsecu=0,
-		Evaluar(x, y),
-		document.getElementById('tablero').style.pointerEvents = 'none' )//Autor: Tania Torres Alvarado
-		: null();// Fin  del bloque,Autor: Lucio Nieto Bautista
+  crearFicha.addEventListener('mouseup', () => {
+    (crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUser, crearFicha.id = userId,
+    socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id, color:colorUser,usuarioTiro: userId}), sumaJ1=1,
+    sumaJ2=0,
+    fichasEneConsecu=0,
+    Evaluar(x, y),
+    flagTiro=1 )
+    : null();// Fin  del bloque,Autor: Lucio Nieto Bautista
 
-		});
-	}
+    });
+  }
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
@@ -99,7 +100,7 @@ function Ficha(x, y) {
     if(userId==3) { colorUser='green'; }
 
     if(userId==4) { colorUser='yellow';}
-
+    document.getElementById('tablero').style.pointerEvents = 'none'
   })
 
   socket.on('setScore', function (data) {
@@ -111,7 +112,7 @@ function Ficha(x, y) {
           "<div class='card' style='width: 18rem;''>"+
             "<div class='card-body'>"+
               "<div class='row justify-content-md-center'>"+
-                "<div cass='col-2'>"+
+                "<div cass='col-2 text-right'>"+
                   "<span id='"+i+"color' class='dot'></span>"+
                 "</div>"+
                 "<div cass='col-4'>"+
@@ -146,6 +147,7 @@ function Ficha(x, y) {
      }
   })
 
+
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo se recibe el id del TH donde el otro usuario tiro
@@ -158,7 +160,33 @@ socket.on('pente:seleccion',function(data){
 
     childNode[0].setAttribute('style', `background-color: ${data.color}`);
     childNode[0].setAttribute('id',` ${data.usuarioTiro}`);
-    document.getElementById('tablero').style.pointerEvents = 'auto';
+    
+});
+
+socket.on('turno',function(data){
+  flagTiro=0;
+  if(data==1)
+{
+  var timeLeft = 10;
+ 
+    var elem = document.getElementById('temporizador');
+    var timerId = setInterval(countdown, 1000);
+    
+    function countdown() {
+  
+      if (timeLeft == 0 || flagTiro==1) {
+        timeLeft = 0;
+        clearTimeout(timerId);
+        elem.innerHTML = 'Tiempo';
+        document.getElementById('tablero').style.pointerEvents = 'none'
+        socket.emit('siguienteTurno',userId);
+      } else {
+        document.getElementById('tablero').style.pointerEvents = 'auto'
+        elem.innerHTML = timeLeft + ' segundos restantes';
+        timeLeft--;
+      }
+    }
+}
 });
 
 /*
@@ -180,6 +208,19 @@ function Guardar() {
   $('#formCantidadJugadores').modal('hide')
   TiempoEmpezarSala(); //Iniciar el tiempo para que la sala se llene
 }
+
+socket.on('notificacionEsperarSala', function (data) {
+  document.getElementById("notificacionTitulo").innerHTML = "Esperando jugadores";
+      document.getElementById("notificacionDescripcion").innerHTML = "tiempo estimado";
+      document.getElementById("temporizador").innerHTML = data;
+})
+
+socket.on('notificacionIniciarJuego', function (data) {
+  document.getElementById("notificacionTitulo").innerHTML = "EL juego inicia en";
+      document.getElementById("notificacionDescripcion").innerHTML = "";
+      document.getElementById("temporizador").innerHTML = data;
+})
+
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo si detecta que eres el primer usuario en entrar a /juego
@@ -187,28 +228,9 @@ function Guardar() {
 */
 socket.on('jugador1', function (data) {
   if (data == 1) {
-    $('#formCantidadJugadores').modal('show'); 
-    document.getElementById('tablero').style.pointerEvents = 'none'
+    $('#formCantidadJugadores').modal('show')
   }
 })
-
-socket.on('esperarSala', function (data) {
-  document.getElementById("notificacionTitulo").innerHTML = "Esperando jugadores";
-      document.getElementById("notificacionDescripcion").innerHTML = "tiempo estimado";
-      document.getElementById("temporizador").innerHTML = data;
-})
-
-socket.on('iniciarJuego', function (data) {
-  document.getElementById("notificacionTitulo").innerHTML = "EL juego inicia en";
-      document.getElementById("notificacionDescripcion").innerHTML = "";
-      document.getElementById("temporizador").innerHTML = data;
-})
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
-* Envia un mensaje avisando
-*/
-
 /*
 * Autor: Roberto Sagaón , Nicolas Omar Diego
 * En este metodo se desaparecen las fichas que se hayan comido en el turno.
