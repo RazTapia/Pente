@@ -14,7 +14,7 @@
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/funcionesGenerales.js"></script>
 </head>
-<body onload="Principal()">  
+<body onload="Principal()">
   <div class="container-fluid" id="interfaz" style="display:none">
     <div class="row">
         <div class="col-md-4">
@@ -68,7 +68,7 @@
           <p style="color:#fff;">¿Listo para pensar en todo ?</p>
         </div>
        </div>
-       <div class="container"> 
+       <div class="container">
         <div class="row">
           <div class="col align-self-center">
             <a href="#" id="2" class="btn btn-sm animated-button victoria-one"
@@ -84,23 +84,22 @@
             <p style="color:#888">Diseñado por <a href="#">9510IC 2018</a></p>
           </div>
         </footer>
-        <br> 
+        <br>
         <br>
     </div>
   </div>
 </div>
 
 </div>
-  <script type="text/javascript">
-    function Principal() {
-      Tablero();
-      DibujarFichasTablero();
-      //Por default desactivar el tablero para todos hasta que se activen otras funciones
-      document.getElementById('tablero').style.pointerEvents = 'none';
-      document.getElementById("notificacionTitulo").innerHTML = "PENTE";
-      document.getElementById("notificacionDescripcion").innerHTML = "El juego";
-  }
-  </script>
+<script type="text/javascript">
+function Principal () {
+  Tablero()
+  DibujarFichasTablero()
+  // Por default desactivar el tablero para todos hasta que se activen otras funciones
+  document.getElementById('tablero').style.pointerEvents = 'none'
+  document.getElementById('notificacionTitulo').innerHTML = 'PENTE'
+  document.getElementById('notificacionDescripcion').innerHTML = 'El juego'
+}
+</script>
 </body>
 </html>
-
