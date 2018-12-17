@@ -123,8 +123,8 @@ function Ficha(x, y) {
               "</div>"+
               "<div class='row'>"+
                 "<div class='col-6'>"+
-                  "<P id='jugador"+i+"Comida'>Comidas: 0</P>"+
-                  "<P id='jugador"+i+"Filas'>Filas de 4: 0</P>"+
+                  "<P class='text-right'>Comidas:<strong id='jugador"+i+"Comida'> 0</strong></P>"+
+                  "<P class='text-right'>Filas de 4:<strong id='jugador"+i+"Filas4'> 0</strong></P>"+
                 "</div>"+
                 "<div class='col-6'>"+
                   "<P>Tiempo</P>"+
@@ -178,6 +178,7 @@ function Guardar() {
   }
   socket.emit('cantidadJugadores',users)
   $('#formCantidadJugadores').modal('hide')
+  TiempoEmpezarSala(); //Iniciar el tiempo para que la sala se llene
 }
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
@@ -186,21 +187,28 @@ function Guardar() {
 */
 socket.on('jugador1', function (data) {
   if (data == 1) {
-    $('#formCantidadJugadores').modal('show')
+    $('#formCantidadJugadores').modal('show'); 
     document.getElementById('tablero').style.pointerEvents = 'none'
   }
+})
+
+socket.on('esperarSala', function (data) {
+  document.getElementById("notificacionTitulo").innerHTML = "Esperando jugadores";
+      document.getElementById("notificacionDescripcion").innerHTML = "tiempo estimado";
+      document.getElementById("temporizador").innerHTML = data;
+})
+
+socket.on('iniciarJuego', function (data) {
+  document.getElementById("notificacionTitulo").innerHTML = "EL juego inicia en";
+      document.getElementById("notificacionDescripcion").innerHTML = "";
+      document.getElementById("temporizador").innerHTML = data;
 })
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
 * Envia un mensaje avisando
 */
-socket.on('jugador2', function (data) {
-  if (data == 2) {
-    // NotificacionEmpezarPartida()
-    document.getElementById('tablero').style.pointerEvents = 'auto'
-  }
-})
+
 /*
 * Autor: Roberto Sagaón , Nicolas Omar Diego
 * En este metodo se desaparecen las fichas que se hayan comido en el turno.

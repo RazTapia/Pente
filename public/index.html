@@ -34,23 +34,21 @@
           </div>
         </div>
         <div class="col-md-3">
-          <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formCantidadJugadores">
-            Launch demo modal
-          </button>-->
+          <!--Panel de todos los jugadores, aqui se muestran de 1-4 paneles -->
           <div id= "panel-jugadores">
           </div>
         </div>
     </div>
   </div>
   <!--Modal para escoger cantidad de jugadores-->
-  <div class="modal fade" id="formCantidadJugadores" tabindex="-1" role="dialog" aria-labelledby="formCantidadJugadores" aria-hidden="true">
+  <div class="modal fade" id="formCantidadJugadores" tabindex="-1" role="dialog" aria-labelledby="formCantidadJugadores" aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Selecciona jugadores</h5>
-        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>-->
+        </button>
       </div>
       <div class="modal-body">
         <label class="radio-inline"><input type="radio" id="2" name="optradio" checked>2 jugadores</label><br/>
@@ -63,26 +61,17 @@
     </div>
   </div>
 </div>
+
+</div>
   <script type="text/javascript">
     function Principal() {
       Tablero();
       DibujarFichasTablero();
+      //Por default desactivar el tablero para todos hasta que se activen otras funciones
+      document.getElementById('tablero').style.pointerEvents = 'none';
 
-      document.getElementById("notificacionTitulo").innerHTML = "Actualizar notificacion";
+      document.getElementById("notificacionTitulo").innerHTML = "Error en servido";
       document.getElementById("notificacionDescripcion").innerHTML = "Actualizar descripcion";
-      /* EN DESAROLLO, Josué esta viendo lo del timer y turnos
-      //PuntajeComidaJugador1(3);
-
-       // document.getElementById("temporizador").innerHTML = h + ":" + m + ":" + s;
-       // var t = setTimeout(function(){ startTime() }, 500);
-
-       // function starTime(){
-       //  for(var i ;)
-       //  return 
-       // }
-      // var duration = 2000; //2 seconds
-      // setTimeout(function () { $('#welldone').hide(); }, duration);
-      */
   }
   </script>
 </body>

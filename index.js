@@ -4,8 +4,12 @@ const express = require('express')
 const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
-var USERS=1; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
+var USERS=0; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
 var USER_ARRAY = new Array();
+var TIEMPO
+var TIEMPO_ESPERA_SALA = 60
+var TIEMPO_POR_TURNO = 10
+var TIEMPO_INICIAR_JUEGO = 3
 
 // Puerto
 app.set('port', process.env.PORT || 3000)
@@ -41,35 +45,39 @@ io.on('connection', (socket) => {
   TOTAL_USERS = io.engine.clientsCount
   io.to(socket.id).emit('setPlayers',TOTAL_USERS)
 
-  if (TOTAL_USERS === 1) {
+  if (TOTAL_USERS == 1) {
     socket.emit('jugador1', TOTAL_USERS)
     USER_ARRAY[0]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
 
   }
 
-  if (TOTAL_USERS === 2) {
-    socket.broadcast.emit('jugador2', TOTAL_USERS)
+  if (TOTAL_USERS == 2) {
     USER_ARRAY[1]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
   }
 
-  if (TOTAL_USERS === 3) {
-    socket.broadcast.emit('jugador3', TOTAL_USERS)
+  if (TOTAL_USERS == 3) {
     USER_ARRAY[2]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[2]).emit('setScore',TOTAL_USERS)
   }
 
-  if (TOTAL_USERS === 4) {
-    socket.broadcast.emit('jugador2', TOTAL_USERS)
+  if (TOTAL_USERS == 4) {
     USER_ARRAY[3]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[2]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[3]).emit('setScore',TOTAL_USERS)
+  }
+
+  if(TOTAL_USERS == USERS)
+  { 
+    RecargarTiempo();
+    clearInterval(TIEMPO)
+    TiempoIniciarJuego()
   }
 
   socket.on('disconnect', () => {
@@ -83,7 +91,58 @@ io.on('connection', (socket) => {
 */
   socket.on('cantidadJugadores', (users) => {
     USERS=users;
+    RecargarTiempo();
+    TiempoEmpezarSala();
+    console.log("Cantidad de jugadores máxima",users)
+    
   })
+  
+  function TiempoEmpezarSala() { 
+    TIEMPO= setInterval(
+      function() {
+        if(TIEMPO_ESPERA_SALA >= 0)
+        {
+           for( var i = 0; i<=USER_ARRAY.length; i++) {
+              io.to(USER_ARRAY[i]).emit('esperarSala',TIEMPO_ESPERA_SALA)
+            }
+            TIEMPO_ESPERA_SALA--
+        }else{
+          clearInterval(TIEMPO)
+        }
+        console.log("Tiempo de llenado de sala",TIEMPO_ESPERA_SALA)
+      },1000 
+  )}
+
+    function TiempoIniciarJuego() { 
+    TIEMPO= setInterval(
+      function() {
+        if(TIEMPO_INICIAR_JUEGO >= 0)
+        {
+           for( var i = 0; i<=USER_ARRAY.length; i++) {
+              io.to(USER_ARRAY[i]).emit('iniciarJuego',TIEMPO_INICIAR_JUEGO)
+            }
+            TIEMPO_INICIAR_JUEGO--
+        }else{
+          clearInterval(TIEMPO)
+          // Empezar uego()
+        }
+        console.log("Tiempo para iniciar el juego",TIEMPO_INICIAR_JUEGO)
+      },1000 
+  )}
+
+    function EmpezarJuego() {
+        for( var i = 0; i<=USER_ARRAY.length; i++) {
+        io.to(USER_ARRAY[i]).emit('empezarJuego',"hola")
+        console.log("Juego iniciado")
+      }
+      RecargarTiempo();
+    }   
+
+  function RecargarTiempo() {
+    TIEMPO_ESPERA_SALA = 60;
+    TIEMPO_POR_TURNO = 10;
+    TIEMPO_INICIAR_JUEGO = 3;
+  }
 
   socket.on('pente:seleccion', (data) => {
     socket.broadcast.emit('pente:seleccion', data)
