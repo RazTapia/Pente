@@ -158,6 +158,24 @@ socket.on('pente:seleccion', function (data) {
 })
 
 /*
+* Autor: Tania Torres Alvarado
+* Verifica el valor escogido por el primer usuario en el form formCantidadJugadores
+* y se lo envía al servidor.
+*/
+
+function Guardar() {
+  var users;
+  if(document.getElementById('2').checked) {
+    users=2;
+  }else if(document.getElementById('3').checked) {
+    users=3;
+  }else if(document.getElementById('4').checked) {
+    users=4;
+  }
+  socket.emit('cantidadJugadores',users)
+  $('#formCantidadJugadores').modal('hide')
+}
+/*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
 * En este metodo si detecta que eres el primer usuario en entrar a /juego
 * bloquea el tablero de juego.
@@ -165,7 +183,6 @@ socket.on('pente:seleccion', function (data) {
 socket.on('jugador1', function (data) {
   if (data == 1) {
     $('#formCantidadJugadores').modal('show')
-    // NotificacionJugador1Listo()
     document.getElementById('tablero').style.pointerEvents = 'none'
   }
 })
@@ -192,8 +209,8 @@ socket.on('pente:comeer', function (data) {
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si el servidor detecta que uno de los dos jugadores se a salido
-* se le bloquea al tablero al usuario que aun permanece y envia un mensaje.
+* En este metodo  el servidor detecta cuando  solo queda un jugador
+* en la partida ganando por default
 */
 
 socket.on('desconectado', function (data) {
@@ -712,7 +729,7 @@ function PuntajeFilas4Jugador2 (filas) {
  *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
  */
 function NotificacionHasGanado () {
-//  RecargarPagina()
+  RecargarPagina()
   console.log()
 }
 
@@ -723,7 +740,13 @@ function NotificacionHasGanado () {
 function RecargarPagina () {
   setTimeout(function () { window.location.href = '/' }, 3000)
 }
+
 /* $( document ).ready(function() {
 
   $('#formCantidadJugadores').modal('show')
 }); */
+
+$('#formCantidadJugadores').modal({
+  backdrop: 'static',
+  keyboard: false
+})
