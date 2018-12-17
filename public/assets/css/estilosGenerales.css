@@ -12,7 +12,7 @@ body {
 .central {
   width: 620px;
   margin-top: 5%;
-  margin-left: 3%;
+  margin-left: 2%;
   height: 533px;
   padding-left: -6px;
 }
@@ -55,6 +55,17 @@ body {
   font-style: italic;
   background-color:  transparent !important;
   height: 145px;
+}
+
+/*Modal pantalal completa */
+.modal-full {
+  min-width: 100%;
+  margin: 0;
+}
+
+.modal-full .modal-content {
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom right, #0fff , #000 );
 }
 
 a.animated-button:link, a.animated-button:visited {
@@ -204,6 +215,7 @@ a.animated-button.victoria-four:hover:after {
 
 .margin-down {
   margin-top: 22px;
+  margin-left: 31px;
 }
 
 /*circulo de color de los jugadores */
