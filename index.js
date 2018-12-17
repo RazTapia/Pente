@@ -5,7 +5,7 @@ const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
 var USERS = 1 // En esta variable se guardará la cantidad de usuarios permitidos
-var USER_ARRAY = new Array();
+var USER_ARRAY = []
 
 // Puerto
 app.set('port', process.env.PORT || 3000)

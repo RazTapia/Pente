@@ -221,7 +221,7 @@ socket.on('desconectado', function (data) {
 })
 socket.on('perdedor', function (data) {
   if (data.flag == 1) {
-    // NotificacionHasPerdido()
+     NotificacionHasPerdido()
   }
 })
 /*
@@ -280,12 +280,12 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   Abajo(x, y)
 
-  if (fichasConsecu === 5) {
-   NotificacionHasGanado()
+  if (fichasConsecu >= 5) {
+    NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
 
-  if (fichasConsecu === 4) {
+  if (fichasConsecu == 4) {
     // console.log("lineaTemporal: " + lineaTemporal[0] + " - " + lineaTemporal[1] + " - " + lineaTemporal[2] + " - " + lineaTemporal[3]);
     var checar = true
     for (var i = 0; i < 5; i++) {
@@ -307,12 +307,12 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   IzquierdaAbajo(x, y)
 
-  if (fichasConsecu === 5) {
+  if (fichasConsecu >= 5) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
 
-  if (fichasConsecu === 4) {
+  if (fichasConsecu == 4) {
     var checar = true
     for (var i = 0; i < 5; i++) {
       if (posicionesJ1[i] === 0 && checar === true) {
@@ -333,7 +333,7 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   Izquierda(x, y)
 
-  if (fichasConsecu == 5) {
+  if (fichasConsecu >= 5) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -359,7 +359,7 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   IzquierdaArriba(x, y)
 
-  if (fichasConsecu == 5) {
+  if (fichasConsecu >= 5) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -380,14 +380,15 @@ function Evaluar (x, y) {
   socket.emit('pasarTiro')
   console.log('posicionesJ1: \n' + 'Pos 1: ' + posicionesJ1[0] + ' Pos 2: ' + posicionesJ1[1] + ' Pos 3: ' + posicionesJ1[2] + ' Pos 4: ' + posicionesJ1[3] + ' Pos 5: ' + posicionesJ1[4])
 
+  // Funcion recorrer arreglo
   var ganar = 0
   posicionesJ1.forEach(function (valor) {
     if (valor == 1) {
       ganar++
     }
   })
-
-  if (ganar == 5) {
+  // Funcion verifica Ganar 5 Lineas
+  if (ganar >= 5) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -729,8 +730,13 @@ function PuntajeFilas4Jugador2 (filas) {
  *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
  */
 function NotificacionHasGanado () {
-  RecargarPagina()
-  console.log()
+//  RecargarPagina()
+  console.log('ganaste 5F')
+}
+
+function NotificacionHasPerdido () {
+//  RecargarPagina()
+  console.log('Perdiste')
 }
 
 /*  Autor: Josue Zapata
