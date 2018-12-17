@@ -4,8 +4,8 @@
 * Se inicializa la variable del socket del lado del cliente.
 */
 const socket = io()
-var userId;
-var colorUser;
+var userId
+var colorUser
 
 /*
 * Autor: RannFerii
@@ -51,36 +51,34 @@ function Tablero () { // eslint-disable-line
 * con los siguientes parametros: int X: la fila & int Y: la columna
 */
 
-function Ficha(x, y) {
-	
-	let estadoFoo =0; //variable que contendrá el estado actual del hueco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
-	var crearFicha = document.createElement("DIV");
-	let idPadre=0;
-    document.getElementById("F"+x+"C"+y).appendChild(crearFicha);
-	crearFicha.classList.add("ficha");
-	crearFicha.setAttribute("id",estadoFoo); //se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
-	crearFicha.setAttribute("draggable",false);
-/*
+function Ficha (x, y) {
+  let estadoFoo = 0 // variable que contendrá el estado actual del hueco; 0 representa vacío y 1 representa ocupado, Autor: LucNieto
+  var crearFicha = document.createElement('DIV')
+
+  document.getElementById('F' + x + 'C' + y).appendChild(crearFicha)
+  crearFicha.classList.add('ficha')
+  crearFicha.setAttribute('id', estadoFoo) // se le asigna un id al hueco para llevar control del estado de la ficha, Autor: LucNieto
+  crearFicha.setAttribute('draggable', false)
+  /*
 * Autor: LucNieto
 * se obtiene el id del hueco para cambiar el color e indicar que se está seleccionando
 * ya sea para el mouseover o el click
 */
-	crearFicha.addEventListener('mouseover', () => {
-		(crearFicha.id == 0) ? (crearFicha.style.backgroundColor = "grey") : null ; }); // Autor: Lucio Nieto Bautista
+  crearFicha.addEventListener('mouseover', () => {
+    (crearFicha.id == 0) ? (crearFicha.style.backgroundColor = 'grey') : null
+  }) // Autor: Lucio Nieto Bautista
 
-	crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = "lightgrey" : null});// Autor: Lucio Nieto Bautista
+  crearFicha.addEventListener('mouseout', () => { (crearFicha.id == 0) ? crearFicha.style.backgroundColor = 'lightgrey' : null })// Autor: Lucio Nieto Bautista
 
-	crearFicha.addEventListener('mouseup', () => {
-		(crearFicha.id == 0) ? ( crearFicha.style.backgroundColor = colorUser, crearFicha.id = userId,
-		socket.emit('pente:seleccion',{ id:crearFicha.parentNode.id, color:colorUser,usuarioTiro: userId}), sumaJ1=1,
-		sumaJ2=0,
-		fichasEneConsecu=0,
-		Evaluar(x, y),
-		document.getElementById('tablero').style.pointerEvents = 'none' )//Autor: Tania Torres Alvarado
-		: null();// Fin  del bloque,Autor: Lucio Nieto Bautista
-
-		});
-	}
+  crearFicha.addEventListener('mouseup', () => {
+    (crearFicha.id == 0) ? (crearFicha.style.backgroundColor = colorUser, crearFicha.id = userId,
+    socket.emit('pente:seleccion', { id: crearFicha.parentNode.id, color: colorUser, usuarioTiro: userId }), sumaJ1 = 1,
+    fichasEneConsecu = 0,
+    Evaluar(x, y),
+    document.getElementById('tablero').style.pointerEvents = 'none')// Autor: Tania Torres Alvarado
+      : null()// Fin  del bloque,Autor: Lucio Nieto Bautista
+  })
+}
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
@@ -89,61 +87,60 @@ function Ficha(x, y) {
 * setScore dibuja el score a todos los usuarios dependiendo del numero de usuarios actuales
 */
 
-  socket.on('setPlayers', function (data) {
-    userId=data;
+socket.on('setPlayers', function (data) {
+  userId = data
 
-    if(userId==1) { colorUser='red';   }
+  if (userId == 1) { colorUser = 'red' }
 
-    if(userId==2) { colorUser='blue';  }
+  if (userId == 2) { colorUser = 'blue' }
 
-    if(userId==3) { colorUser='green'; }
+  if (userId == 3) { colorUser = 'green' }
 
-    if(userId==4) { colorUser='yellow';}
+  if (userId == 4) { colorUser = 'yellow' }
+})
 
-  })
+socket.on('setScore', function (data) {
+  document.getElementById('panel-jugadores').innerHTML = ''
+  for (var i = 1; i <= data; i++) {
+    document.getElementById('panel-jugadores').innerHTML +=
+        "<div class='panel1'>" +
+         "<div class='panel-Jugador1'>" +
+          "<div class='card' style='width: 18rem;''>" +
+            "<div class='card-body'>" +
+              "<div class='row justify-content-md-center'>" +
+                "<div cass='col-2'>" +
+                  "<span id='" + i + "color' class='dot'></span>" +
+                '</div>' +
+                "<div cass='col-4'>" +
+                  "<h5 class='card-title'> &nbsp; <label id='jugador'>Jugador " + i + '</label> </h5>' +
+                '</div>' +
+                "<div class='col-4 margin-down'>" +
+                  "<div class='osahanloading'></div>" +
+                '</div>' +
+              '</div>' +
+              "<div class='row'>" +
+                "<div class='col-6'>" +
+                  "<P id='jugador" + i + "Comida'>Comidas: 0</P>" +
+                  "<P id='jugador" + i + "Filas'>Filas de 4: 0</P>" +
+                '</div>' +
+                "<div class='col-6'>" +
+                  '<P>Tiempo</P>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+         '</div>' +
+        '</div>'
+    var ficha = document.getElementById(i + 'color')
+    if (i == 1) { ficha.style.backgroundColor = 'red' }
 
-  socket.on('setScore', function (data) {
-     document.getElementById("panel-jugadores").innerHTML = "";
-     for(var i = 1;i <= data;i++) {
-      document.getElementById("panel-jugadores").innerHTML+=
-        "<div class='panel1'>"+
-         "<div class='panel-Jugador1'>"+
-          "<div class='card' style='width: 18rem;''>"+
-            "<div class='card-body'>"+
-              "<div class='row justify-content-md-center'>"+
-                "<div cass='col-2'>"+
-                  "<span id='"+i+"color' class='dot'></span>"+
-                "</div>"+
-                "<div cass='col-4'>"+
-                  "<h5 class='card-title'> &nbsp; <label id='jugador'>Jugador "+i+"</label> </h5>"+
-                "</div>"+
-                "<div class='col-4 margin-down'>"+ 
-                  "<div class='osahanloading'></div>"+
-                "</div>"+
-              "</div>"+
-              "<div class='row'>"+
-                "<div class='col-6'>"+
-                  "<P id='jugador"+i+"Comida'>Comidas: 0</P>"+
-                  "<P id='jugador"+i+"Filas'>Filas de 4: 0</P>"+
-                "</div>"+
-                "<div class='col-6'>"+
-                  "<P>Tiempo</P>"+
-                "</div>"+
-              "</div>"+
-            "</div>"+
-          "</div>"+
-         "</div>"+
-        "</div>"
-        var ficha = document.getElementById( i+'color' );
-      if(i==1) { ficha.style.backgroundColor = 'red';   }
+    if (i == 2) { ficha.style.backgroundColor = 'blue' }
 
-      if(i==2) { ficha.style.backgroundColor = 'blue';  }
+    if (i == 3) { ficha.style.backgroundColor = 'green' }
 
-      if(i==3) { ficha.style.backgroundColor = 'green'; }
-
-      if(i==4) { ficha.style.backgroundColor = 'yellow';}
-     }
-  })
+    if (i == 4) { ficha.style.backgroundColor = 'yellow' }
+  }
+})
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
@@ -151,14 +148,14 @@ function Ficha(x, y) {
 * y se pinta en la pantalla contraria.
 */
 
-socket.on('pente:seleccion',function(data){
-    var childNode = document.getElementById(data.id).childNodes;
-    console.log(data.usuarioTiro)
+socket.on('pente:seleccion', function (data) {
+  var childNode = document.getElementById(data.id).childNodes
+  console.log(data.usuarioTiro)
 
-    childNode[0].setAttribute('style', `background-color: ${data.color}`);
-    childNode[0].setAttribute('id',` ${data.usuarioTiro}`);
-    document.getElementById('tablero').style.pointerEvents = 'auto';
-});
+  childNode[0].setAttribute('style', `background-color: ${data.color}`)
+  childNode[0].setAttribute('id', ` ${data.usuarioTiro}`)
+  document.getElementById('tablero').style.pointerEvents = 'auto'
+})
 
 /*
 * Autor: Tania Torres Alvarado,Josue Zapata Moreno
@@ -244,7 +241,6 @@ socket.on('recibirTiro', function () {
 * puede comer fichas o si existen 4 o 5 fichas del mismo jugador.
 */
 var sumaJ1 = 1
-var sumaJ2 = 0
 var fichasEneConsecu = 0
 var fichasConsecu = 1
 
@@ -261,7 +257,6 @@ var posicionesJ1 = [0, 0, 0, 0, 0]
 function Evaluar (x, y) {
   lineaTemporal[0] = x + ',' + y
   sumaJ1 = 1
-  sumaJ2 = 0
   fichasConsecu = 1
   fichasEneConsecu = 0
   Arriba(x, y)
@@ -269,7 +264,7 @@ function Evaluar (x, y) {
   Abajo(x, y)
 
   if (fichasConsecu === 5) {
-    NotificacionHasGanado()
+   NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
 
@@ -289,7 +284,6 @@ function Evaluar (x, y) {
 
   lineaTemporal[0] = x + ',' + y
   sumaJ1 = 1
-  sumaJ2 = 0
   fichasConsecu = 1
   fichasEneConsecu = 0
   ArribaDerecha(x, y)
@@ -316,7 +310,6 @@ function Evaluar (x, y) {
 
   lineaTemporal[0] = x + ',' + y
   sumaJ1 = 1
-  sumaJ2 = 0
   fichasConsecu = 1
   fichasEneConsecu = 0
   Derecha(x, y)
@@ -343,7 +336,6 @@ function Evaluar (x, y) {
 
   lineaTemporal[0] = x + ',' + y
   sumaJ1 = 1
-  sumaJ2 = 0
   fichasConsecu = 1
   fichasEneConsecu = 0
   DerechaAbajo(x, y)
@@ -697,7 +689,7 @@ function IzquierdaArriba (x, y) {
  * Funciones para mostrar el puntaje segun el jugador y su movimiento
  * como por ejemplo, mostrar cuantas fichas comidas por jugador hay
  * y asi mismo cuantas filas de 4.
- *
+ *2
  */
 
 function PuntajeComidaJugador1 (comida) {
@@ -719,6 +711,10 @@ function PuntajeFilas4Jugador2 (filas) {
 /* Autor: Josue Zapata
  *  Funciones SweetAlert, usadas para notificar a los jugadores de como se desarrolla el juego
  */
+function NotificacionHasGanado () {
+//  RecargarPagina()
+  console.log()
+}
 
 /*  Autor: Josue Zapata
  *  Recargar pagina cuando  hay un ganador
@@ -727,7 +723,7 @@ function PuntajeFilas4Jugador2 (filas) {
 function RecargarPagina () {
   setTimeout(function () { window.location.href = '/' }, 3000)
 }
-/*$( document ).ready(function() {
+/* $( document ).ready(function() {
 
   $('#formCantidadJugadores').modal('show')
-});*/
+}); */
