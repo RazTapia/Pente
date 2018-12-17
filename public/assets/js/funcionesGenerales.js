@@ -284,9 +284,7 @@ socket.on('desconectado', function (data) {
   }
 })
 socket.on('perdedor', function (data) {
-  if (data.flag == 1) {
-    NotificacionHasPerdido()
-  }
+  NotificacionHasPerdido()
 })
 
 /**
@@ -369,11 +367,9 @@ function Evaluar (x, y) {
 
   if (fichasConsecu >= 5) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
   if (fichasComidas >= 10) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
 
   if (fichasConsecu == 4) {
@@ -399,11 +395,9 @@ function Evaluar (x, y) {
 
   if (fichasConsecu >= 5) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
   if (fichasComidas >= 10) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
 
   if (fichasConsecu == 4) {
@@ -429,11 +423,9 @@ function Evaluar (x, y) {
 
   if (fichasConsecu >= 5) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
   if (fichasComidas >= 10) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
 
   if (fichasConsecu == 4) {
@@ -459,11 +451,9 @@ function Evaluar (x, y) {
 
   if (fichasConsecu >= 5) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
   if (fichasComidas >= 10) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
 
   if (fichasConsecu == 4) {
@@ -491,7 +481,6 @@ function Evaluar (x, y) {
   // Funcion verifica Ganar 5 Lineas
   if (ganar >= 5) {
     NotificacionHasGanado()
-    socket.emit('perdedor', { flag: 1 })
   }
 }// Fin Evaluar
 
@@ -855,18 +844,24 @@ function IzquierdaArriba (x, y) {
  *  Recargar pagina cuando  hay un ganador
  */
 function NotificacionHasGanado () {
-  document.getElementById('temporizador').innerHTML = 'Ganaste'
+  socket.emit('perdedor')
+  setTimeout(function () {
+    document.getElementById('notificacionTitulo').innerHTML = 'HAS GANADO'
+    document.getElementById('notificacionDescripcion').innerHTML = 'Jugador'
+    document.getElementById('temporizador').innerHTML = ''
+  }, 1000)
   RecargarPagina()
-  console.log('ganaste 5F')
-  console.log('ganaste Comio: ' + fichasComidas)
 }
 
 function NotificacionHasPerdido () {
-  document.getElementById('temporizador').innerHTML = 'Perdiste'
+  setTimeout(function () {
+    document.getElementById('notificacionTitulo').innerHTML = 'HAS PERDIDO'
+    document.getElementById('notificacionDescripcion').innerHTML = ''
+    document.getElementById('temporizador').innerHTML = ''
+  }, 1000)
   RecargarPagina()
-  console.log('Perdiste')
 }
 
 function RecargarPagina () {
-  // setTimeout(function () { window.location.href = '/' }, 3000)
+  setTimeout(function () { window.location.href = '/' }, 20000)
 }

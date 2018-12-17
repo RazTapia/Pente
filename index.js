@@ -10,6 +10,7 @@ var flagInicioJuego
 var TIEMPO
 var TIEMPO_ESPERA_SALA = 60
 var TIEMPO_INICIAR_JUEGO = 3
+var DETENER_TIEMPO_TURNO = false
 var fichasComidas = [0, 0, 0, 0]
 
 // Puerto
@@ -181,6 +182,7 @@ io.on('connection', (socket) => {
   function RecargarTiempo () {
     TIEMPO_ESPERA_SALA = 60
     TIEMPO_INICIAR_JUEGO = 3
+    DETENER_TIEMPO_TURNO = false
   }
 
   /**
@@ -205,8 +207,9 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('recibirTiro')
   })
 
-  socket.on('perdedor', function (data) {
-    socket.broadcast.emit('perdedor', data)
+  socket.on('perdedor', () => {
+    DETENER_TIEMPO_TURNO = true
+    socket.broadcast.emit('perdedor')
   })
 
   /*
@@ -216,9 +219,9 @@ io.on('connection', (socket) => {
   */
 
   socket.on('siguienteTurno', function (data) {
-    if (data == TOTAL_USERS) {
+    if (data == TOTAL_USERS && DETENER_TIEMPO_TURNO == false) {
       io.to(USER_ARRAY[0]).emit('turno', flagInicioJuego)
-    } else {
+    } else if (DETENER_TIEMPO_TURNO == false) {
       io.to(USER_ARRAY[data]).emit('turno', flagInicioJuego)
     }
   })
