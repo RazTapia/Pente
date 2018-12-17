@@ -73,7 +73,7 @@ function Ficha (x, y) {
 
   crearFicha.addEventListener('mouseup', () => {
     (crearFicha.id == 0) ? (crearFicha.style.backgroundColor = colorUser, crearFicha.id = userId,
-      document.getElementById('tablero').style.pointerEvents = 'none',
+    document.getElementById('tablero').style.pointerEvents = 'none',
     socket.emit('pente:seleccion', { id: crearFicha.parentNode.id, color: colorUser, usuarioTiro: userId }),
     sumaJ1 = 1,
     fichasEneConsecu = 0,
@@ -127,7 +127,7 @@ socket.on('setScore', function (data) {
                   jugadorCliente +
                 '</div>' +
                 "<div class='col-4 margin-down'>" +
-                  "<div id='animacionTurno"+i+"' class='osahanloading' style='display:none'></div>" +
+                  "<div id='animacionTurno" + i + "' class='osahanloading' style='display:none'></div>" +
                 '</div>' +
               '</div>' +
               "<div class='row'>" +
@@ -169,13 +169,13 @@ socket.on('pente:seleccion', function (data) {
 })
 
 socket.on('saberTurno', function (data) {
-  for(var i =1; i<=data.jugador;i++) {
-    document.getElementById('animacionTurno'+i).style.display = 'none';
+  for (var i = 1; i <= data.jugador; i++) {
+    document.getElementById('animacionTurno' + i).style.display = 'none'
   }
-   document.getElementById('notificacionTitulo').innerHTML = 'Turno de'
-   document.getElementById('notificacionDescripcion').innerHTML = 'Jugador '+data.jugador
-   document.getElementById('temporizador').innerHTML = data.tiempo
-   document.getElementById('animacionTurno'+data.jugador).style.display = 'block'
+  document.getElementById('notificacionTitulo').innerHTML = 'Turno de'
+  document.getElementById('notificacionDescripcion').innerHTML = 'Jugador ' + data.jugador
+  document.getElementById('temporizador').innerHTML = data.tiempo
+  document.getElementById('animacionTurno' + data.jugador).style.display = 'block'
 })
 
 socket.on('turno', function (data) {
@@ -191,14 +191,13 @@ socket.on('turno', function (data) {
         clearTimeout(timerId)
         document.getElementById('tablero').style.pointerEvents = 'none'
         socket.emit('siguienteTurno', userId)
-        socket.emit('saberTurno',{tiempo:timeLeft,jugador:userId+1})
+        socket.emit('saberTurno', { tiempo: timeLeft, jugador: userId + 1 })
       } else {
         document.getElementById('tablero').style.pointerEvents = 'auto'
         elem.innerHTML = timeLeft
         timeLeft--
-        socket.emit('saberTurno',{tiempo:timeLeft,jugador:userId})
+        socket.emit('saberTurno', { tiempo: timeLeft, jugador: userId })
       }
-    
     }
   }
 })

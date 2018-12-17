@@ -223,8 +223,8 @@ io.on('connection', (socket) => {
     }
   })
 
- socket.on('saberTurno', function (data) {
-  EnviarATodos('saberTurno',data)
+  socket.on('saberTurno', function (data) {
+    EnviarATodos('saberTurno', data)
   })
 
   /**
