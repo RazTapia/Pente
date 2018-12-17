@@ -78,7 +78,7 @@ function Ficha (x, y) {
     fichasEneConsecu = 0,
     Evaluar(x, y),
     flagTiro = 1)
-      : null()// Fin  del bloque,Autor: Lucio Nieto Bautista
+      : null// Fin  del bloque,Autor: Lucio Nieto Bautista
   })
 }
 
@@ -162,7 +162,6 @@ socket.on('setScore', function (data) {
 
 socket.on('pente:seleccion', function (data) {
   var childNode = document.getElementById(data.id).childNodes
-  console.log(data.usuarioTiro)
 
   childNode[0].setAttribute('style', `background-color: ${data.color}`)
   childNode[0].setAttribute('id', ` ${data.usuarioTiro}`)
@@ -303,12 +302,16 @@ function DibujarFichasTablero () { // eslint-disable-line
 
 socket.on('recibirTiro', function () {
   EvaluarLineas4()
-  console.log('Paso metodo Evaluar Lineas 4')
 })
+
+/**
+ *  @author Nicolás Diego
+ * @description Metodo que recibe el id y el puntaje del usuario actual para actualizarce y
+ *
+ */
 
 socket.on('actualizarPuntaje', function (datos) {
   for (var i = 0; i < jugadoresTotal; i++) {
-    console.log('ActualizadosDatos: ' + datos[i])
     document.getElementById('jugador' + (i + 1) + 'Comida').innerHTML = ' ' + datos[i]
   }
 })
@@ -353,13 +356,12 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   Abajo(x, y)
 
-  if (fichasConsecu >= 5) {
+  if (fichasConsecu >= 5 || fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
 
   if (fichasConsecu == 4) {
-    // console.log("lineaTemporal: " + lineaTemporal[0] + " - " + lineaTemporal[1] + " - " + lineaTemporal[2] + " - " + lineaTemporal[3]);
     var checar = true
     for (var i = 0; i < 5; i++) {
       if (posicionesJ1[i] === 0 && checar === true) {
@@ -380,7 +382,7 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   IzquierdaAbajo(x, y)
 
-  if (fichasConsecu >= 5) {
+  if (fichasConsecu >= 5 || fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -406,7 +408,7 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   Izquierda(x, y)
 
-  if (fichasConsecu >= 5) {
+  if (fichasConsecu >= 5 || fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -432,7 +434,7 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   IzquierdaArriba(x, y)
 
-  if (fichasConsecu >= 5) {
+  if (fichasConsecu >= 5 || fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -451,7 +453,6 @@ function Evaluar (x, y) {
   }
 
   socket.emit('pasarTiro')
-  console.log('posicionesJ1: \n' + 'Pos 1: ' + posicionesJ1[0] + ' Pos 2: ' + posicionesJ1[1] + ' Pos 3: ' + posicionesJ1[2] + ' Pos 4: ' + posicionesJ1[3] + ' Pos 5: ' + posicionesJ1[4])
 
   // Funcion recorrer arreglo
   var ganar = 0
@@ -468,13 +469,9 @@ function Evaluar (x, y) {
 }// Fin Evaluar
 
 function EvaluarLineas4 () {
-  console.log('Metodo: Evaluar Lineas 4')
   for (var i = 0; i < 5; i++) {
     for (var j = 0; j < 4; j++) {
-      console.log('Matriz: ' + lineasCuatro[i][j])
       if (lineasCuatro[i][j] != 'x,y') {
-        console.log('Entre es distinto de x,y')
-        console.log('Linea Pasante:' + lineasCuatro[i][j])
         var charExtra = 0
         var tempXC = lineasCuatro[i][j].charAt(0)
         var tempXD = ''
@@ -489,18 +486,12 @@ function EvaluarLineas4 () {
           charExtra++
         }
         var ficha = document.getElementById('F' + tempXC + tempXD + 'C' + tempYC + tempYD).lastChild
-        console.log('Cuak!: ' + tempXC + tempXD + ' | ' + tempYC + tempYD + ' | ficha id: ' + ficha.id + ' == ' + '0')
         if (ficha.id == 0) {
-          console.log('¡¡¡LO BORRO!!! : ' + i)
           posicionesJ1[i] = 0
         }
       }
-      // console.log("j"+j);
     }
-
-    // console.log("i"+i);
   }
-  console.log('----------------------------')
 }
 
 /**
@@ -508,9 +499,7 @@ function EvaluarLineas4 () {
  * @description colocar descripción aquí.
  */
 function Arriba (x, y) {
-  // console.log(x + " & " + y);
   if (x > 0) {
-    // console.log(`${x}${y}`);
     x--
     var ficha = document.getElementById('F' + x + 'C' + y).lastChild
 
@@ -518,7 +507,6 @@ function Arriba (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
 
@@ -536,7 +524,6 @@ function Arriba (x, y) {
           fichasComidas += 2
           document.getElementById('jugador' + userId + 'Comida').innerHTML = ' ' + fichasComidas
           var data = [userId, fichasComidas]
-          console.log('id: ' + data[0] + ' fichas: ' + data[1])
           socket.emit('totalPuntajeComer', data)
         }
       } else {
@@ -562,7 +549,6 @@ function ArribaDerecha (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
@@ -603,7 +589,6 @@ function Derecha (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
@@ -646,7 +631,6 @@ function DerechaAbajo (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
@@ -687,7 +671,6 @@ function Abajo (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Abajo: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
 
@@ -730,7 +713,6 @@ function IzquierdaAbajo (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
@@ -771,7 +753,6 @@ function Izquierda (x, y) {
       sumaJ1 += 1
       if (fichasConsecu <= 4) {
         lineaTemporal[fichasConsecu] = x + ',' + y
-        /// console.log("Linea Temporal Arriba: " + lineaTemporal[fichasConsecu]);
       }
       fichasConsecu++
       if (fichasEneConsecu == 2 && sumaJ1 <= 2) {
@@ -849,6 +830,7 @@ function IzquierdaArriba (x, y) {
 function NotificacionHasGanado () {
   RecargarPagina()
   console.log('ganaste 5F')
+  console.log('ganaste Comio: ' + fichasComidas)
 }
 
 function NotificacionHasPerdido () {
