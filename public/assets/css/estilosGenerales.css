@@ -57,6 +57,17 @@ body {
   height: 145px;
 }
 
+/*Modal pantalal completa */
+.modal-full {
+  min-width: 100%;
+  margin: 0;
+}
+
+.modal-full .modal-content {
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom right, #0fff , #000 );
+}
+
 a.animated-button:link, a.animated-button:visited {
   position: relative;
   display: block;
@@ -204,6 +215,7 @@ a.animated-button.victoria-four:hover:after {
 
 .margin-down {
   margin-top: 22px;
+  margin-left: 31px;
 }
 
 /*circulo de color de los jugadores */

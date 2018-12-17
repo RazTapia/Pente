@@ -92,7 +92,7 @@ function Ficha(x, y) {
 
   socket.on('setPlayers', function (data) {
     userId=data;
-
+    document.getElementById("interfaz").style.display = 'block';
     if(userId==1) { colorUser='red';   }
 
     if(userId==2) { colorUser='blue';  }
@@ -106,6 +106,14 @@ function Ficha(x, y) {
   socket.on('setScore', function (data) {
      document.getElementById("panel-jugadores").innerHTML = "";
      for(var i = 1;i <= data;i++) {
+
+      var jugadorCliente="";
+      if( i==userId){
+        jugadorCliente =  "<span class='badge badge-secondary'>Jugador "+i+"</span></h5>";
+      }else{
+        jugadorCliente =  "Jugador "+i+"</h5>";
+      }
+
       document.getElementById("panel-jugadores").innerHTML+=
         "<div class='panel1'>"+
          "<div class='panel-Jugador1'>"+
@@ -116,7 +124,8 @@ function Ficha(x, y) {
                   "<span id='"+i+"color' class='dot'></span>"+
                 "</div>"+
                 "<div cass='col-4'>"+
-                  "<h5 class='card-title'> &nbsp; <label id='jugador'>Jugador "+i+"</label> </h5>"+
+                  "<h5 class='card-title'> &nbsp; "+
+                  jugadorCliente+
                 "</div>"+
                 "<div class='col-4 margin-down'>"+ 
                   "<div class='osahanloading'></div>"+
@@ -195,30 +204,23 @@ socket.on('turno',function(data){
 * y se lo envía al servidor.
 */
 
-function Guardar() {
-  var users;
-  if(document.getElementById('2').checked) {
-    users=2;
-  }else if(document.getElementById('3').checked) {
-    users=3;
-  }else if(document.getElementById('4').checked) {
-    users=4;
-  }
-  socket.emit('cantidadJugadores',users)
+function Guardar(data) {
+  socket.emit('cantidadJugadores',data)
   $('#formCantidadJugadores').modal('hide')
+  document.getElementById("interfaz").style.display = 'block';
   TiempoEmpezarSala(); //Iniciar el tiempo para que la sala se llene
 }
 
 socket.on('notificacionEsperarSala', function (data) {
   document.getElementById("notificacionTitulo").innerHTML = "Esperando jugadores";
-      document.getElementById("notificacionDescripcion").innerHTML = "tiempo estimado";
-      document.getElementById("temporizador").innerHTML = data;
+  document.getElementById("notificacionDescripcion").innerHTML = "tiempo estimado";
+  document.getElementById("temporizador").innerHTML = data;
 })
 
 socket.on('notificacionIniciarJuego', function (data) {
   document.getElementById("notificacionTitulo").innerHTML = "EL juego inicia en";
-      document.getElementById("notificacionDescripcion").innerHTML = "";
-      document.getElementById("temporizador").innerHTML = data;
+  document.getElementById("notificacionDescripcion").innerHTML = "";
+  document.getElementById("temporizador").innerHTML = data;
 })
 
 /*

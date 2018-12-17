@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 const socketIO = require('socket.io')
 var TOTAL_USERS
-var USERS; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
+var USERS =  4; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
 var USER_ARRAY = new Array();
 var flagInicioJuego;
 var TIEMPO
@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
   io.to(socket.id).emit('setPlayers',TOTAL_USERS)
 
   if (TOTAL_USERS === 1) {
+    clearInterval(TIEMPO)
     socket.emit('jugador1', TOTAL_USERS)
     USER_ARRAY[0]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)

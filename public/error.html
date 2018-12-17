@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>PENTE</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
-  <link rel="icon" type="assets/image/png" href="assets/images/icons/favicon.ico"/>
-  <link rel="stylesheet" type="text/css" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/estilosPlantilla.css">
-</head>
-<body>
-  <div class="limiter">
-    <div class="container-login100">
-      <div class="wrap-login100">
-        <div class="login100-pic js-tilt" data-tilt>
-          <img src="assets/images/img-01.png" alt="IMG">
-        </div>
-        <form class="login100-form">
-          <span class="login100-form-title">
-            Lo Sentimos, No hay espacios Disponibles.
-          </span>
-          <div class="text-center p-t-12">
-            <span class="txt1">
-            </span>
-          </div>
-          <!-- <div class="text-center p-t-136">
-            <a class="txt2" href="juego">
-              Volver a Menu de Inicio
-              <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-            </a>
-          </div> -->
-        </form>
+  <head>
+    <title>El Juego del Pente</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
+    <link rel="icon" type="assets/image/png" href="assets/images/controller.png"/>
+    <link rel="stylesheet" type="text/css" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/estilosGenerales.css">
+  </head>
+  <body>
+   <div class="jumbotron text-center">
+    <div class="container">
+      <h1><span class="badge badge-danger">ERROR</span></h1>
+      <p style="color:#fff;">Parece que la sala esta llena o no se ha elegido la cantidad de jugadores</p>
+    </div>
+   </div>
+   <div class="container" style="margin-bottom: 141px;"> 
+    <div class="row">
+      <div class="col align-self-center">
+       <a href="/"  class="btn btn-sm animated-button victoria-one">Regresar</a> 
       </div>
     </div>
-  </div>
-</body>
+    <footer class="jumbotron text-center">
+      <div class="container">
+        <p style="color:#888">Diseñado por <a href="#">9510IC  2018</a></p>
+      </div>
+    </footer>
+    <br> 
+    <br>
+  </body>
 </html>
