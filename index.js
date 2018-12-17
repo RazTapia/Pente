@@ -218,11 +218,13 @@ io.on('connection', (socket) => {
   socket.on('siguienteTurno', function (data) {
     if (data == TOTAL_USERS) {
       io.to(USER_ARRAY[0]).emit('turno', flagInicioJuego)
-        socket.broadcast.emit('saberTurno',1)
     } else {
       io.to(USER_ARRAY[data]).emit('turno', flagInicioJuego)
-      socket.broadcast.emit('saberTurno',data+1)
     }
+  })
+
+ socket.on('saberTurno', function (data) {
+  EnviarATodos('saberTurno',data)
   })
 
   /**
