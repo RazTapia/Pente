@@ -6,6 +6,7 @@ const socketIO = require('socket.io')
 var TOTAL_USERS
 var USERS=1; /*En esta variable se guardará la cantidad de usuarios permitidos */ 
 var USER_ARRAY = new Array();
+var flagInicioJuego;
 
 // Puerto
 app.set('port', process.env.PORT || 3000)
@@ -49,14 +50,12 @@ io.on('connection', (socket) => {
   }
 
   if (TOTAL_USERS === 2) {
-    socket.broadcast.emit('jugador2', TOTAL_USERS)
     USER_ARRAY[1]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
   }
 
   if (TOTAL_USERS === 3) {
-    socket.broadcast.emit('jugador3', TOTAL_USERS)
     USER_ARRAY[2]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
@@ -64,7 +63,6 @@ io.on('connection', (socket) => {
   }
 
   if (TOTAL_USERS === 4) {
-    socket.broadcast.emit('jugador2', TOTAL_USERS)
     USER_ARRAY[3]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
@@ -83,11 +81,11 @@ io.on('connection', (socket) => {
 */
   socket.on('cantidadJugadores', (users) => {
     USERS=users;
+    flagInicioJuego=1;
   })
 
   socket.on('pente:seleccion', (data) => {
     socket.broadcast.emit('pente:seleccion', data)
-    console.log(data);
   })
 
   socket.on('pente:comer', (data) => {
@@ -102,4 +100,18 @@ io.on('connection', (socket) => {
   socket.on('perdedor', function (data) {
     socket.broadcast.emit('perdedor', data)
   })
+
+  if(TOTAL_USERS==USERS&& flagInicioJuego==1){
+   
+    io.to(USER_ARRAY[0]).emit('turno',flagInicioJuego);
+  }//endif
+
+  socket.on('siguienteTurno', function (data) {
+    if(data==TOTAL_USERS){
+      io.to(USER_ARRAY[0]).emit('turno',flagInicioJuego);
+    }else{
+    io.to(USER_ARRAY[data]).emit('turno',flagInicioJuego);
+    }
+  })
 })
+

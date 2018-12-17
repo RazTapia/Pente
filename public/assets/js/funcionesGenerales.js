@@ -6,7 +6,8 @@
 const socket = io()
 var userId;
 var colorUser;
-
+var flagTiro;
+var jugadores;
 /*
 * Autor: RannFerii
 * Su tarea es dibujar todo el tablero
@@ -76,7 +77,7 @@ function Ficha(x, y) {
 		sumaJ2=0,
 		fichasEneConsecu=0,
 		Evaluar(x, y),
-		document.getElementById('tablero').style.pointerEvents = 'none' )//Autor: Tania Torres Alvarado
+		flagTiro=1 )
 		: null();// Fin  del bloque,Autor: Lucio Nieto Bautista
 
 		});
@@ -99,7 +100,7 @@ function Ficha(x, y) {
     if(userId==3) { colorUser='green'; }
 
     if(userId==4) { colorUser='yellow';}
-
+    document.getElementById('tablero').style.pointerEvents = 'none'
   })
 
   socket.on('setScore', function (data) {
@@ -157,7 +158,34 @@ socket.on('pente:seleccion',function(data){
 
     childNode[0].setAttribute('style', `background-color: ${data.color}`);
     childNode[0].setAttribute('id',` ${data.usuarioTiro}`);
-    document.getElementById('tablero').style.pointerEvents = 'auto';
+    
+});
+
+
+socket.on('turno',function(data){
+  flagTiro=0;
+  if(data==1)
+{
+  var timeLeft = 10;
+ 
+    var elem = document.getElementById('temporizador');
+    var timerId = setInterval(countdown, 1000);
+    
+    function countdown() {
+  
+      if (timeLeft == 0 || flagTiro==1) {
+        timeLeft = 0;
+        clearTimeout(timerId);
+        elem.innerHTML = 'Tiempo';
+        document.getElementById('tablero').style.pointerEvents = 'none'
+        socket.emit('siguienteTurno',userId);
+      } else {
+        document.getElementById('tablero').style.pointerEvents = 'auto'
+        elem.innerHTML = timeLeft + ' segundos restantes';
+        timeLeft--;
+      }
+    }
+}
 });
 
 /*
@@ -186,18 +214,6 @@ function Guardar() {
 socket.on('jugador1', function (data) {
   if (data == 1) {
     $('#formCantidadJugadores').modal('show')
-    document.getElementById('tablero').style.pointerEvents = 'none'
-  }
-})
-/*
-* Autor: Tania Torres Alvarado,Josue Zapata Moreno
-* En este metodo si ya hay dos jugadores y activa el tablero al primer jugador que llego.
-* Envia un mensaje avisando
-*/
-socket.on('jugador2', function (data) {
-  if (data == 2) {
-    // NotificacionEmpezarPartida()
-    document.getElementById('tablero').style.pointerEvents = 'auto'
   }
 })
 /*
