@@ -13,9 +13,20 @@ var TIEMPO_POR_TURNO = 10
 var TIEMPO_INICIAR_JUEGO = 3
 
 // Puerto
+/**
+ * @author Tania Torres
+ * @param process.env.PORT
+ * @description asigna el puerto actual o el 3000 por defecto
+*/
 app.set('port', process.env.PORT || 3000)
 
-// Routeo
+/**
+ * @author Tania Torres
+ * @callback app.get()
+ * @param {middleware function} req
+ * @param {middleware function} res
+ * @description escucha en la ruta / y recibe una función anónima.
+ */
 app.get('/', function (req, res) {
   if (TOTAL_USERS === USERS) {
     res.redirect('/error')
@@ -25,6 +36,11 @@ app.get('/', function (req, res) {
   }
 })
 
+/**
+ * @author Tania Torres
+ * @callback app.get()
+ * @description ruta de error definida esperando a ser llamada
+ */
 app.get('/error', function (req, res) {
   res.sendFile(path.join(__dirname, 'public', 'error.html'))
 })
@@ -38,7 +54,11 @@ const server = app.listen(app.get('port'), () => {
   console.log('server on port', app.get('port'))
 })
 
-// websockets
+/**
+ * @author Tania Torres
+ * @param server
+ * @description instancia del socket, controla la cantidad de conexiones según el número de usuarios conectados
+ */
 const io = socketIO(server)
 
 io.on('connection', (socket) => {
@@ -84,11 +104,14 @@ io.on('connection', (socket) => {
     TOTAL_USERS = io.engine.clientsCount
     socket.broadcast.emit('desconectado', TOTAL_USERS)
   })
-  /*
-* Autor: Tania Torres Alvarado
-* En este metodo recibe lo obtenido en el formulario formCantidadJugadores
-* y le asigna a una variable global del servidor de cuantos seran la partida;
-*/
+
+/**
+ * @author Tania Torres
+ * @callback socket.on()
+ * @param {class} formCantidadJugadores
+ * @description En este metodo recibe lo obtenido en el formulario formCantidadJugadores
+ * y le asigna a una variable global del servidor de cuantos seran la partida
+ */
   socket.on('cantidadJugadores', (users) => {
     USERS = users
     flagInicioJuego = 1
@@ -98,48 +121,71 @@ io.on('connection', (socket) => {
     console.log('Cantidad de jugadores máxima', users)
   })
 
-  function TiempoEmpezarSala () {
-    TIEMPO = setInterval(
-      function () {
-        if (TIEMPO_ESPERA_SALA >= 0) {
-          EnviarATodos('notificacionEsperarSala', TIEMPO_ESPERA_SALA)
-          TIEMPO_ESPERA_SALA--
-        } else {
+/**
+ * @author
+ * @callback setInterval
+ * @description Lleva el control sobre tiemer, cuando empezar al igual que el tiempo de espera
+ */
+   function TiempoEmpezarSala() {
+    TIEMPO= setInterval(
+      function() {
+        if(TIEMPO_ESPERA_SALA >= 0)
+        {
+            EnviarATodos("notificacionEsperarSala",TIEMPO_ESPERA_SALA)
+            TIEMPO_ESPERA_SALA--
+        }else{
           clearInterval(TIEMPO)
         }
-        console.log('Tiempo de llenado de sala', TIEMPO_ESPERA_SALA)
-      }, 1000
-    )
-  }
+        console.log("Tiempo de llenado de sala",TIEMPO_ESPERA_SALA)
+      },1000
+  )}
 
-  function TiempoIniciarJuego () {
-    TIEMPO = setInterval(
-      function () {
-        if (TIEMPO_INICIAR_JUEGO >= 0) {
-          EnviarATodos('notificacionIniciarJuego', TIEMPO_INICIAR_JUEGO)
-          TIEMPO_INICIAR_JUEGO--
-        } else {
+
+  /**
+ * @author
+ * @callback setInterval
+ * @description Lleva el control sobre tiempo para iniciar la partida
+ */
+    function TiempoIniciarJuego() {
+    TIEMPO= setInterval(
+      function() {
+        if(TIEMPO_INICIAR_JUEGO >= 0)
+        {
+            EnviarATodos("notificacionIniciarJuego",TIEMPO_INICIAR_JUEGO)
+            TIEMPO_INICIAR_JUEGO--
+        }else{
           clearInterval(TIEMPO)
           // Empezar uego()
         }
-        console.log('Tiempo para iniciar el juego', TIEMPO_INICIAR_JUEGO)
-      }, 1000
-    )
+        console.log("Tiempo para iniciar el juego",TIEMPO_INICIAR_JUEGO)
+      },1000
+  )}
+
+ /**
+ * @author
+ * @description llama a la función EnviarATodos
+ */
+  function EmpezarJuego() {
+      EnviarATodos("EmpezarJuego",0)
   }
 
-  function EmpezarJuego () {
-    EnviarATodos('EmpezarJuego', 0)
+/**
+ * @author
+ * @description Inicializa los valores del timer
+ */
+  function RecargarTiempo() {
+    TIEMPO_ESPERA_SALA = 60;
+    TIEMPO_POR_TURNO = 10;
+    TIEMPO_INICIAR_JUEGO = 3;
   }
 
-  function RecargarTiempo () {
-    TIEMPO_ESPERA_SALA = 60
-    TIEMPO_POR_TURNO = 10
-    TIEMPO_INICIAR_JUEGO = 3
-  }
-
-  function EnviarATodos (metodo, tiempo) {
-    for (var i = 0; i <= USER_ARRAY.length; i++) {
-      io.to(USER_ARRAY[i]).emit(metodo, tiempo)
+ /**
+ * @author
+ * @description Emite un mensaje broadcast para los clientes
+ */
+  function EnviarATodos(metodo,tiempo) {
+    for( var i = 0; i<=USER_ARRAY.length; i++) {
+      io.to(USER_ARRAY[i]).emit(metodo,tiempo)
     }
   }
 
