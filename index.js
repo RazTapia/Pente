@@ -200,7 +200,6 @@ io.on('connection', (socket) => {
   })
 
   socket.on('pasarTiro', () => {
-    console.log('Servidor Metodo Evaluar Lineas 4')
     socket.broadcast.emit('recibirTiro')
   })
 
@@ -222,10 +221,14 @@ io.on('connection', (socket) => {
     }
   })
 
+  /**
+ * @author Nicolas Omar
+ * @callback totalPuntajeComer
+ * @description En este metodo se manda el total de usuarios en partida y se actualizan los puntajes de los jugadores
+ */
+
   socket.on('totalPuntajeComer', (data) => {
-    console.log('Recibi datos id: ' + data[0] + ' puntaje: ' + data[1])
     socket.broadcast.emit('totalJugadores', USERS)
-    console.log('Total Jugadores: ' + USERS)
     if (data[0] === 1) {
       fichasComidas[0] = data[1]
     }
