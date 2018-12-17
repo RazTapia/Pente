@@ -73,6 +73,7 @@ function Ficha (x, y) {
 
   crearFicha.addEventListener('mouseup', () => {
     (crearFicha.id == 0) ? (crearFicha.style.backgroundColor = colorUser, crearFicha.id = userId,
+      document.getElementById('tablero').style.pointerEvents = 'none',
     socket.emit('pente:seleccion', { id: crearFicha.parentNode.id, color: colorUser, usuarioTiro: userId }),
     sumaJ1 = 1,
     fichasEneConsecu = 0,
@@ -126,7 +127,7 @@ socket.on('setScore', function (data) {
                   jugadorCliente +
                 '</div>' +
                 "<div class='col-4 margin-down'>" +
-                  "<div class='osahanloading'></div>" +
+                  "<div id='animacionTurno"+i+"' class='osahanloading' style='display:none'></div>" +
                 '</div>' +
               '</div>' +
               "<div class='row'>" +
@@ -168,11 +169,20 @@ socket.on('pente:seleccion', function (data) {
   childNode[0].setAttribute('id', ` ${data.usuarioTiro}`)
 })
 
+socket.on('saberTurno', function (data) {
+  document.getElementById('animacionTurno1').style.display = 'none';
+  document.getElementById('animacionTurno2').style.display = 'none';
+  document.getElementById('animacionTurno3').style.display = 'none';
+  document.getElementById('animacionTurno4').style.display = 'none';
+ document.getElementById('notificacionTitulo').innerHTML = 'Turno de'
+ document.getElementById('notificacionDescripcion').innerHTML = 'Jugador '+data
+ document.getElementById('animacionTurno'+data).style.display = 'block'
+})
+
 socket.on('turno', function (data) {
   flagTiro = 0
   if (data == 1) {
     var timeLeft = 10
-
     var elem = document.getElementById('temporizador')
     var timerId = setInterval(countdown, 1000)
 
@@ -185,9 +195,10 @@ socket.on('turno', function (data) {
         socket.emit('siguienteTurno', userId)
       } else {
         document.getElementById('tablero').style.pointerEvents = 'auto'
-        elem.innerHTML = timeLeft + ' segundos restantes'
+        elem.innerHTML = timeLeft
         timeLeft--
       }
+      
     }
   }
 })

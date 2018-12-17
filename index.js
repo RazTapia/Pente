@@ -58,6 +58,7 @@ const server = app.listen(app.get('port'), () => {
  * @param server
  * @description instancia del socket, controla la cantidad de conexiones según el número de usuarios conectados
  */
+
 const io = socketIO(server)
 
 io.on('connection', (socket) => {
@@ -136,6 +137,7 @@ io.on('connection', (socket) => {
           TIEMPO_ESPERA_SALA--
         } else {
           clearInterval(TIEMPO)
+          TiempoIniciarJuego()
         }
         console.log('Tiempo de llenado de sala', TIEMPO_ESPERA_SALA)
       }, 1000
@@ -216,8 +218,10 @@ io.on('connection', (socket) => {
   socket.on('siguienteTurno', function (data) {
     if (data == TOTAL_USERS) {
       io.to(USER_ARRAY[0]).emit('turno', flagInicioJuego)
+        socket.broadcast.emit('saberTurno',1)
     } else {
       io.to(USER_ARRAY[data]).emit('turno', flagInicioJuego)
+      socket.broadcast.emit('saberTurno',data+1)
     }
   })
 })
