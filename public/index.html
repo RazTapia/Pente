@@ -3,95 +3,84 @@
 <head>
   <title>PENTE</title>
   <meta charset="UTF-8">
-  <link rel="icon" type="assets/image/png" href="assets/images/icons/favicon.ico"/>
+  <link rel="icon" type="assets/image/png" href="assets/images/controller.png"/>
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/estilosPlantilla.css">
   <link rel="stylesheet" href="assets/css/estilosGenerales.css">
   <script src ="/socket.io/socket.io.js" charset="utf-8"></script>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/funcionesGenerales.js"></script>
-  <script src="assets/js/sweetAlert2.min.js"></script>
 </head>
-<body onload="Principal()">  
-  <div class="limiter">
-    <div class="container-login100">
-      <!--Contenedores para el Jugardor 1-->
-      <div class="wrap-login100 seccion-jugador1">
-        <div class="wrap-secction">
-          <br>
-          <h3>JUGADOR 1</h3>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="wrap-secction">
-          <div class="wrap-comida" >
-            <i class="fa fa-circle fa-2" aria-hidden="true"></i>
-            <div class="wrap-display" id="jugador1Comida">0</div>
+<body onload="Principal()">
+  <div class="container-fluid" id="interfaz" style="display:none">
+    <div class="row">
+        <div class="col-md-4">
+          <div class="box">
+              <svg><rect></rect></svg>
+              <div class="content">
+                <h1 id="notificacionTitulo">¡Atención jugadores!</h1>
+                <h4 id="notificacionDescripcion">Bienvenidos a su juego preferido, pente.</h4>
+                <h5 id="temporizador"></h5>
+              </div>
           </div>
-          <br>
-          <div class="wrap-filas4">
-            <i class="fa fa-circle" aria-hidden="true"></i>
-            <br>
-            <i class="fa fa-circle" aria-hidden="true"></i>
-            <br>
-            <i class="fa fa-circle" aria-hidden="true"></i>
-            <br>
-            <i class="fa fa-circle" aria-hidden="true"></i>
+        </div>
+        <div class="estilo-tablero">
+          <div class="central">
+            <table id="tablero" border=1>
+            </table>
           </div>
-          <div class="wrap-display" id="jugador1Filas4">0</div>
-          <br>
         </div>
-      </div>
-      <!-- Terminan los contenedores del Jugador 1-->
-      <!--Tablero-->
-      <div class="wrap-login100">
-        <!--Div principal y central  el cual contendrá el tablero y sus fichas-->
-        <div class="central">
-          <table id="tablero" border=1>
-          </table>
-        </div>
-      </div>
-      <!--Contenedores para el Jugardor 2-->
-      <div class="wrap-login100 seccion-jugador2">
-        <div class="wrap-secction">
-          <br>
-          <h3>JUGADOR 2</h3>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="wrap-secction">
-          <div class="wrap-comida" >
-            <i class="fa fa-circle fa-2" aria-hidden="true"></i>
-            <div class="wrap-display" id="jugador2Comida">0</div>
+        <div class="col-md-3">
+          <!--Panel de todos los jugadores, aqui se muestran de 1-4 paneles -->
+          <div id= "panel-jugadores">
           </div>
-          <br>
-          <div class="wrap-filas4">
-            <i class="fa fa-circle" aria-hidden="true"></i>
-            <br>
-            <i class="fa fa-circle" aria-hidden="true"></i>
-            <br>
-            <i class="fa fa-circle" aria-hidden="true"></i>
-            <br>
-            <i class="fa fa-circle" aria-hidden="true"></i>
-          </div>
-          <div class="wrap-display" id="jugador2Filas4">0</div>
-          <br>
         </div>
-      </div>
-      <!--Terminan los contenedores del jugador 2 -->
     </div>
-  </div> 
-  <script type="text/javascript">
-    function Principal() {
-      Tablero();
-      DibujarFichasTablero();
-      //PuntajeComidaJugador1(3);
-    }
-  </script>
+  </div>
+  <div class="modal fade" id="formCantidadJugadores" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-full" role="document">
+      <div class="modal-content">
+         <div class="jumbotron text-center">
+          <div class="container">
+            <h1><span class="badge badge-secondary">El Juego del Pente</span></h1>
+            <p style="color:#fff;">¿Listo para pensar en todo ?</p>
+          </div>
+         </div>
+         <div class="container">
+          <div class="row">
+            <div class="col align-self-center">
+              <a href="#" id="2" class="btn btn-sm animated-button victoria-one"
+              onclick="Guardar(2)">2 Jugadores</a>
+             <a href="#" id="2" class="btn btn-sm animated-button victoria-one"
+              onclick="Guardar(3)">3 Jugadores</a>
+              <a href="#" id="2" class="btn btn-sm animated-button victoria-one"
+              onclick="Guardar(4)">4 Jugadores</a>
+            </div>
+          </div>
+          <footer class="jumbotron text-center">
+            <div class="container">
+              <p style="color:#888">Diseñado por <a href="#">9510IC 2018</a></p>
+            </div>
+          </footer>
+          <br>
+          <br>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function Principal () {
+  Tablero()
+  DibujarFichasTablero()
+  // Por default desactivar el tablero para todos hasta que se activen otras funciones
+  document.getElementById('tablero').style.pointerEvents = 'none'
+  document.getElementById('notificacionTitulo').innerHTML = 'PENTE'
+  document.getElementById('notificacionDescripcion').innerHTML = 'El juego'
+  // document.getElementById('temporizador').innerHTML = 'El juego'
+}
+</script>
 </body>
 </html>
-

@@ -1,24 +1,29 @@
-body {
-  background-color: #cccccc;
-  height: 100%; 
+body, html {
+  background-image: linear-gradient(to bottom right, #0fff , #000 );
+  height: 100%;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 /*
-* Autor: RannFerii
+* Autor: Josue Zapata
 * Alinear vertical y horizontalmente el div central
 */
+.estilo-tablero {
+  border-radius: 15px;
+  background-color: #ffffff;
+  margin-top: 20px;
+  padding-top: 2%;
+  padding-left: 1.5%;
+}
 .central {
-    width: 620px;
-    margin-top: 5%;
-    margin-left: 3%;
-    height: 533px;
-    padding-left: -6px;
+  width: 100%;
+  height: 100%;
 }
 
 /*
-* Autor: RannFerii
+* Autor: Josue Zapata
 * Cuadro= 30x30 px cuadrados
 */
 .cuadro {
@@ -42,47 +47,305 @@ body {
 	background: lightgrey;
 }
 
+/*Clases para el login.html */
+
+.jumbotron {
+  color: #353535;
+  font-style: italic;
+  background-color:  transparent !important;
+  height: 145px;
+}
+
+/*Modal pantalal completa */
+.modal-full {
+  min-width: 100%;
+  margin: 0;
+}
+
+.modal-full .modal-content {
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom right, #0fff , #000 );
+}
+
+a.animated-button:link, a.animated-button:visited {
+  position: relative;
+  display: block;
+  margin: 30px auto 0;
+  padding: 14px 15px;
+  color: #fff;
+  font-size:14px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  letter-spacing: .08em;
+  border-radius: 0;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+a.animated-button:link:after, a.animated-button:visited:after {
+  content: "";
+  position: absolute;
+  height: 0%;
+  left: 50%;
+  top: 50%;
+  width: 150%;
+  z-index: -1;
+  -webkit-transition: all 0.75s ease 0s;
+  -moz-transition: all 0.75s ease 0s;
+  -o-transition: all 0.75s ease 0s;
+  transition: all 0.75s ease 0s;
+}
+
+a.animated-button:link:hover, a.animated-button:visited:hover {
+  color: #FFF;
+  text-shadow: none;
+}
+
+a.animated-button:link:hover:after, a.animated-button:visited:hover:after {
+  height: 450%;
+}
+
+a.animated-button:link, a.animated-button:visited {
+  width: 400px;
+  position: relative;
+  display: block;
+  margin: 30px auto 0;
+  padding: 14px 15px;
+  color: #fff;
+  font-size:14px;
+  border-radius: 0;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  letter-spacing: .08em;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+/* Estilo victoria, para mayor información https://codepen.io/sazzad/pen/yNNNJG */
+
+a.animated-button.victoria-one {
+  border: 2px solid #00a0a0;
+}
+
+a.animated-button.victoria-one:after {
+  background: #00a7af;
+  -moz-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+  -ms-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+  -webkit-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+  transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+}
+
+a.animated-button.victoria-two {
+  border: 2px solid #D24D57;
+}
+
+a.animated-button.victoria-two:after {
+  background: #D24D57;
+  -moz-transform: translateX(-50%) translateY(-50%) rotate(25deg);
+  -ms-transform: translateX(-50%) translateY(-50%) rotate(25deg);
+  -webkit-transform: translateX(-50%) translateY(-50%) rotate(25deg);
+  transform: translateX(-50%) translateY(-50%) rotate(25deg);
+}
+
+a.animated-button.victoria-three {
+  border: 2px solid #D24D57;
+}
+
+a.animated-button.victoria-three:after {
+  background: #D24D57;
+  opacity: .5;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+a.animated-button.victoria-three:hover:after {
+  height: 140%;
+  opacity: 1;
+}
+
+a.animated-button.victoria-four {
+  border: 2px solid #D24D57;
+}
+
+a.animated-button.victoria-four:after {
+  background: #D24D57;
+  opacity: .5;
+  -moz-transform: translateY(-50%) translateX(-50%) rotate(90deg);
+  -ms-transform: translateY(-50%) translateX(-50%) rotate(90deg);
+  -webkit-transform: translateY(-50%) translateX(-50%) rotate(90deg);
+  transform: translateY(-50%) translateX(-50%) rotate(90deg);
+}
+
+a.animated-button.victoria-four:hover:after {
+  opacity: 1;
+  height: 600% !important;
+}
+
 /*
  * Autor: Josué Zapata
- * Sobreescritura de las clases del template para acomodar componentes y el puntaje a la interfaz
+ * Clases para el index.html, marcador, puntaje, alinemiento, posicionamiento etc.
  */
 
-.wrap-login100 {
-  width: 550px;
-  background: #ffff;
-  border-radius: 10px;
-  display: -moz-box;
-  display: -ms-flexbox;
-  padding:0; margin:0;
+.panel1 {
+  width: 0px;
+  padding-bottom: 10px;
 }
 
-.seccion-jugador1{
+.panel-Jugador1 {
+  height: 200;
+  width: 300px;
+}
+
+/*icono de jugador en turno un poco abajo*/
+
+.margin-down {
   margin-top: 22px;
-  margin-bottom: 368px;
-  width: 223px;
-  margin-right: 90px;
+  margin-left: 31px;
 }
 
-.seccion-jugador2{
-  margin-top: 22px;
-  margin-bottom: 368px;
-  width: 223px;
-  margin-left: 99px;
-}
+/*circulo de color de los jugadores */
 
-.wrap-secction{
-  padding-left: 38px;
-  font-size: 13px;
-}
-
-.wrap-filas4{
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #000;
+  border-radius: 50%;
   display: inline-block;
-  height: 20px;
-  line-height:50%;
 }
 
-.wrap-display{
-  display: inline;
-  margin-left: 18px;
-  font-size: 40px;
+.panel-Jugador2 {
+  height: 300px;
+  width: 300px;
+}
+
+/* icono indicador de jugador en turno */
+
+.animationload {
+    background-color: #fff;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+.osahanloading {
+    animation: 1.5s linear 0s normal none infinite running osahanloading;
+    background: #fed37f none repeat scroll 0 0;
+    border-radius: 50px;
+    height: 20px;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: absolute;
+    top: 50%;
+    width: 20px;
+}
+
+.osahanloading::after {
+    animation: 1.5s linear 0s normal none infinite running osahanloading_after;
+    border-color: #85d6de transparent;
+    border-radius: 80px;
+    border-style: solid;
+    border-width: 10px;
+    content: "";
+    height: 40px;
+    left: -10px;
+    position: absolute;
+    top: -10px;
+    width: 40px;
+}
+
+@keyframes osahanloading {
+  0% {
+      transform: rotate(0deg);
+  }
+  50% {
+      background: #85d6de none repeat scroll 0 0;
+      transform: rotate(180deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/* animacion de div principal de notificacion*/
+
+.box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 200px;
+  background: #ffff;
+  box-sizing: border-box;
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+  border:2px solid rgba(0,0,0,.5);
+}
+
+.box .content {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border: 2px solid #034643;
+  padding: 30px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.5);
+  text-align: center;
+}
+
+.box .content h1 {
+  color: #000;
+  font-size: 30px;
+  margin: 0 0 10px;
+  padding: 0;
+
+}
+
+.box .content p {
+ color: #000;
+}
+
+.box svg,
+.box svg rect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+}
+
+.box svg rect {
+  stroke: #d4d1d1;
+  stroke-width: 5px;
+  stroke-dasharray: 400;
+  animation: animate 20s linear infinite;
+}
+
+@keyframes animate {
+  0%{
+    stroke-dashoffset:800;
+  }
+  100%{
+    stroke-dashoffset:0;
+  }
+
 }
