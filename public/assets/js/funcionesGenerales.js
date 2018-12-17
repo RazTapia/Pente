@@ -368,7 +368,11 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   Abajo(x, y)
 
-  if (fichasConsecu >= 5 || fichasComidas >= 10) {
+  if (fichasConsecu >= 5) {
+    NotificacionHasGanado()
+    socket.emit('perdedor', { flag: 1 })
+  }
+  if (fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -394,7 +398,11 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   IzquierdaAbajo(x, y)
 
-  if (fichasConsecu >= 5 || fichasComidas >= 10) {
+  if (fichasConsecu >= 5) {
+    NotificacionHasGanado()
+    socket.emit('perdedor', { flag: 1 })
+  }
+  if (fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -420,7 +428,11 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   Izquierda(x, y)
 
-  if (fichasConsecu >= 5 || fichasComidas >= 10) {
+  if (fichasConsecu >= 5) {
+    NotificacionHasGanado()
+    socket.emit('perdedor', { flag: 1 })
+  }
+  if (fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -446,7 +458,11 @@ function Evaluar (x, y) {
   fichasEneConsecu = 0
   IzquierdaArriba(x, y)
 
-  if (fichasConsecu >= 5 || fichasComidas >= 10) {
+  if (fichasConsecu >= 5) {
+    NotificacionHasGanado()
+    socket.emit('perdedor', { flag: 1 })
+  }
+  if (fichasComidas >= 10) {
     NotificacionHasGanado()
     socket.emit('perdedor', { flag: 1 })
   }
@@ -466,7 +482,7 @@ function Evaluar (x, y) {
 
   socket.emit('pasarTiro')
 
-  // Funcion recorrer arreglo
+  // Funcion recorrer arreglo filass de 5
   var ganar = 0
   posicionesJ1.forEach(function (valor) {
     if (valor == 1) {
@@ -840,12 +856,14 @@ function IzquierdaArriba (x, y) {
  *  Recargar pagina cuando  hay un ganador
  */
 function NotificacionHasGanado () {
+  document.getElementById('temporizador').innerHTML = 'Ganaste'
   RecargarPagina()
   console.log('ganaste 5F')
   console.log('ganaste Comio: ' + fichasComidas)
 }
 
 function NotificacionHasPerdido () {
+  document.getElementById('temporizador').innerHTML = 'Perdiste'
   RecargarPagina()
   console.log('Perdiste')
 }
