@@ -135,13 +135,14 @@ function Ficha(x, y) {
          "</div>"+
         "</div>"
         var ficha = document.getElementById( i+'color' );
-      if(i==1) { ficha.style.backgroundColor = 'red';   }
 
-      if(i==2) { ficha.style.backgroundColor = 'blue';  }
+        if(i==1) { ficha.style.backgroundColor = 'red';   }
 
-      if(i==3) { ficha.style.backgroundColor = 'green'; }
+        if(i==2) { ficha.style.backgroundColor = 'blue';  }
 
-      if(i==4) { ficha.style.backgroundColor = 'yellow';}
+        if(i==3) { ficha.style.backgroundColor = 'green'; }
+
+        if(i==4) { ficha.style.backgroundColor = 'yellow';}
      }
   })
 
@@ -169,7 +170,7 @@ socket.on('jugador1', function (data) {
   if (data == 1) {
     $('#formCantidadJugadores').modal('show')
     // NotificacionJugador1Listo()
-    document.getElementById('tablero').style.pointerEvents = 'none'
+    // document.getElementById('tablero').style.pointerEvents = 'none'
   }
 })
 /*

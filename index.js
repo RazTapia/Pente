@@ -39,21 +39,22 @@ io.on('connection', (socket) => {
   console.log('Nueva conexion', socket.id)
   TOTAL_USERS = io.engine.clientsCount
   io.to(socket.id).emit('setPlayers',TOTAL_USERS)
+  var usuariosPermitidos = 4
 
-  if (TOTAL_USERS === 1) {
-    socket.emit('jugador1', TOTAL_USERS)
+  if (TOTAL_USERS === 1 && usuariosPermitidos == 1) {
+    socket.emit('jugadorTurno', TOTAL_USERS)
     USER_ARRAY[0]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
   }
 
-  if (TOTAL_USERS === 2) {
+  if (TOTAL_USERS === 2 && usuariosPermitidos == 1) {
     socket.broadcast.emit('jugador2', TOTAL_USERS)
     USER_ARRAY[1]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
   }
 
-  if (TOTAL_USERS === 3) {
+  if (TOTAL_USERS === 3 && usuariosPermitidos == 1) {
     socket.broadcast.emit('jugador3', TOTAL_USERS)
     USER_ARRAY[2]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
@@ -61,8 +62,8 @@ io.on('connection', (socket) => {
     io.to(USER_ARRAY[2]).emit('setScore',TOTAL_USERS)
   }
 
-  if (TOTAL_USERS === 4) {
-    socket.broadcast.emit('jugador2', TOTAL_USERS)
+  if (TOTAL_USERS === 4 && usuariosPermitidos == 1) {
+    socket.broadcast.emit('jugador4', TOTAL_USERS)
     USER_ARRAY[3]=socket.id
     io.to(USER_ARRAY[0]).emit('setScore',TOTAL_USERS)
     io.to(USER_ARRAY[1]).emit('setScore',TOTAL_USERS)
@@ -77,6 +78,8 @@ io.on('connection', (socket) => {
 
   socket.on('pente:seleccion', (data) => {
     socket.broadcast.emit('pente:seleccion', data)
+
+    console.log("emision",data)
   })
 
   socket.on('pente:comer', (data) => {
