@@ -135,9 +135,6 @@ socket.on('setScore', function (data) {
                   "<P class='text-right'>Comidas:<strong id='jugador" + i + "Comida'> 0</strong></P>" +
                   "<P class='text-right'>Filas de 4:<strong id='jugador" + i + "Filas4'> 0</strong></P>" +
                 '</div>' +
-                "<div class='col-6'>" +
-                  '<P>Tiempo</P>' +
-                '</div>' +
               '</div>' +
             '</div>' +
           '</div>' +
